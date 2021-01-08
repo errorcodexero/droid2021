@@ -12,7 +12,14 @@ public class MotorSubsystem extends Subsystem
     public MotorSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
 
-        controller_ = getRobot().getMotorFactory().createMotor(name, "hw:" + name + ":motor") ;
+        String mname = "hw:" + name + ":motor" ;
+        controller_ = getRobot().getMotorFactory().createMotor(name, mname) ;
+        if (controller_ == null)
+        {
+            getRobot().getMessageLogger().startMessage(MessageType.Fatal) ;
+            getRobot().getMessageLogger().add("could not create motor for name '" + mname + "'") ;
+            getRobot().getMessageLogger().endMessage();
+        }
         power_ = 0.0 ;
     }
 

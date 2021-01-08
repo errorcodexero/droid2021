@@ -44,6 +44,15 @@ public class SparkMaxMotorController extends MotorController
         }
     }
 
+    public String typeName() {
+        String ret = "SparkMaxBrushed" ;
+
+        if (brushless_)
+            ret = "SparkMaxBrushless" ;
+
+        return ret ;
+    }
+
     public void set(double percent) {
         if (sim_ != null) {
             sim_power_.set(percent) ;

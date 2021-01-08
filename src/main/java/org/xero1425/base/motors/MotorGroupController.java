@@ -10,8 +10,15 @@ public class MotorGroupController extends MotorController
         motors_ = new ArrayList<MotorController>() ;
     }
 
+    public String typeName() {
+        if (motors_.size() == 0)
+            return "NoMotors" ;
+        
+            return motors_.get(0).typeName() ;
+    }
+
     public void addMotor(MotorController ctrl, boolean inverted) throws BadMotorRequestException {
-        if (motors_.size() > 0 && !motors_.get(0).getName().equals(ctrl.getName()))
+        if (motors_.size() > 0 && !motors_.get(0).typeName().equals(ctrl.typeName()))
             throw new BadMotorRequestException(this, "cannot add motor to group with existing motors unless the are the same type") ;
 
         motors_.add(ctrl) ;

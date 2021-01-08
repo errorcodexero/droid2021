@@ -71,6 +71,27 @@ public class CTREMotorController extends MotorController
         }
     }
 
+    public String typeName() {
+        String ret = "CTREUnknown" ;
+
+        switch(type_)
+        {
+        case TalonSRX:
+            ret = "TalonSRX" ;
+            break ;
+
+        case TalonFX:
+            ret = "TalonFX" ;
+            break ;
+
+        case VictorSPX:
+            ret = "VictorSPX" ;
+            break ;
+        }
+
+        return ret ;
+    }
+
     public void set(double percent) {
         if (sim_ != null) {
             sim_power_.set(percent) ;

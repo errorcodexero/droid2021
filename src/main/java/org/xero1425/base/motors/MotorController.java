@@ -22,6 +22,7 @@ public abstract class MotorController
         return name_  ;
     }
 
+    public abstract String typeName() ;
     public abstract void set(double percent)  throws BadMotorRequestException;
     public abstract void setInverted(boolean inverted)  throws BadMotorRequestException;
     public abstract boolean isInverted() throws BadMotorRequestException ;    
