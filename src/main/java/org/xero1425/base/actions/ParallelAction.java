@@ -17,7 +17,7 @@ public class ParallelAction extends ActionGroup
 
     public void addAction(Action act) throws InvalidActionRequest {
         if (running_)
-            throw new InvalidActionRequest(this, 
+            throw new InvalidActionRequest(this, InvalidActionRequest.Reason.ModifyingRunningAction,
                     "cannot add actions to parallel after it has been started") ;
 
         actions_.add(act) ;
