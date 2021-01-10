@@ -486,6 +486,13 @@ public class Subsystem {
     }
 
     /// \brief put a value on the driver station dashboard
+    /// The dtype parameter controls when a value is displayed on the dashboard.  If dtype
+    /// is set to DisplayType.Always, the value is always displayed on the dashboard.  If the
+    /// dtype is set to Disabled, the value is only displayed when the robot is disabled.  This is
+    /// useful for displaying values that aid in robot system checkes.  If the dtype is set to Verbose, 
+    /// the value is only displayed when the robot is disabled or when the subsystem is in verbose 
+    /// mode.  A subsystem is put in verbose mode, when the settings file contains a property with the
+    /// name SUBSYSTEM:verbose set to true, where SUBSYSTEM is the name of the subsystem.
     /// \param name name of the value to display
     /// \param dtype indicates when the value should be displayed
     /// \value the value to display
@@ -495,6 +502,13 @@ public class Subsystem {
     }
 
     /// \brief put a value on the driver station dashboard
+    /// The dtype parameter controls when a value is displayed on the dashboard.  If dtype
+    /// is set to DisplayType.Always, the value is always displayed on the dashboard.  If the
+    /// dtype is set to Disabled, the value is only displayed when the robot is disabled.  This is
+    /// useful for displaying values that aid in robot system checkes.  If the dtype is set to Verbose, 
+    /// the value is only displayed when the robot is disabled or when the subsystem is in verbose 
+    /// mode.  A subsystem is put in verbose mode, when the settings file contains a property with the
+    /// name SUBSYSTEM:verbose set to true, where SUBSYSTEM is the name of the subsystem.    
     /// \param name name of the value to display
     /// \param dtype indicates when the value should be displayed
     /// \value the value to display
@@ -504,6 +518,13 @@ public class Subsystem {
     }
 
     /// \brief put a value on the driver station dashboard
+    /// The dtype parameter controls when a value is displayed on the dashboard.  If dtype
+    /// is set to DisplayType.Always, the value is always displayed on the dashboard.  If the
+    /// dtype is set to Disabled, the value is only displayed when the robot is disabled.  This is
+    /// useful for displaying values that aid in robot system checkes.  If the dtype is set to Verbose, 
+    /// the value is only displayed when the robot is disabled or when the subsystem is in verbose 
+    /// mode.  A subsystem is put in verbose mode, when the settings file contains a property with the
+    /// name SUBSYSTEM:verbose set to true, where SUBSYSTEM is the name of the subsystem.    
     /// \param name name of the value to display
     /// \param dtype indicates when the value should be displayed
     /// \value the value to display
@@ -513,12 +534,29 @@ public class Subsystem {
     }
 
     /// \brief put a value on the driver station dashboard
+    /// The dtype parameter controls when a value is displayed on the dashboard.  If dtype
+    /// is set to DisplayType.Always, the value is always displayed on the dashboard.  If the
+    /// dtype is set to Disabled, the value is only displayed when the robot is disabled.  This is
+    /// useful for displaying values that aid in robot system checkes.  If the dtype is set to Verbose, 
+    /// the value is only displayed when the robot is disabled or when the subsystem is in verbose 
+    /// mode.  A subsystem is put in verbose mode, when the settings file contains a property with the
+    /// name SUBSYSTEM:verbose set to true, where SUBSYSTEM is the name of the subsystem.    
     /// \param name name of the value to display
     /// \param dtype indicates when the value should be displayed
     /// \value the value to display    
     public void putDashboard(String name, DisplayType dtype, String value) {
         if (shouldDisplay(dtype))
             SmartDashboard.putString(name, value) ;        
+    }
+
+    /// \brief returns true if the subsystem is in verbose mode
+    /// A subsystem is placed in verbose mode when there is a value in the settings file named
+    /// SUBSYSTEM:verbose that is a boolean set to true.  This value is queried only when the subsystem
+    /// is created and therefore changing the verbose setting on a running robot has no effect until
+    /// the robot code is restarted.
+    /// \returns true if the subsystem is in verbose mode
+    public boolean isVerbose() {
+        return verbose_ ;
     }
 
     /// \brief returns true if the subsystem is busy running and action and the action is not the default action

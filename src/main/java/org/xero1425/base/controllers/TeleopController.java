@@ -35,7 +35,7 @@ public class TeleopController extends BaseController
             logger.endMessage(); 
         }
 
-        if (sequence_.getChildren().size() > 0)
+        if (sequence_.size() > 0)
         {
             try {
                 sequence_.start() ;

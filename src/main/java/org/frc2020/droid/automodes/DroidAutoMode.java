@@ -49,7 +49,7 @@ public class DroidAutoMode extends AutoMode {
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
         ParallelAction parallel ;
 
-        parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger()) ;
+        parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger(), ParallelAction.DonePolicy.All) ;
         parallel.addAction(setTurretToTrack(angle)) ;
 
         parallel.addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), false);
@@ -68,7 +68,7 @@ public class DroidAutoMode extends AutoMode {
         ParallelAction parallel ;
         SequenceAction series ;
 
-        parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger()) ;
+        parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger(), ParallelAction.DonePolicy.All) ;
 
         parallel.addSubActionPair(db, new TankDriveFollowPathAction(db, path, false), true);
 

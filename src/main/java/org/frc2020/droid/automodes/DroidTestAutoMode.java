@@ -107,7 +107,7 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 21:            // Test collect path
-                parallel = new ParallelAction(ctrl.getRobot().getMessageLogger()) ;
+                parallel = new ParallelAction(ctrl.getRobot().getMessageLogger(), ParallelAction.DonePolicy.All) ;
                 addAction(parallel);
 
                 parallel.addSubActionPair(intake, new CollectOnAction(intake), false);

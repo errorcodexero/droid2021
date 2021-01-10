@@ -23,10 +23,14 @@ public class InvalidActionRequest extends Exception
         act_ = act ;
     }
 
+    /// \brief return the action that caused the exception
+    /// \returns the action that caused the exception
     public Action getAction() {
         return act_ ;
     }
 
+    /// \brief return the reason for the exception
+    /// \returns the reasons for the exception
     public Reason getReason() {
         return reason_ ;
     }
