@@ -2,20 +2,29 @@ package org.xero1425.base.alarms;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.wpi.first.wpilibj.DriverStation;
-
 import java.util.* ;
-
 import org.xero1425.base.Subsystem;
 
+/// \file
+
+/// \brief this subsystem provides a mechanism for robot code to set alarms.
+/// The alarms are set as a function of the match time, starting from the beginning
+/// of the match.  Alarms are presented to the drive team in terms of AlarmSounders. 
+/// These can be flashing lights on the OI, vibrating the gamepad, etc.
 public class AlarmSubsystem extends Subsystem {
+    /// \brief create the AlarmSubsystem.
+    /// \param parent the parent subsystem
     public AlarmSubsystem(Subsystem parent) {
         super(parent, "alarms") ;
 
         entries_ = new ArrayList<AlarmEntry>() ;
     }
 
+    /// \brief run the AlarmSubsystem.
+    /// Running this subsystem checks each active alarm and determines if it
+    /// has expired.  If the alarm is expired the associated AlarmSounder is used
+    /// to communicate this to the drive team.
     @Override
     public void run() {
         DriverStation ds = DriverStation.getInstance() ;
@@ -37,6 +46,9 @@ public class AlarmSubsystem extends Subsystem {
         }
     }
 
+    /// \brief add a new alarm
+    /// \param time the match time remaining for the alarm (30 would mean 30 seconds remaining in the match)
+    /// \param sounder the object used to notify the drive team that the alarm has expired
     public void addEntry(double time, AlarmSounder sounder) {
         AlarmEntry entry = new AlarmEntry(time, sounder) ;
         entries_.add(entry) ;
