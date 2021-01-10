@@ -22,9 +22,9 @@ public class TeleopController extends BaseController
     @Override 
     public void run() {
         OISubsystem oi = getRobot().getRobotSubsystem().getOI() ;
-
-        sequence_.clear() ;
+        
         try {
+            sequence_.clear() ;
             oi.generateActions(sequence_) ;
         }
         catch(InvalidActionRequest ex) {

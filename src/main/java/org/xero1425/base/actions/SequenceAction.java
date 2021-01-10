@@ -66,7 +66,10 @@ public class SequenceAction extends ActionGroup
     }
 
     /// \brief clear all child actions from this sequence.
-    public void clear() {
+    public void clear() throws InvalidActionRequest {
+        if (running_)
+            throw new InvalidActionRequest(this, InvalidActionRequest.Reason.ModifyingRunningAction, 
+                    "cannot clear a running SequenceAction") ;
         index_ = -1 ;
         actions_.clear() ;
     }
@@ -141,6 +144,7 @@ public class SequenceAction extends ActionGroup
             }
             else
             {
+                running_ = false ;
                 setDone() ;
             }
         }
