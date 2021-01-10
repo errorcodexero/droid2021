@@ -27,11 +27,11 @@ public class SparkMaxMotorController extends MotorController
             else
                 sim_ = SimDevice.create(SimDeviceNameBrushed, index) ;
 
-            sim_power_ = sim_.createDouble(MotorController.SimPowerParamName, false, 0.0) ;
-            sim_encoder_ = sim_.createDouble(MotorController.SimEncoderParamName, false, 0.0) ;
-            sim_motor_inverted_ = sim_.createBoolean(MotorController.SimInvertedParamName, false, false) ;
-            sim_neutral_mode_ = sim_.createBoolean(MotorController.SimNeutralParamName, false, false) ;  
-            sim_.createBoolean(MotorController.SimEncoderStoresTicksParamName, true, false) ;            
+            sim_power_ = sim_.createDouble(MotorController.SimPowerParamName, SimDevice.Direction.kBidir, 0.0) ;
+            sim_encoder_ = sim_.createDouble(MotorController.SimEncoderParamName, SimDevice.Direction.kBidir, 0.0) ;
+            sim_motor_inverted_ = sim_.createBoolean(MotorController.SimInvertedParamName, SimDevice.Direction.kBidir, false) ;
+            sim_neutral_mode_ = sim_.createBoolean(MotorController.SimNeutralParamName, SimDevice.Direction.kBidir, false) ;  
+            sim_.createBoolean(MotorController.SimEncoderStoresTicksParamName, SimDevice.Direction.kBidir, false) ;            
         }
         else {
             if (brushless)
