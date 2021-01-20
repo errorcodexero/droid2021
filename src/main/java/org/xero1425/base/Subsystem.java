@@ -10,7 +10,6 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SettingsValue;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /// \file
@@ -282,6 +281,9 @@ public class Subsystem {
             min_time_ = Math.min(min_time_, elapsed) ;
             max_time_ = Math.max(max_time_, elapsed) ;
 
+            //
+            // TODO: turn off this in a competition
+            //
             if (total_cnt_ > 0 && (total_cnt_ % 500) == 0) {
                 MessageLogger logger = getRobot().getMessageLogger() ;
                 logger.startMessage(MessageType.Debug, getRobot().getLoggerID()) ;
@@ -451,14 +453,14 @@ public class Subsystem {
         // Store the default action
         //
         default_action_ = act ;
-        if (action_ == null)
+        if (action_ == null && default_action_ != null)
         {
             //
             // If nothing is running now, start the default action
             //
             try {
                 cancelActionPlusChildren();
-                action_ = default_action_ ;                
+                action_ = default_action_ ;
                 action_.start() ;
                 if (action_.isDone())
                     finished_default_ = true ;
@@ -652,7 +654,7 @@ public class Subsystem {
         }
 
         action_.cancel() ;
-        if (default_action_ != null && action_ != default_action_)
+        if (default_action_ != null && action_ != default_action_ && start_default)
         {
             action_ = default_action_ ;
             try {
@@ -681,5 +683,4 @@ public class Subsystem {
         for(Subsystem child: children_)
             child.cancelActionPlusChildren();
     }
-
 }

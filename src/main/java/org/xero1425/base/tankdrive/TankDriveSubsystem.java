@@ -5,6 +5,7 @@ import java.util.HashMap;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
 import org.xero1425.base.LoopType;
+import org.xero1425.base.PositionTracker;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorController;
@@ -16,11 +17,37 @@ import org.xero1425.misc.Speedometer;
 
 public class TankDriveSubsystem extends Subsystem {
 
+    private PositionTracker tracker_ ;
+    private double left_power_ ;
+    private double right_power_ ;
+    private int ticks_left_ ;
+    private int ticks_right_ ;
+    private double dist_l_ ;
+    private double dist_r_ ;
+    private double left_inches_per_tick_ ;
+    private double right_inches_per_tick_ ;
+    private double total_angle_ ;
+    private AHRS navx_ ;
+    private MotorController.NeutralMode automode_neutral_ ;
+    private MotorController.NeutralMode teleop_neutral_ ;
+    private MotorController.NeutralMode disabled_neutral_ ;
+
+    private Speedometer angular_ ;
+    private Speedometer left_linear_ ;
+    private Speedometer right_linear_ ;
+
+    private MotorController left_motors_ ;
+    private MotorController right_motors_ ;
+
+    private Map<String, Double> trips_ ;
+
     public TankDriveSubsystem(Subsystem parent, String name, String config)
             throws BadParameterTypeException, MissingParameterException {
         super(parent, name);
 
         MessageLogger logger = getRobot().getMessageLogger();
+        double width = getRobot().getSettingsParser().get("tankdrive:width").getDouble() ;
+        tracker_ = new PositionTracker(width) ;
 
         dist_l_ = 0.0;
         dist_r_ = 0.0;
@@ -182,6 +209,7 @@ public class TankDriveSubsystem extends Subsystem {
                 angular_.update(getRobot().getDeltaTime(), angle);
             }
 
+            tracker_.updatePosition(dist_l_, dist_r_, angle);
             left_linear_.update(getRobot().getDeltaTime(), getLeftDistance());
             right_linear_.update(getRobot().getDeltaTime(), getRightDistance());
 
@@ -226,29 +254,6 @@ public class TankDriveSubsystem extends Subsystem {
 
     private void attachHardware() {
         left_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:left", "hw:tankdrive:motors:left") ;
-        right_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:right", "hw:tankdrive:motors:right") ;
+        right_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:right", "hw:tankdrive:motors:right") ; 
     }
-
-    private double left_power_ ;
-    private double right_power_ ;
-    private int ticks_left_ ;
-    private int ticks_right_ ;
-    private double dist_l_ ;
-    private double dist_r_ ;
-    private double left_inches_per_tick_ ;
-    private double right_inches_per_tick_ ;
-    private double total_angle_ ;
-    private AHRS navx_ ;
-    private MotorController.NeutralMode automode_neutral_ ;
-    private MotorController.NeutralMode teleop_neutral_ ;
-    private MotorController.NeutralMode disabled_neutral_ ;
-
-    private Speedometer angular_ ;
-    private Speedometer left_linear_ ;
-    private Speedometer right_linear_ ;
-
-    private MotorController left_motors_ ;
-    private MotorController right_motors_ ;
-
-    private Map<String, Double> trips_ ;
-} ;
+}

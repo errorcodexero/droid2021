@@ -144,6 +144,7 @@ public abstract class XeroRobot extends TimedRobot {
             return;
         }
 
+        // TODO: look at this assignment
         delta_time_ = period_;
         try {
             robot_subsystem_.computeState();
@@ -430,7 +431,6 @@ public abstract class XeroRobot extends TimedRobot {
             logger_.add(ex.getMessage()) ;
             logger_.endMessage();            
         }
-
 
         last_time_ = initial_time ;
     }
