@@ -22,7 +22,7 @@ public class DroidAutoController extends AutoController {
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'NearSideEightAuto', exception caught") ;
+            logger.add("cannot create automode 'NearSideEightAuto', exception caught - ") ;
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }
@@ -32,7 +32,7 @@ public class DroidAutoController extends AutoController {
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'NearSideSixAuto', exception caught") ;
+            logger.add("cannot create automode 'NearSideSixAuto', exception caught - ") ;
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }
@@ -42,7 +42,7 @@ public class DroidAutoController extends AutoController {
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'NearSideTenAuto', exception caught") ;
+            logger.add("cannot create automode 'NearSideTenAuto', exception caught - ") ;
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }
@@ -52,7 +52,7 @@ public class DroidAutoController extends AutoController {
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'MiddleAuto', exception caught") ;
+            logger.add("cannot create automode 'MiddleAuto', exception caught - ") ;
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }
@@ -62,7 +62,7 @@ public class DroidAutoController extends AutoController {
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'FarSideAuto', exception caught") ;
+            logger.add("cannot create automode 'FarSideAuto', exception caught - ") ;
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }        

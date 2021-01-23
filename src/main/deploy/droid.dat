@@ -74,8 +74,8 @@ endif
 
 hw:turret:encoder:analog:rc                                     0.0
 
-hw:intake:collect:motor:type                                   "sparkmax_brushless"
-hw:intake:collect:motor:canid                                  10                          # CAN 10
+hw:intake:collector:motor:type                                   "sparkmax_brushless"
+hw:intake:collector:motor:canid                                  10                          # CAN 10
 hw:intake:motor:type                                           "sparkmax_brushless"
 hw:intake:motor:canid                                          11                          # CAN 11
 hw:intake:encoder:quad:motor                                   true
@@ -134,7 +134,7 @@ intake:follower:up:kp                                         0.001
 intake:follower:up:kd                                         0.0
 intake:follower:up:kv                                         0.000147929
 intake:follower:up:ka                                         0.0
-intake:goto:threshold                                       10.0       # Within three degrees
+intake:goto:threshold                                       10.0       # Within 10 ticks degrees
 intake:goto:maxd                                            -14000.0     # maximum deceleration
 intake:goto:maxa                                            14000.0     # maximum acceleration
 intake:goto:maxv                                            14000.0     # maximum velocity
@@ -267,6 +267,7 @@ turret:follower:down:ka                                                 0
 turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
+
 turret:fire_threshold                                           0.5
 turret:min                                                      -40 # The minimum safe angle.
 turret:max                                                      40  # The maximum safe angle.

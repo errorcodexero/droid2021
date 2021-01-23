@@ -24,7 +24,7 @@
                     "values" :
                     {
                         "comment" : "%%%% Collect mode switch to collect",
-                        "button11" : 0
+                        "button11" : false
                     }
                 }
             ]

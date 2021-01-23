@@ -55,7 +55,8 @@ public abstract class AutoController extends BaseController {
                 }
             }
             try {
-                current_automode_.run() ;
+                if (!current_automode_.isDone())
+                    current_automode_.run() ;
             }
             catch(Exception ex) {
                 MessageLogger logger = getRobot().getMessageLogger();

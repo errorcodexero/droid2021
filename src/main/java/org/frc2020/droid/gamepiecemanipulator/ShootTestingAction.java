@@ -10,8 +10,7 @@ import edu.wpi.first.wpilibj.shuffleboard.* ;
 import org.xero1425.base.actions.Action;
 
 public class ShootTestingAction extends Action {
-    public ShootTestingAction(GamePieceManipulatorSubsystem gp, ShooterSubsystem.HoodPosition pos)
-            throws Exception {
+    public ShootTestingAction(GamePieceManipulatorSubsystem gp, ShooterSubsystem.HoodPosition pos) throws Exception {
         super(gp.getRobot().getMessageLogger()) ;
 
         sub_ = gp ;

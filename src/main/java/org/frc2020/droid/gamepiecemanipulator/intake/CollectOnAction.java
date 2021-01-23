@@ -13,7 +13,7 @@ public class CollectOnAction extends MotorEncoderGotoAction {
         super(sub, "intake:arm:collecton:pos", true) ;
 
         sub_ = sub ;
-        collect_power_ = sub.getRobot().getSettingsParser().get("intake:collector::motor:power").getDouble() ;
+        collect_power_ = sub.getRobot().getSettingsParser().get("intake:collector:motor:power").getDouble() ;
     }
 
     @Override

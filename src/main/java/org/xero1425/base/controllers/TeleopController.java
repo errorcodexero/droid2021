@@ -49,7 +49,8 @@ public class TeleopController extends BaseController
             }
 
             try {
-                sequence_.run() ;
+                if (!sequence_.isDone())
+                    sequence_.run() ;
             }
             catch(Exception ex) {
                 MessageLogger logger = getRobot().getMessageLogger() ;
