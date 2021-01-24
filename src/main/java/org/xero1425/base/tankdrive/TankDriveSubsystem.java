@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.HashMap;
 import edu.wpi.first.wpilibj.SPI;
 import com.kauailabs.navx.frc.AHRS;
+
+import org.xero1425.base.DriveBase;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.PositionTracker;
 import org.xero1425.base.Subsystem;
@@ -15,7 +17,7 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.Speedometer;
 
-public class TankDriveSubsystem extends Subsystem {
+public class TankDriveSubsystem extends DriveBase {
 
     private PositionTracker tracker_ ;
     private double left_power_ ;
@@ -26,13 +28,10 @@ public class TankDriveSubsystem extends Subsystem {
     private double dist_r_ ;
     private double left_inches_per_tick_ ;
     private double right_inches_per_tick_ ;
-    private double total_angle_ ;
-    private AHRS navx_ ;
     private MotorController.NeutralMode automode_neutral_ ;
     private MotorController.NeutralMode teleop_neutral_ ;
     private MotorController.NeutralMode disabled_neutral_ ;
 
-    private Speedometer angular_ ;
     private Speedometer left_linear_ ;
     private Speedometer right_linear_ ;
 
@@ -55,27 +54,12 @@ public class TankDriveSubsystem extends Subsystem {
         left_inches_per_tick_ = getRobot().getSettingsParser().get("tankdrive:inches_per_tick").getDouble();
         right_inches_per_tick_ = left_inches_per_tick_;
 
-        angular_ = new Speedometer("angles", 2, true);
         left_linear_ = new Speedometer("left", 2, false);
         right_linear_ = new Speedometer("right", 2, false);
 
         automode_neutral_ = MotorController.NeutralMode.Brake;
         teleop_neutral_ = MotorController.NeutralMode.Brake;
         disabled_neutral_ = MotorController.NeutralMode.Coast;
-
-        navx_ = new AHRS(SPI.Port.kMXP) ;
-        double start = getRobot().getTime() ;
-        while (getRobot().getTime() - start < 3.0) {
-            if (navx_.isConnected())
-                break ;
-        }
-
-        if (!navx_.isConnected()) {
-            logger.startMessage(MessageType.Error);
-            logger.add("NavX is not connected - cannot perform tankdrive path following functions");
-            logger.endMessage();
-            navx_ = null;
-        }
 
         trips_ = new HashMap<String, Double>();
 
@@ -137,13 +121,6 @@ public class TankDriveSubsystem extends Subsystem {
         return ticks_right_ ;
     }
 
-    public double getAngle() {
-        return angular_.getDistance() ;
-    }
-
-    public double getTotalAngle() {
-        return total_angle_ ;
-    }
 
     public void reset() {
         super.reset();
@@ -189,6 +166,7 @@ public class TankDriveSubsystem extends Subsystem {
     }
 
     public void computeMyState() {
+        super.computeMyState(); 
         double angle = 0.0;
 
         try {
@@ -204,17 +182,10 @@ public class TankDriveSubsystem extends Subsystem {
 
             dist_l_ = ticks_left_ * left_inches_per_tick_;
             dist_r_ = ticks_right_ * right_inches_per_tick_;
-            if (navx_ != null) {
-                angle = -navx_.getYaw();
-                angular_.update(getRobot().getDeltaTime(), angle);
-            }
 
             tracker_.updatePosition(dist_l_, dist_r_, angle);
             left_linear_.update(getRobot().getDeltaTime(), getLeftDistance());
             right_linear_.update(getRobot().getDeltaTime(), getRightDistance());
-
-
-            total_angle_ = navx_.getAngle() ;
 
         } catch (Exception ex) {
             //
@@ -224,7 +195,7 @@ public class TankDriveSubsystem extends Subsystem {
 
         putDashboard("dbleft", DisplayType.Verbose, left_linear_.getDistance());
         putDashboard("dbright", DisplayType.Verbose, right_linear_.getDistance());
-        putDashboard("dbangle", DisplayType.Verbose, angular_.getDistance());        
+        putDashboard("dbangle", DisplayType.Verbose, getAngle());        
 
         MessageLogger logger = getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, getLoggerID()) ;
