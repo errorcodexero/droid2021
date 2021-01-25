@@ -281,8 +281,9 @@ public class Subsystem {
             min_time_ = Math.min(min_time_, elapsed) ;
             max_time_ = Math.max(max_time_, elapsed) ;
 
+            
             //
-            // TODO: turn off this in a competition
+            // Turn this off for competition
             //
             if (total_cnt_ > 0 && (total_cnt_ % 500) == 0) {
                 MessageLogger logger = getRobot().getMessageLogger() ;
@@ -294,6 +295,7 @@ public class Subsystem {
                 logger.add("max", fmt_.format(max_time_ * 1000)) ;
                 logger.endMessage();
             }
+            
         }
         catch(Exception ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;            

@@ -21,6 +21,7 @@ import org.xero1425.base.actions.Action;
 import org.xero1425.base.alarms.AlarmSubsystem;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.DriveType;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SimArgs;
@@ -59,6 +60,10 @@ public class Droid extends XeroRobot {
 
     public String getName() {
         return "droid";
+    }
+
+    public DriveType getDriveType() {
+        return DriveType.Swerve ;
     }
 
     protected AutoController createAutoController() throws MissingParameterException, BadParameterTypeException {
@@ -111,6 +116,6 @@ public class Droid extends XeroRobot {
     }
 
     protected void loadPathsFile() throws Exception {
-        super.loadPathsFile();
+        super.loadPathsFile(getDriveType());
     }
 }

@@ -22,6 +22,7 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.DriveType;
 import org.xero1425.misc.MessageDestination;
 import org.xero1425.misc.MessageDestinationFile;
 import org.xero1425.misc.MessageDestinationThumbFile;
@@ -34,6 +35,29 @@ import org.xero1425.base.actions.Action;
 import org.xero1425.base.controllers.*;
 
 public abstract class XeroRobot extends TimedRobot {
+    private final RobotPaths robot_paths_;
+    private final double period_ ;
+    private double delta_time_ ;
+    private MessageLogger logger_ ;
+    private SettingsParser settings_ ;
+    private PlotManager plot_mgr_ ;
+    private XeroPathManager paths_ ;
+    private MotorFactory motors_ ;
+    private double last_time_;
+    private byte[] mac_addr_ ;
+    private RobotSubsystem robot_subsystem_ ;
+
+    private int automode_ ;
+    private String game_data_ ;
+    private boolean fms_connection_ ;
+    private int loop_count_ ;
+    private int logger_id_ ;
+
+    private BaseController current_controller_ ;
+    private AutoController auto_controller_ ;
+    private TeleopController teleop_controller_ ;
+    private TestController test_controller_ ;
+
     public static final String LoggerName = "xerorobot" ;
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
@@ -70,7 +94,7 @@ public abstract class XeroRobot extends TimedRobot {
         // Read the paths files needed
         paths_ = new XeroPathManager(logger_, robot_paths_.pathsDirectory());
         try {
-            loadPathsFile();
+            loadPathsFile(getDriveType());
         } catch (Exception ex) {
             logger_.startMessage(MessageType.Error) ;
             logger_.add("caught exception reading path files -").add(ex.getMessage()).endMessage();
@@ -87,6 +111,8 @@ public abstract class XeroRobot extends TimedRobot {
 
         automode_ = -1;
     }
+
+    public abstract DriveType getDriveType() ;
 
     public int getLoggerID() {
         return logger_id_ ;
@@ -144,7 +170,6 @@ public abstract class XeroRobot extends TimedRobot {
             return;
         }
 
-        // TODO: look at this assignment
         delta_time_ = period_;
         try {
             robot_subsystem_.computeState();
@@ -556,9 +581,8 @@ public abstract class XeroRobot extends TimedRobot {
         }
     }
 
-    protected void loadPathsFile() throws Exception {
+    protected void loadPathsFile(DriveType dtype) throws Exception {
         XeroPathManager mgr = getPathManager() ;
-        mgr.setExtensions("_left.csv", "_right.csv");
 
         try (Stream<Path> walk = Files.walk(Paths.get(mgr.getBaseDir()))) {
 
@@ -568,7 +592,7 @@ public abstract class XeroRobot extends TimedRobot {
                 if (index != -1) {
                     name = name.substring(index + 1) ;
                     name = name.substring(0, name.length() - 9) ;
-                    mgr.loadPath(name) ;
+                    mgr.loadPath(name, dtype) ;
                 }
             }
         }
@@ -649,26 +673,4 @@ public abstract class XeroRobot extends TimedRobot {
         }
     }
 
-    private final RobotPaths robot_paths_;
-    private final double period_ ;
-    private double delta_time_ ;
-    private MessageLogger logger_ ;
-    private SettingsParser settings_ ;
-    private PlotManager plot_mgr_ ;
-    private XeroPathManager paths_ ;
-    private MotorFactory motors_ ;
-    private double last_time_;
-    private byte[] mac_addr_ ;
-    private RobotSubsystem robot_subsystem_ ;
-
-    private int automode_ ;
-    private String game_data_ ;
-    private boolean fms_connection_ ;
-    private int loop_count_ ;
-    private int logger_id_ ;
-
-    private BaseController current_controller_ ;
-    private AutoController auto_controller_ ;
-    private TeleopController teleop_controller_ ;
-    private TestController test_controller_ ;
 }

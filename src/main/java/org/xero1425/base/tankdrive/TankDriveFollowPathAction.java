@@ -7,9 +7,31 @@ import org.xero1425.misc.MissingPathException;
 import org.xero1425.misc.PIDACtrl;
 import org.xero1425.misc.XeroMath;
 import org.xero1425.misc.XeroPath;
+import org.xero1425.misc.XeroPathManager;
 import org.xero1425.misc.XeroPathSegment;
 
 public class TankDriveFollowPathAction extends TankDriveAction {
+    private int index_ ;
+    private double left_start_ ;
+    private double right_start_ ;
+    private double start_time_ ;
+    private double angle_correction_ ;
+    private XeroPath path_ ;
+    private String path_name_ ;
+    private PIDACtrl left_follower_ ;
+    private PIDACtrl right_follower_ ;
+    private boolean reverse_ ;
+    private double start_angle_ ;
+    private double target_start_angle_ ;
+    private int plot_id_ ;
+    private Double [] plot_data_ ;
+    static final String[] plot_columns_ = {             
+        "time", 
+        "ltpos", "lapos", "ltvel", "lavel", "ltaccel", "laaccel", "lout","lticks","lvout","laout","lpout","ldout","lerr",
+        "rtpos", "rapos", "rtvel", "ravel", "rtaccel", "raaccel", "rout","rticks","rvout","raout","rpout","rdout","rerr",
+        "thead", "ahead", "angcorr"
+    } ;
+
     public TankDriveFollowPathAction(TankDriveSubsystem drive, String path, boolean reverse)
             throws MissingPathException, BadParameterTypeException, MissingParameterException {
         super(drive) ;
@@ -20,7 +42,6 @@ public class TankDriveFollowPathAction extends TankDriveAction {
 
         left_follower_ = new PIDACtrl(drive.getRobot().getSettingsParser(), "tankdrive:follower:left", false) ;
         right_follower_ = new PIDACtrl(drive.getRobot().getSettingsParser(), "tankdrive:follower:right", false) ;
-        turn_correction_ = drive.getRobot().getSettingsParser().get("tankdrive:follower:turn_correction").getDouble() ;
         angle_correction_ = drive.getRobot().getSettingsParser().get("tankdrive:follower:angle_correction").getDouble() ;
 
         plot_id_ = drive.initPlot(toString(0)) ;
@@ -43,12 +64,10 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         index_ = 0 ;
         start_time_ = getSubsystem().getRobot().getTime() ;
         start_angle_ = getSubsystem().getAngle() ;
-        target_start_angle_ = path_.getLeftSegment(0).getHeading() ;
+        target_start_angle_ = path_.getSegment(XeroPathManager.LeftWheel, 0).getHeading() ;
 
         getSubsystem().startPlot(plot_id_, plot_columns_);
         getSubsystem().startTrip("pathfollower") ;
-
-        getSubsystem().startPlot(plot_id_, plot_columns_);
     }
 
     @Override
@@ -59,8 +78,8 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         if (index_ < path_.getSize())
         {
             double dt = robot.getDeltaTime();
-            XeroPathSegment lseg = path_.getLeftSegment(index_) ;
-            XeroPathSegment rseg = path_.getRightSegment(index_) ;
+            XeroPathSegment lseg = path_.getSegment(XeroPathManager.LeftWheel, index_) ;
+            XeroPathSegment rseg = path_.getSegment(XeroPathManager.RightWheel, index_) ;
 
             double laccel, lvel, lpos ;
             double raccel, rvel, rpos ;
@@ -166,25 +185,4 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         return ret ;
     }
 
-    private int index_ ;
-    double left_start_ ;
-    double right_start_ ;
-    double start_time_ ;
-    double turn_correction_ ;
-    double angle_correction_ ;
-    XeroPath path_ ;
-    String path_name_ ;
-    PIDACtrl left_follower_ ;
-    PIDACtrl right_follower_ ;
-    boolean reverse_ ;
-    double start_angle_ ;
-    double target_start_angle_ ;
-    private int plot_id_ ;
-    Double [] plot_data_ ;
-    static final String[] plot_columns_ = {             
-        "time", 
-        "ltpos", "lapos", "ltvel", "lavel", "ltaccel", "laaccel", "lout","lticks","lvout","laout","lpout","ldout","lerr",
-        "rtpos", "rapos", "rtvel", "ravel", "rtaccel", "raaccel", "rout","rticks","rvout","raout","rpout","rdout","rerr",
-        "thead", "ahead", "angcorr"
-    } ;
 }

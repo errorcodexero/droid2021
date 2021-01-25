@@ -2,9 +2,6 @@ package org.xero1425.base.tankdrive;
 
 import java.util.Map;
 import java.util.HashMap;
-import edu.wpi.first.wpilibj.SPI;
-import com.kauailabs.navx.frc.AHRS;
-
 import org.xero1425.base.DriveBase;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.PositionTracker;
@@ -44,7 +41,6 @@ public class TankDriveSubsystem extends DriveBase {
             throws BadParameterTypeException, MissingParameterException {
         super(parent, name);
 
-        MessageLogger logger = getRobot().getMessageLogger();
         double width = getRobot().getSettingsParser().get("tankdrive:width").getDouble() ;
         tracker_ = new PositionTracker(width) ;
 
@@ -173,11 +169,6 @@ public class TankDriveSubsystem extends DriveBase {
             if (left_motors_.hasPosition() && right_motors_.hasPosition()) {
                 ticks_left_ = (int)left_motors_.getPosition();
                 ticks_right_ = (int)right_motors_.getPosition();
-            }
-            else {
-                //
-                // TODO: Support external encoders
-                //
             }
 
             dist_l_ = ticks_left_ * left_inches_per_tick_;

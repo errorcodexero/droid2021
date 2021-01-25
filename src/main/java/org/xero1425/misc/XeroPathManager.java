@@ -11,6 +11,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser ;
 import org.apache.commons.csv.CSVRecord ;
 
+
 /// \file
 
 /// \brief This class loads an projects all of the paths stored in path files.
@@ -23,12 +24,12 @@ public class XeroPathManager
     //
     // The message logger, for logging path manager related messages to the log file
     //
-    MessageLogger logger_ ;
+    private MessageLogger logger_ ;
 
     //
     // The message ID for the path logger
     //
-    int logger_id_ ;
+    private int logger_id_ ;
 
     //
     // The set of paths loaded into the path manager
@@ -41,21 +42,20 @@ public class XeroPathManager
     private String basedir_ ;
 
     //
-    // The extension to append to the path name to get the data for the
-    // left side of the path.
-    //
-    private String left_ext_ ;
-
-    //
-    // The extension to append to the path name to get the data for the
-    // right side of the path.
-    //
-    private String right_ext_ ;
-
-    //
     // The name of the messages for the logger
     //
     static final private String LoggerName = "pathmanager" ;
+
+    static final private String[] TankExtensions = { "_left.csv", "_right.csv"} ;
+    static final private String[] SwerveExtensions = { "_fl.csv", "_fr.csv", "_bl.csv", "_br.csv"} ;
+
+    static final public int LeftWheel = 0 ;
+    static final public int RightWheel = 1 ;
+
+    static final public int FLWheel = 0 ;
+    static final public int FRWheel = 1 ;
+    static final public int BLWheel = 2 ;
+    static final public int BRWheel = 3 ;            
 
     /// \brief create the path manager
     /// \param logger the message logger
@@ -65,7 +65,6 @@ public class XeroPathManager
         paths_ = new HashMap<String, XeroPath>() ;
         logger_id_ = logger.registerSubsystem(LoggerName) ;
 
-        setExtensions("_left.csv", "_right.csv");
     }
 
     /// \brief return the base directory for the path manager
@@ -80,135 +79,106 @@ public class XeroPathManager
     /// name given in thie call, and left_ext and right_ext are the extensions set in the setExtensions()
     /// call.
     /// \param name the name of the path to load
-    public boolean loadPath(String name) {
+    /// \param tank if true, load path for tank drive, otherwise 
+    public boolean loadPath(String name, DriveType dtype) throws Exception {
         String filename = null ;
-        Reader lrdr, rrdr ;
+        String[] exts ;
 
-        try {
-            filename = basedir_ + "/" + name + left_ext_ ;
-            lrdr = Files.newBufferedReader(Paths.get(filename)) ;
-        }
-        catch(Exception ex) {
-            logger_.startMessage(MessageType.Error) ;
-            logger_.add("cannot load path file (left) '").add(filename).add("' - ").add(ex.getMessage()) ;
-            logger_.endMessage();
-            return false ;
-        }
-
-        try {
-            filename = basedir_ + "/" + name + right_ext_ ;
-            rrdr = Files.newBufferedReader(Paths.get(filename)) ;
-        }
-        catch(Exception ex) {
-            try {
-                lrdr.close() ;
-            }
-            catch(Exception ex2) {
-            }
-            logger_.startMessage(MessageType.Error) ;
-            logger_.add("cannot load path file (right)'").add(filename).add("' - ").add(ex.getMessage()) ;
-            logger_.endMessage();
-            return false ;
-        }        
-
-        CSVParser lparser = null ;
-        CSVParser rparser = null ;
-
-        try {
-            lparser = new CSVParser(lrdr, CSVFormat.DEFAULT) ;
-            rparser = new CSVParser(rrdr, CSVFormat.DEFAULT) ;
-        }
-        catch(Exception ex) {
-            try {
-                if (lparser != null)
-                    lparser.close() ;
-                else
-                    lrdr.close() ;
-
-                if (rparser != null)
-                    rparser.close() ;
-                else
-                    rrdr.close() ;
-            }
-            catch(Exception ex2) {                
-            }
-
-            logger_.startMessage(MessageType.Error) ;
-            logger_.add("cannot load path '").add(name).add("' - ").add(ex.getMessage()) ;
-            logger_.endMessage();                
-        }
-
-        Iterator<CSVRecord> liter = lparser.iterator() ;
-        Iterator<CSVRecord> riter = rparser.iterator() ;
-        XeroPath path = new XeroPath(name) ;
-        boolean first = true ;
-
-        while (liter.hasNext() && riter.hasNext())
+        if (dtype == DriveType.Tank)
         {
-            CSVRecord lrec = liter.next() ;
-            CSVRecord rrec = riter.next() ;
+            exts = TankExtensions ;
+        }
+        else if (dtype == DriveType.Swerve)
+        {
+            exts = SwerveExtensions ;
+        }
+        else
+        {
+            logger_.startMessage(MessageType.Error, logger_id_) ;
+            logger_.add("unknown drive type - cannot load path") ;
+            logger_.endMessage();
+            return false ;            
+        }
 
-            if (first)
-            {
-                first = false ;
-                continue ;
-            }
+        Reader rdr = null ;
+        CSVParser parser = null ;
+        XeroPath path = new XeroPath(name, dtype) ;
+        for(int i = 0 ; i < exts.length ; i++)
+        {
+            boolean first = true ;
 
-            if (lrec.size() != 8)
-            {
-                logger_.startMessage(MessageType.Error) ;
-                logger_.add("cannot load path '").add(name) ;
-                logger_.add("' - left file contains invalid number of columns, line") ;
-                logger_.add(lrec.getRecordNumber()) ;
-                logger_.endMessage();   
-                return false ;
-            }
-
-            if (rrec.size() != 8)
-            {
-                logger_.startMessage(MessageType.Error) ;
-                logger_.add("cannot load path '").add(name) ;
-                logger_.add("' - right file contains invalid number of columns, line") ;
-                logger_.add(lrec.getRecordNumber()) ;
-                logger_.endMessage();   
-                return false ;
-            }
-
-            XeroPathSegment lseg, rseg ;
             try {
-                lseg = parseCSVRecord(lrec) ;
+                filename = basedir_ + "/" + name + exts[i];
+                rdr = Files.newBufferedReader(Paths.get(filename)) ;
             }
             catch(Exception ex) {
-                logger_.startMessage(MessageType.Error) ;
-                logger_.add("cannot load path '").add(name) ;
-                logger_.add("' - left file contains invalid floating point number, line") ;
-                logger_.add(lrec.getRecordNumber()) ;
-                logger_.endMessage();   
+                logger_.startMessage(MessageType.Error, logger_id_) ;
+                logger_.add("cannot load path file (left) '").add(filename).add("' - ").add(ex.getMessage()) ;
+                logger_.endMessage();
                 return false ;
             }
 
             try {
-                rseg = parseCSVRecord(lrec) ;
-            }
+                parser = new CSVParser(rdr, CSVFormat.DEFAULT) ;
+            }   
             catch(Exception ex) {
-                logger_.startMessage(MessageType.Error) ;
-                logger_.add("cannot load path '").add(name) ;
-                logger_.add("' - right file contains invalid floating point number, line") ;
-                logger_.add(lrec.getRecordNumber()) ;
-                logger_.endMessage();   
-                return false ;
+                try {
+                    parser.close() ;
+                    rdr.close() ;
+                }
+                catch(Exception ex2) {                
+                }
+
+                logger_.startMessage(MessageType.Error, logger_id_) ;
+                logger_.add("cannot load path '").add(name).add("' - ").add(ex.getMessage()) ;
+                logger_.endMessage();                
             }
 
-            path.addPathSegment(lseg, rseg);
+            Iterator<CSVRecord> iter = parser.iterator() ;
+            while (iter.hasNext())
+            {
+                CSVRecord rec = iter.next() ;
+
+                if (first)
+                {
+                    first = false ;
+                    continue ;
+                }
+
+                if (rec.size() != 8)
+                {
+                    logger_.startMessage(MessageType.Error, logger_id_) ;
+                    logger_.add("cannot load path '").add(name) ;
+                    logger_.add("' - file '").add(filename).add("' has invalid data") ;
+                    logger_.add(rec.getRecordNumber()) ;
+                    logger_.endMessage();   
+                    return false ;
+                }
+
+                XeroPathSegment seg ;
+                try {
+                    seg = parseCSVRecord(rec) ;
+                }
+                catch(Exception ex) {
+                    logger_.startMessage(MessageType.Error, logger_id_) ;
+                    logger_.add("cannot load path '").add(name) ;
+                    logger_.add("' - file '").add(filename).add("' has invalid data") ;
+                    logger_.add(rec.getRecordNumber()) ;
+                    logger_.endMessage();   
+                    return false ;
+                }
+
+                path.addPathSegment(i, seg) ;
+            }
         }
 
-        if (liter.hasNext() || riter.hasNext())
+        if (!path.isValid())
         {
-            logger_.startMessage(MessageType.Error) ;
+            logger_.startMessage(MessageType.Error, logger_id_) ;
             logger_.add("cannot load path '").add(name) ;
-            logger_.add("' - left and right files contains differing number of segments") ;
+            logger_.add("' - file '").add(filename).add("' has invalid data") ;
             logger_.endMessage();   
-            return false ;
+            return false ;            
         }
 
         paths_.put(name, path) ;
@@ -231,14 +201,6 @@ public class XeroPathManager
     /// \returns true if the path manager has loaded a path with the name given
     public boolean hasPath(String name) {
         return paths_.containsKey(name) ;
-    }
-
-    /// \brief sets the extensions for loading paths
-    /// The default extension are "_left.csv" and "_right.csv".  This only needs to be called if
-    /// the extension for a given path are different than this.
-    public void setExtensions(String left, String right) {
-        left_ext_ = left ;
-        right_ext_ = right ;
     }
 
     private XeroPathSegment parseCSVRecord(CSVRecord r) throws NumberFormatException {

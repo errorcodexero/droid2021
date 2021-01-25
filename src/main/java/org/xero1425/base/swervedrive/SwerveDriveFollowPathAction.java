@@ -1,39 +1,47 @@
 package org.xero1425.base.swervedrive;
 
-import org.xero1425.base.Subsystem;
 import org.xero1425.base.XeroRobot;
+import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDACtrl;
+import org.xero1425.misc.PIDCtrl;
 import org.xero1425.misc.XeroPath;
+import org.xero1425.misc.XeroPathSegment;
 
 public class SwerveDriveFollowPathAction extends SwerveDriveAction {
     private String path_name_;
-    private boolean reversed_;
     private XeroPath path_;
-    private PIDACtrl fl_follower_, fr_follower_, bl_follower_, br_follower_;
+    private PIDACtrl[] followers_ ;
+    private PIDCtrl[] steer_pids_ ;
     private int plot_id_;
     private Double[] plot_data_;
-    private SwerveDriveSubsystem.WheelData start_ ;
+    private double[] start_ ;
+    // private double target_start_angle_ ;
     private int index_ ;
     private double start_time_ ;
-    private double start_angle_ ;
+    // private double start_angle_ ;
 
-    static final String[] plot_columns_ = { "time", "ltpos", "lapos", "ltvel", "lavel", "ltaccel", "laaccel", "lout",
-            "lticks", "lvout", "laout", "lpout", "ldout", "lerr", "rtpos", "rapos", "rtvel", "ravel", "rtaccel",
-            "raaccel", "rout", "rticks", "rvout", "raout", "rpout", "rdout", "rerr", "thead", "ahead", "angcorr" };
+    static final String[] plot_columns_ = { "time", 
+        "fltpos", "flapos", "fltvel", "flavel", "fltaccel", "flaaccel", "fldrive", "flsteer",
+        "frtpos", "frapos", "frtvel", "fravel", "frtaccel", "fraaccel", "frdrive", "frsteer",
+        "bltpos", "blapos", "bltvel", "blavel", "bltaccel", "blaaccel", "bldrive", "blsteer",
+        "brtpos", "brapos", "brtvel", "bravel", "brtaccel", "braaccel", "brdrive", "fbrsteer",   
+    } ;
 
-    public SwerveDriveFollowPathAction(SwerveDriveSubsystem drive, String path, boolean reverse)
+    public SwerveDriveFollowPathAction(SwerveDriveSubsystem drive, String path)
             throws BadParameterTypeException, MissingParameterException {
         super(drive);
 
         path_name_ = path;
-        reversed_ = reverse;
-
-        fl_follower_ = new PIDACtrl(drive.getRobot().getSettingsParser(), "swervedrive:follower:fl", false);
-        fr_follower_ = new PIDACtrl(drive.getRobot().getSettingsParser(), "swervedrive:follower:fr", false);
-        bl_follower_ = new PIDACtrl(drive.getRobot().getSettingsParser(), "swervedrive:follower:bl", false);
-        br_follower_ = new PIDACtrl(drive.getRobot().getSettingsParser(), "swervedrive:follower:br", false);
+        
+        followers_ = new PIDACtrl[drive.getWheelCount()] ;
+        steer_pids_ = new PIDCtrl[drive.getWheelCount()] ;
+        for(int i = 0 ; i < followers_.length ; i++) 
+        {
+            followers_[i] = new PIDACtrl(drive.getRobot().getSettingsParser(), "swervedrive:follower:" + drive.getWheelName(i), false) ;
+            steer_pids_[i] = new PIDCtrl(drive.getRobot().getSettingsParser(), "swervedrive:steerpid:" + drive.getWheelName(i), true) ;
+        }
 
         plot_id_ = drive.initPlot(toString(0));
         plot_data_ = new Double[plot_columns_.length];
@@ -41,113 +49,66 @@ public class SwerveDriveFollowPathAction extends SwerveDriveAction {
 
     @Override
     public void start() throws Exception {
-        super.start();
+        super.start() ;
 
-        path_ = getSubsystem().getRobot().getPathManager().getPath(path_name_);
+        path_ = getSubsystem().getRobot().getPathManager().getPath(path_name_) ;
 
         start_ = getSubsystem().getDistances() ;
 
-        start_time_ = getSubsystem().getRobot().getTime();
+        index_ = 0 ;
+        start_time_ = getSubsystem().getRobot().getTime() ;
+        // start_angle_ = getSubsystem().getAngle() ;
+        // target_start_angle_ = path_.getSegment(0, 0).getHeading() ;
 
         getSubsystem().startPlot(plot_id_, plot_columns_);
     }
 
     @Override
-    public void run() {
-        SwerveDriveSubsystem td = getSubsystem();
-        XeroRobot robot = td.getRobot() ;
+    public void run() throws BadMotorRequestException {
+        SwerveDriveSubsystem sw = getSubsystem();
+        XeroRobot robot = sw.getRobot() ;
+        double [] drive = new double[4] ;
+        double [] steer = new double[4] ;
+        int pindex = 0 ;
 
         if (index_ < path_.getSize())
         {
             double dt = robot.getDeltaTime();
-            XeroPathSegment lseg = path_.getLeftSegment(index_) ;
-            XeroPathSegment rseg = path_.getRightSegment(index_) ;
+            XeroPathSegment[] segs = path_.getSegments(index_) ;
+            double[] distances = sw.getDistances() ;
+            double[] velocities = sw.getVelocities() ;
+            double[] accelerations = sw.getAccelerations() ;
+            double[] angles = sw.getWheelAngles() ;
 
-            double laccel, lvel, lpos ;
-            double raccel, rvel, rpos ;
-            double thead, ahead ;
+            // thead = XeroMath.normalizeAngleDegrees(segs[0].getHeading() - target_start_angle_) ;  
+            // ahead = XeroMath.normalizeAngleDegrees(getSubsystem().getAngle() - start_angle_) ;
 
-            if (reverse_)
+            plot_data_[pindex++] = robot.getTime() - start_time_ ;
+
+            for(int i = 0 ; i < segs.length ; i++)
             {
-                laccel = -rseg.getAccel() ;
-                lvel = -rseg.getVelocity() ;
-                lpos = -rseg.getPosition() ;
-                raccel = -lseg.getAccel() ;
-                rvel = -lseg.getVelocity() ;
-                rpos = -lseg.getPosition() ;
-                thead = XeroMath.normalizeAngleDegrees(lseg.getHeading() - target_start_angle_) ;
-                ahead = XeroMath.normalizeAngleDegrees(getSubsystem().getAngle() - start_angle_) ;                 
-            }
-            else
-            {
-                laccel = lseg.getAccel() ;
-                lvel = lseg.getVelocity() ;
-                lpos = lseg.getPosition() ;
-                raccel = rseg.getAccel() ;
-                rvel = rseg.getVelocity() ;
-                rpos = rseg.getPosition() ;
-                thead = XeroMath.normalizeAngleDegrees(lseg.getHeading() - target_start_angle_) ;  
-                ahead = XeroMath.normalizeAngleDegrees(getSubsystem().getAngle() - start_angle_) ;
-            }
+                double dist = distances[i] - start_[i] ;
+                drive[i] = followers_[i].getOutput(segs[i].getAccel(), segs[i].getVelocity(), segs[i].getPosition(), dist, dt) ;
+                steer[i] = steer_pids_[i].getOutput(segs[i].getHeading(), angles[i], dt) ;
 
-            double ldist, rdist ;
-            ldist = td.getLeftDistance() - left_start_ ;
-            rdist = td.getRightDistance() - right_start_ ;
-            
-            double lout = left_follower_.getOutput(laccel, lvel, lpos, ldist, dt) ;
-            double rout = right_follower_.getOutput(raccel, rvel, rpos, rdist, dt) ;
-
-            double angerr = XeroMath.normalizeAngleDegrees(thead - ahead) ;
-            double turn = angle_correction_ * angerr ;
-            lout += turn ;
-            rout -= turn ;
-
-            td.setPower(lout, rout) ;
-
-            plot_data_[0] = robot.getTime() - start_time_ ;
-
-            // Left side
-            plot_data_[1] = lpos ;
-            plot_data_[2] = td.getLeftDistance() - left_start_ ;
-            plot_data_[3] = lvel ;
-            plot_data_[4] = td.getLeftVelocity() ;
-            plot_data_[5] = laccel ;
-            plot_data_[6] = td.getLeftAcceleration() ;
-            plot_data_[7] = lout ;
-            plot_data_[8] = (double)td.getLeftTick() ;
-            plot_data_[9] = left_follower_.getVPart() ;
-            plot_data_[10] = left_follower_.getAPart() ;
-            plot_data_[11] = left_follower_.getPPart() ;
-            plot_data_[12] = left_follower_.getDPart() ;
-            plot_data_[13] = left_follower_.getLastError() ;                                                
-
-            // Right side
-            plot_data_[14] = rpos ;
-            plot_data_[15] = td.getRightDistance() - right_start_ ;
-            plot_data_[16] = rvel ;
-            plot_data_[17] = td.getRightVelocity() ;
-            plot_data_[18] = raccel ;
-            plot_data_[19] = td.getRightAcceleration() ;
-            plot_data_[20] = rout ;
-            plot_data_[21] = (double)td.getRightTick() ;
-            plot_data_[22] = right_follower_.getVPart() ;
-            plot_data_[23] = right_follower_.getAPart() ;
-            plot_data_[24] = right_follower_.getPPart() ;
-            plot_data_[25] = right_follower_.getDPart() ;
-            plot_data_[26] = right_follower_.getLastError() ;
-
-            plot_data_[27] = thead ;
-            plot_data_[28] = ahead ;
-            plot_data_[29] = turn ;
-
-            td.addPlotData(plot_id_, plot_data_);
+                plot_data_[pindex++] = segs[i].getPosition() ;
+                plot_data_[pindex++] = dist ;
+                plot_data_[pindex++] = segs[i].getVelocity() ;
+                plot_data_[pindex++] = velocities[i] ;
+                plot_data_[pindex++] = segs[i].getAccel() ;
+                plot_data_[pindex++] = accelerations[i] ;
+                plot_data_[pindex++] = drive[i] ;
+                plot_data_[pindex++] = steer[i] ;
+            }            
+            sw.setPower(drive, steer) ;
+            sw.addPlotData(plot_id_, plot_data_) ;
         }
         index_++ ;
 
         if (index_ == path_.getSize())
         {
-            td.endPlot(plot_id_);
-            td.setPower(0.0, 0.0) ;
+            sw.endPlot(plot_id_);
+            sw.stop() ;
             setDone() ;
         }
     }
@@ -157,16 +118,14 @@ public class SwerveDriveFollowPathAction extends SwerveDriveAction {
         super.cancel() ;
         index_ = path_.getSize() ;
 
-        getSubsystem().setPower(0.0, 0.0) ;
+        getSubsystem().stop() ;
         getSubsystem().endPlot(plot_id_);
     }
 
-
     @Override
     public String toString(int indent) {
-        String ret = prefix(indent) + "SwerveDriveFollowPath-" + path_name_ ;
-        if (reversed_)
-            ret += "[R]" ;
+        String ret = prefix(indent) + "TankDriveFollowPath-" + path_name_ ;
         return ret ;
-    }   
+    }
+
 }
