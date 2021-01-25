@@ -13,7 +13,7 @@ function detectos()
 
 function initwin()
 {
-    export JAVA_HOME="C:/users/public/wpilib/2020/jdk"
+    export JAVA_HOME="C:/users/public/wpilib/2021/jdk"
     echo "initialzing for windows"
 }
 
@@ -26,7 +26,7 @@ function initmacos()
 function initlinux()
 {
     echo "initialzing for linux"
-    export JAVA_HOME=~/wpilib/2020/jdk
+    export JAVA_HOME=~/wpilib/2021/jdk
 }
 
 echo -n "Cleaning the build to ensure a fresh build ... "
