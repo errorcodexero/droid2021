@@ -144,7 +144,6 @@ public abstract class XeroRobot extends TimedRobot {
             return;
         }
 
-        // TODO: look at this assignment
         delta_time_ = period_;
         try {
             robot_subsystem_.computeState();
