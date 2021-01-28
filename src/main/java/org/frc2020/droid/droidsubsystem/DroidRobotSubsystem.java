@@ -10,18 +10,25 @@ import org.xero1425.base.RobotSubsystem;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
+import edu.wpi.first.wpilibj.PWM;
+
 public class DroidRobotSubsystem extends RobotSubsystem {
     public final static String SubsystemName = "droid" ;
     public final static String TankdriveSubsystemName = "tankdrive" ;
 
+    PWM p_ ;
+
     public DroidRobotSubsystem(XeroRobot robot) throws Exception {
         super(robot, SubsystemName) ;
+
+        p_ = new PWM(6) ;
+        p_.setSpeed(1.0);
 
         db_ = new TankDriveSubsystem(this, TankdriveSubsystemName, "tankdrive") ;
         addChild(db_) ;
 
-        climber_ = new ClimberSubsystem(this) ;
-        addChild(climber_) ;
+        //climber_ = new ClimberSubsystem(this) ;
+        //addChild(climber_) ;
 
         manip_ = new GamePieceManipulatorSubsystem(this, db_) ;
         addChild(manip_) ;
@@ -37,6 +44,12 @@ public class DroidRobotSubsystem extends RobotSubsystem {
 
         oi_ = new DroidOISubsystem(this, db_) ;
         addChild(oi_) ;        
+    }
+
+    @Override
+    public void run() throws Exception {
+        super.run() ;
+        p_.setSpeed(1.0) ;
     }
 
     public TankDriveSubsystem getTankDrive() {

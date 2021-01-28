@@ -70,8 +70,16 @@ public class MotorFactory
                         if (groupinverted)
                             v = !v ;
                         single.setInverted(v);
-                    } else if (leaderinverted) {
-                        v = !v ;
+                    } else {
+                        if (leaderinverted)
+                            v = !v ;
+
+                        if (groupinverted)
+                            v = !v ;
+                        single.setInverted(v) ;
+
+                        if (!leaderinverted && groupinverted)
+                            v = !v ;
                     }
 
                     if (groupmode != null)
@@ -93,7 +101,6 @@ public class MotorFactory
                     break ;
                 }
             }
-
         }
         catch(Exception ex) {
             ret = null ;

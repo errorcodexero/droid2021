@@ -2,7 +2,6 @@
 # This file describes the droid robot.  This version is for the java robot.
 #
 
-
 # Drivebase motors
 hw:tankdrive:motors:left:1:canid                                1                           # CAN 1
 hw:tankdrive:motors:left:1:type                                 "talon_fx"
@@ -18,7 +17,7 @@ hw:shooter:motor:1:type                                         "sparkmax_brushl
 hw:shooter:motor:1:canid                                        5                          # CAN 5
 hw:shooter:motor:2:type                                         "sparkmax_brushless"
 hw:shooter:motor:2:canid                                        6                          # CAN 6
-hw:shooter:motor:2:inverted                                     true
+hw:shooter:motor:1:inverted                                     true
 hw:shooter:motor:neutral_mode                                   "coast"
 
 if PRACTICE
@@ -499,8 +498,8 @@ shoottest:hold                                                true
 # this active value below is ignored if we are connected to the field.
 #
 auto:testmode:active                                          true
-auto:testmode:which                                           0
+auto:testmode:which                                           36
 auto:testmode:distance                                        0
-auto:testmode:power                                           0.9
-auto:testmode:duration                                        5
+auto:testmode:power                                           5000
+auto:testmode:duration                                        1
 auto:testmode:name                                           "test_straight"

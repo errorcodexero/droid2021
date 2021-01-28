@@ -125,7 +125,7 @@ public class DroidTestAutoMode extends TestAutoMode {
 
             case 24:            // Run shooter and intake side of conveyor in forward direction
                 addSubActionPair(conveyor, new ConveyorOnAction(conveyor, 1.0, 1.0), true);
-                addAction(new DelayAction(ctrl.getRobot(), 10.0));                
+                addAction(new DelayAction(ctrl.getRobot(), 3.0));                
                 addSubActionPair(conveyor, new ConveyorOnAction(conveyor, 0.0, 0.0), true);
                 break ;
 
