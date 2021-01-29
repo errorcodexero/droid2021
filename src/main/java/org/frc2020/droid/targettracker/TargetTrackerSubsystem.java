@@ -95,6 +95,12 @@ public class TargetTrackerSubsystem extends Subsystem {
                 logger.add(" angle", yaw) ;
                 logger.endMessage();
             }
+            else
+            {
+                logger.startMessage(MessageType.Debug, getLoggerID()) ;
+                logger.add("targettracker: no target detected") ;
+                logger.endMessage();
+            }
 
             //
             // Now, based on the number of samples and their age, we see if we are
@@ -130,6 +136,9 @@ public class TargetTrackerSubsystem extends Subsystem {
                     // desired angle based on new data.
                     //
                     locked_ = true ;
+                    logger.startMessage(MessageType.Debug, getLoggerID()) ;
+                    logger.add("targettracker: locked on target") ;
+                    logger.endMessage();
                 }
                 else {
                     //

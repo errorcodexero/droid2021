@@ -372,8 +372,15 @@ public abstract class XeroRobot extends TimedRobot {
         byte[] addr = getPracticeBotMacAddress();
         if (addr == null)
             return false;
-
-        return mac_addr_.equals(addr);
+        boolean ret = true ;
+        for(int i = 0 ; i  < 6 ; i++)
+        {
+            byte b1 = addr[i] ;
+            byte b2 = mac_addr_[i] ;
+            if (b1 != b2)
+                ret = false ;
+        }
+        return ret ;
     }
 
     protected abstract AutoController createAutoController() throws MissingParameterException, BadParameterTypeException ;

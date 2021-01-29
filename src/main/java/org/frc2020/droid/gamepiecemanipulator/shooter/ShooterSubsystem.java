@@ -2,6 +2,7 @@ package org.frc2020.droid.gamepiecemanipulator.shooter;
 
 import edu.wpi.first.wpilibj.Servo;
 import org.xero1425.base.Subsystem;
+import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
@@ -36,6 +37,8 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         change_time_ = getRobot().getTime() ;
         actual_ = HoodPosition.Unknown ;
         desired_ = HoodPosition.Down ;
+
+        hood_value_ = 1000.0 ;
     }
 
     public void setHood(HoodPosition pos) {
@@ -67,6 +70,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
 
         double rpm = getVelocity() * 60.0 ;
         putDashboard("shooter:rpm", DisplayType.Verbose, rpm);
+        putDashboard("hoodvalue", DisplayType.Always, hood_value_);
     }
 
     @Override
@@ -81,11 +85,13 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         {
             hood_servo_.set(hood_down_pos_) ;
             actual_ = pos  ;
+            hood_value_ = hood_down_pos_ ;
         }
         else if (pos == HoodPosition.Up)
         {
             hood_servo_.set(hood_up_pos_) ;  
-            actual_ = pos  ;                      
+            actual_ = pos  ;              
+            hood_value_ = hood_up_pos_ ;        
         }
     }
 
@@ -107,4 +113,5 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     private double hood_down_pos_ ;
     private Servo hood_servo_ ;
     private TankDriveSubsystem db_ ;
+    private double hood_value_ ;
 } ;

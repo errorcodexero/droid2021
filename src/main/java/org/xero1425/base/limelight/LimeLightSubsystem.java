@@ -101,6 +101,8 @@ public class LimeLightSubsystem extends Subsystem {
         {
             tv_ = false ;
         }
+
+        putDashboard("LLtv", DisplayType.Always, tv_);
     }
 
     @Override

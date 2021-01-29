@@ -11,9 +11,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 import org.frc2020.droid.automodes.DroidAutoController;
 
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
-// import org.frc2020.droid.targettracker.TargetTrackerSubsystem;
-// import org.frc2020.droid.turret.TurretSubsystem;
-
+import org.frc2020.droid.targettracker.TargetTrackerSubsystem;
+import org.frc2020.droid.turret.TurretSubsystem;
 import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.base.XeroRobot;
@@ -100,6 +99,8 @@ public class Droid extends XeroRobot {
         // logger.enableSubsystem(XeroRobot.LoggerName) ;
 
         logger.enableSubsystem(Action.LoggerName) ;
+        //logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
+        //logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
 
         if (RobotBase.isSimulation()) {
             // logger.enableSubsystem(SimulationEngine.LoggerName) ;

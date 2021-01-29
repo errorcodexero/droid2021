@@ -32,7 +32,7 @@ if PRACTICE
 hw:shooter:hood                                                 3
 endif
 if COMPETITION
-hw:shooter:hood                                                 4
+hw:shooter:hood                                                 3
 endif
 
 hw:conveyor:motors:intake:type                                  "sparkmax_brushless"
@@ -201,7 +201,7 @@ shooter:hold:imax                                               0.0
 
 if COMPETITION
 shooter:hood:down                                               1.0
-shooter:hood:up                                                 0.5
+shooter:hood:up                                                 0.2
 endif
 
 if PRACTICE
@@ -500,6 +500,6 @@ shoottest:hold                                                true
 auto:testmode:active                                          true
 auto:testmode:which                                           36
 auto:testmode:distance                                        0
-auto:testmode:power                                           5000
-auto:testmode:duration                                        1
+auto:testmode:power                                           0
+auto:testmode:duration                                        0
 auto:testmode:name                                           "test_straight"
