@@ -34,7 +34,7 @@ public class FollowTargetAction extends MotorAction {
     public void run() {
         double desired = tracker_.getDesiredTurretAngle() ;
         double error = Math.abs(desired - sub_.getPosition()) ;
-        double out = pid_.getOutput(sub_.getPosition(), desired, sub_.getRobot().getDeltaTime()) ;
+        double out = pid_.getOutput(0, error, sub_.getRobot().getDeltaTime()) ;
         sub_.setPower(out) ;
 
         boolean ready = error < threshold_ ;
@@ -43,6 +43,8 @@ public class FollowTargetAction extends MotorAction {
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
         logger.add("FollowTargetAction:") ;
+        logger.add(" desired", desired) ;
+        logger.add(" position", sub_.getPosition()) ;
         logger.add(" error", error) ;
         logger.add(" output", out) ;
         logger.add(" ready", ready) ;

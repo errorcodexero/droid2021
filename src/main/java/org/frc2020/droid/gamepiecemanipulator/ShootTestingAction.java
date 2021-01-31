@@ -93,7 +93,8 @@ public class ShootTestingAction extends Action {
     }
 
     private SimpleWidget makeWidget() {
-        return Shuffleboard.getTab("ShootTest").add("Velocity", 0.0).withWidget(BuiltInWidgets.kTextView) ;
+        SimpleWidget w = Shuffleboard.getTab("ShootTest").add("Velocity", 0.0) ;
+        return w.withWidget(BuiltInWidgets.kTextView) ;
     }
 
     private enum State {

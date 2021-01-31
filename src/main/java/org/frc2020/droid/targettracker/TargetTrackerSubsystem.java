@@ -1,8 +1,4 @@
 package org.frc2020.droid.targettracker;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.frc2020.droid.droidlimelight.DroidLimeLightSubsystem;
 import org.frc2020.droid.turret.TurretSubsystem;
 import org.xero1425.base.Subsystem;
@@ -98,8 +94,10 @@ public class TargetTrackerSubsystem extends Subsystem {
                 double yaw = ll_.getYaw() - camera_offset_angle_ ;
                 relative_angle_ = -yaw + turret_.getPosition() ;
                 logger.startMessage(MessageType.Debug, getLoggerID());
-                logger.add("targettracker:").add("yaw", yaw).add("distance", distance_).endMessage(); ;
-
+                logger.add("targettracker:").add("yaw", yaw).add("distance", distance_) ;
+                logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
+                logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
+                logger.endMessage();
                 if (Math.abs(db_.getVelocity()) < db_velocity_threshold_ && Math.abs(yaw) < lock_threshold_) {
                     locked_ = true ;
                 }

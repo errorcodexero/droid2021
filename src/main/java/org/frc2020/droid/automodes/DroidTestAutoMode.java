@@ -12,6 +12,7 @@ import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorOnAction;
 import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToEmitAction;
 import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToReceiveAction;
 import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorReceiveAction;
+import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorSetBallCountAction;
 import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorStopAction;
 import org.frc2020.droid.gamepiecemanipulator.conveyor.ConveyorSubsystem;
 import org.frc2020.droid.gamepiecemanipulator.intake.CollectOffAction;
@@ -36,6 +37,8 @@ import org.xero1425.base.tankdrive.TankDriveScrubCharAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
 public class DroidTestAutoMode extends TestAutoMode {
+
+    static ShootTestingAction shoot_ = null ;
 
     public DroidTestAutoMode(DroidAutoController ctrl)
             throws Exception {
@@ -168,15 +171,23 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 33:            // Set shooter to fixed velocity (hood up)
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up), true);
+                addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, 4), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down), false);
+                addAction(new DelayAction(ctrl.getRobot(), 5.0));
+                addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), true);
+                addSubActionPair(conveyor, new ConveyorEmitAction(conveyor), true);
                 break ;
                 
-            case 34:            // Characterize the shooter, gets velocity from smartdashboard
-                addSubActionPair(gp, new ShootTestingAction(gp, HoodPosition.Down), true) ;
+            case 34:            // Characterize the shooter, gets velocity from smartdashboard - hood up
+                if (shoot_ == null)
+                    shoot_ = new ShootTestingAction(gp, HoodPosition.Up) ;
+                addSubActionPair(gp, shoot_, true) ;
                 break ;
 
-            case 35:            // Characterize the shooter, gets velocity from smartdashboard
-                addSubActionPair(gp, new ShootTestingAction(gp, HoodPosition.Up), true) ;
+            case 35:            // Characterize the shooter, gets velocity from smartdashboard - hood down
+                if (shoot_ == null)
+                    shoot_ = new ShootTestingAction(gp, HoodPosition.Down) ;
+                addSubActionPair(gp, shoot_, true) ;
                 break ;
 
             case 36:            // Test the hood
