@@ -98,9 +98,9 @@ public class TargetTrackerSubsystem extends Subsystem {
                 logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
                 logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
                 logger.endMessage();
-                if (Math.abs(db_.getVelocity()) < db_velocity_threshold_ && Math.abs(yaw) < lock_threshold_) {
-                    locked_ = true ;
-                }
+                // if (Math.abs(db_.getVelocity()) < db_velocity_threshold_ && Math.abs(yaw) < lock_threshold_) {
+                //     locked_ = true ;
+                // }
             }
             else
             {

@@ -34,7 +34,7 @@ public class FollowTargetAction extends MotorAction {
     public void run() {
         double desired = tracker_.getDesiredTurretAngle() ;
         double error = Math.abs(desired - sub_.getPosition()) ;
-        double out = pid_.getOutput(0, error, sub_.getRobot().getDeltaTime()) ;
+        double out = pid_.getOutput(desired, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
         sub_.setPower(out) ;
 
         boolean ready = error < threshold_ ;

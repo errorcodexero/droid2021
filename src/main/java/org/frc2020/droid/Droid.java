@@ -99,8 +99,8 @@ public class Droid extends XeroRobot {
         // logger.enableSubsystem(XeroRobot.LoggerName) ;
 
         logger.enableSubsystem(Action.LoggerName) ;
-        //logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
-        //logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
+        logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
+        logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
 
         if (RobotBase.isSimulation()) {
             // logger.enableSubsystem(SimulationEngine.LoggerName) ;
