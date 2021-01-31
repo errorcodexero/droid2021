@@ -24,12 +24,10 @@ public class TargetTrackerSubsystem extends Subsystem {
     private DroidLimeLightSubsystem ll_ ;
     private TankDriveSubsystem db_ ;
     private TurretSubsystem turret_ ;
-    private boolean locked_ ;
     private double distance_ ;
 
     private double camera_offset_angle_ ;
     private double db_velocity_threshold_ ;
-    private double lock_threshold_ ;
 
     public static final String SubsystemName = "targettracker" ;
 
@@ -47,16 +45,14 @@ public class TargetTrackerSubsystem extends Subsystem {
 
         camera_offset_angle_ = getRobot().getSettingsParser().get("targettracker:camera_offset_angle").getDouble() ;
         db_velocity_threshold_ = getRobot().getSettingsParser().get("gamepiecemanipulator:fire:max_drivebase_velocity").getDouble() ;
-        lock_threshold_ = getRobot().getSettingsParser().get("targettracker:turret_lock_threshold").getDouble() ;
     }
 
     public void enable(boolean b) {
         enabled_ = b ;
-        locked_ = false ;
     }
 
     public boolean hasValidSample() {
-        return locked_ ;
+        return true ;
     }
 
     public double getDesiredTurretAngle() {
@@ -71,41 +67,18 @@ public class TargetTrackerSubsystem extends Subsystem {
     public void computeMyState() {
         MessageLogger logger = getRobot().getMessageLogger() ;
 
-        if (locked_)
+        if (enabled_ && ll_.getSampleTime() > last_camera_sample_time_)
         {
-            logger.startMessage(MessageType.Debug, getLoggerID()) ;
-            logger.add("targettracker: locked").endMessage();
+            last_camera_sample_time_ = ll_.getSampleTime() ;
+            distance_ = ll_.getDistance() ;
 
-            if (Math.abs(db_.getVelocity()) > db_velocity_threshold_) {
-                logger.startMessage(MessageType.Debug, getLoggerID()) ;
-                logger.add("targettracker: ").add("dbvelocity", db_.getVelocity()).add(" unlocking") ;
-                logger.endMessage(); 
-                locked_ = false ;
-            }
-        }
-
-        if (!locked_)
-        {
-            if (enabled_ && ll_.getSampleTime() > last_camera_sample_time_)
-            {
-                last_camera_sample_time_ = ll_.getSampleTime() ;
-                distance_ = ll_.getDistance() ;
-
-                double yaw = ll_.getYaw() - camera_offset_angle_ ;
-                relative_angle_ = -yaw + turret_.getPosition() ;
-                logger.startMessage(MessageType.Debug, getLoggerID());
-                logger.add("targettracker:").add("yaw", yaw).add("distance", distance_) ;
-                logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
-                logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
-                logger.endMessage();
-                // if (Math.abs(db_.getVelocity()) < db_velocity_threshold_ && Math.abs(yaw) < lock_threshold_) {
-                //     locked_ = true ;
-                // }
-            }
-            else
-            {
-                relative_angle_ = 0 ;
-            }
+            double yaw = ll_.getYaw() - camera_offset_angle_ ;
+            relative_angle_ = -yaw + turret_.getPosition() ;
+            logger.startMessage(MessageType.Debug, getLoggerID());
+            logger.add("targettracker:").add("yaw", yaw).add("distance", distance_) ;
+            logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
+            logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
+            logger.endMessage();
         }
     }
 }

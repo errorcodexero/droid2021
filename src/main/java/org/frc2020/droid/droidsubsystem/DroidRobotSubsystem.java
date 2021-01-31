@@ -21,9 +21,6 @@ public class DroidRobotSubsystem extends RobotSubsystem {
     public DroidRobotSubsystem(XeroRobot robot) throws Exception {
         super(robot, SubsystemName) ;
 
-        p_ = new PWM(6) ;
-        p_.setSpeed(1.0);
-
         db_ = new TankDriveSubsystem(this, TankdriveSubsystemName, "tankdrive") ;
         addChild(db_) ;
 
