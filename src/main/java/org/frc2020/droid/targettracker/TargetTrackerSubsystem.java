@@ -17,34 +17,28 @@ import org.xero1425.misc.MissingParameterException;
 // for angle and distacne has been locked in.
 //
 public class TargetTrackerSubsystem extends Subsystem {
-
-    private double last_camera_sample_time_ ;
     private boolean enabled_ ;
     private double relative_angle_ ;
     private DroidLimeLightSubsystem ll_ ;
-    private TankDriveSubsystem db_ ;
     private TurretSubsystem turret_ ;
     private double distance_ ;
 
     private double camera_offset_angle_ ;
-    private double db_velocity_threshold_ ;
 
     public static final String SubsystemName = "targettracker" ;
 
-    public TargetTrackerSubsystem(Subsystem parent, TankDriveSubsystem db, 
-                    DroidLimeLightSubsystem ll, TurretSubsystem turret) throws BadParameterTypeException, MissingParameterException {
-        super(parent, SubsystemName) ;
+    public TargetTrackerSubsystem(Subsystem parent, DroidLimeLightSubsystem ll, TurretSubsystem turret)
+            throws BadParameterTypeException, MissingParameterException {
+
+        super(parent, SubsystemName);
 
         ll_ = ll ;
-        db_ = db ;
         turret_ = turret ;
 
-        last_camera_sample_time_ = 0.0 ;
         relative_angle_ = 0.0 ;
-        enable(true) ;
-
+        enabled_ = true ;
+        
         camera_offset_angle_ = getRobot().getSettingsParser().get("targettracker:camera_offset_angle").getDouble() ;
-        db_velocity_threshold_ = getRobot().getSettingsParser().get("gamepiecemanipulator:fire:max_drivebase_velocity").getDouble() ;
     }
 
     public void enable(boolean b) {
@@ -67,9 +61,8 @@ public class TargetTrackerSubsystem extends Subsystem {
     public void computeMyState() {
         MessageLogger logger = getRobot().getMessageLogger() ;
 
-        if (enabled_ && ll_.getSampleTime() > last_camera_sample_time_)
+        if (enabled_)
         {
-            last_camera_sample_time_ = ll_.getSampleTime() ;
             distance_ = ll_.getDistance() ;
 
             double yaw = ll_.getYaw() - camera_offset_angle_ ;
