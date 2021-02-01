@@ -12,6 +12,11 @@ import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SettingsValue;
 
 public abstract class AutoController extends BaseController {
+    
+    private AutoMode current_automode_ ;
+    private boolean test_mode_ ;
+    private boolean started_ ;
+
     private static final String testmode = "auto:testmode:active";
 
     public AutoController(XeroRobot robot, String name) throws MissingParameterException, BadParameterTypeException {
@@ -24,13 +29,6 @@ public abstract class AutoController extends BaseController {
                 test_mode_ = true ;
             }
         }
-    }
-
-    public String getAutomodeName() {
-        if (current_automode_ == null)
-            return "NONE" ;
-        
-        return current_automode_.getName() ;
     }
 
     @Override
@@ -87,12 +85,13 @@ public abstract class AutoController extends BaseController {
         return current_automode_.getName() ;
     }
 
+    public AutoMode getAutoMode() {
+        return current_automode_ ;
+    }
+
     protected void setAutoMode(AutoMode m) {
         current_automode_ = m ;
         started_ = false ;
     }
 
-    private AutoMode current_automode_ ;
-    private boolean test_mode_ ;
-    private boolean started_ ;
 } ;

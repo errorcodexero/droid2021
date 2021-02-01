@@ -198,7 +198,7 @@ public class TankDriveSubsystem extends Subsystem {
             }
             else {
                 //
-                // TODO: Support external encoders
+                // Need to support external encoders
                 //
             }
 

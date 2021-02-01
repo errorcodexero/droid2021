@@ -38,7 +38,7 @@ import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
 public class DroidTestAutoMode extends TestAutoMode {
 
-    static ShootTestingAction shoot_ = null ;
+    private ShootTestingAction shoot_ = null ;
 
     public DroidTestAutoMode(DroidAutoController ctrl)
             throws Exception {

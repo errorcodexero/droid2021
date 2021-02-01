@@ -12,10 +12,27 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 public class DroidAutoController extends AutoController {
+    private AutoMode test_mode_ ;
+    private AutoMode near_side_eight_ ;
+    private AutoMode near_side_six_ ;
+    private AutoMode near_side_ten_ ;
+    private AutoMode middle_three_ ;
+    private AutoMode far_side_five_ ;    
+
     public DroidAutoController(Droid robot) throws MissingParameterException, BadParameterTypeException {
         super(robot, "droid-auto");
 
         MessageLogger logger = getRobot().getMessageLogger() ;
+        
+        try {
+            test_mode_ = new DroidTestAutoMode(this);
+        }
+        catch(Exception e) {
+            logger.startMessage(MessageType.Error) ;
+            logger.add("cannot create automode 'DroidTestAutoMode', exception caught - ") ;
+            logger.add(e.getMessage()) ;
+            logger.endMessage();
+        }
 
         try {
             near_side_eight_ = new NearSideEightAuto(this);
@@ -79,10 +96,9 @@ public class DroidAutoController extends AutoController {
     }
 
     public void updateAutoMode(int mode, String gamedata) {
-
         try {
             if (isTestMode()) {
-                setAutoMode(new DroidTestAutoMode(this));
+                setAutoMode(test_mode_) ;
             }
             else {
                 switch(mode) {
@@ -112,10 +128,5 @@ public class DroidAutoController extends AutoController {
             setAutoMode(null);
         }
     }
-
-    private AutoMode near_side_eight_ ;
-    private AutoMode near_side_six_ ;
-    private AutoMode near_side_ten_ ;
-    private AutoMode middle_three_ ;
-    private AutoMode far_side_five_ ;      
+  
 }

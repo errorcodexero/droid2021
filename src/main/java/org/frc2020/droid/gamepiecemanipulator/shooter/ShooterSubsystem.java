@@ -2,7 +2,6 @@ package org.frc2020.droid.gamepiecemanipulator.shooter;
 
 import edu.wpi.first.wpilibj.Servo;
 import org.xero1425.base.Subsystem;
-import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;

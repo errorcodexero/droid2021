@@ -451,7 +451,7 @@ public abstract class XeroRobot extends TimedRobot {
         logger_.add("    Automode Number: ").add(automode_).endMessage();
 
         logger_.startMessage(MessageType.Info) ;
-        logger_.add("    Automode Name: ").add(auto_controller_.getAutomodeName()).endMessage();
+        logger_.add("    Automode Name: ").add(auto_controller_.getAutoModeName()).endMessage();
 
 
         String str = "undefined" ;
