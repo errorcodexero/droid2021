@@ -8,6 +8,8 @@ public class AutoMode extends SequenceAction {
 
         ctrl_ = ctrl ;
         name_ = name ;
+
+        ctrl.addAutoMode(this) ;
     }
 
     public String getName() {

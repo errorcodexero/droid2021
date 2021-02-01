@@ -1,5 +1,6 @@
 package org.xero1425.base.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,11 +17,14 @@ public abstract class AutoController extends BaseController {
     private AutoMode current_automode_ ;
     private boolean test_mode_ ;
     private boolean started_ ;
+    private List<AutoMode> automodes_ ;
 
     private static final String testmode = "auto:testmode:active";
 
     public AutoController(XeroRobot robot, String name) throws MissingParameterException, BadParameterTypeException {
         super(robot, name) ;
+
+        automodes_ = new ArrayList<AutoMode>() ;
 
         SettingsParser settings = robot.getSettingsParser() ;
         if (settings.isDefined(testmode)) {
@@ -31,11 +35,17 @@ public abstract class AutoController extends BaseController {
         }
     }
 
+    public void addAutoMode(AutoMode m) {
+        automodes_.add(m) ;
+    }
+
     @Override
     public void init() {
     }
 
-    public abstract List<AutoMode> getAllAutomodes() ;
+    public List<AutoMode> getAllAutomodes()  {
+        return automodes_ ;
+    }
 
     @Override
     public void run() {

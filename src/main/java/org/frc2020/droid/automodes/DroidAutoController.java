@@ -1,8 +1,5 @@
 package org.frc2020.droid.automodes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.frc2020.droid.Droid;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.base.controllers.AutoMode;
@@ -83,16 +80,6 @@ public class DroidAutoController extends AutoController {
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }        
-    }
-
-    public List<AutoMode> getAllAutomodes() {
-        List<AutoMode> modes = new ArrayList<AutoMode>() ;
-        modes.add(near_side_eight_) ;
-        modes.add(near_side_six_) ;
-        modes.add(near_side_ten_) ;
-        modes.add(middle_three_) ;
-        modes.add(far_side_five_) ;
-        return modes ;
     }
 
     public void updateAutoMode(int mode, String gamedata) {
