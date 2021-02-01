@@ -134,7 +134,8 @@ public class FireAction extends Action {
             }
             else if (!ready_to_fire_except_shooter) {
                 //
-                // We lost the target
+                // We lost the target or the driver started driving or we got bumped and
+                // are no longer aiming at the target
                 // 
                 emit_action_.stopFiring();
 
@@ -233,5 +234,4 @@ public class FireAction extends Action {
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
     }
-
 }

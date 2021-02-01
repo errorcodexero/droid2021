@@ -21,6 +21,9 @@ public class TargetTrackerSubsystem extends Subsystem {
     private DroidLimeLightSubsystem ll_ ;
     private TurretSubsystem turret_ ;
     private double distance_ ;
+    private int lost_count_ ;
+    private int max_lost_count_ ;
+    boolean has_target_ ;
 
     private double camera_offset_angle_ ;
 
@@ -36,8 +39,11 @@ public class TargetTrackerSubsystem extends Subsystem {
 
         relative_angle_ = 0.0 ;
         enabled_ = true ;
+        lost_count_ = 0 ;
+        has_target_ = false;
         
         camera_offset_angle_ = getRobot().getSettingsParser().get("targettracker:camera_offset_angle").getDouble() ;
+        max_lost_count_ = getRobot().getSettingsParser().get("targettracker:lost_count").getInteger() ;
     }
 
     public void enable(boolean b) {
@@ -45,7 +51,7 @@ public class TargetTrackerSubsystem extends Subsystem {
     }
 
     public boolean hasValidSample() {
-        return true ;
+        return has_target_ ;
     }
 
     public double getDesiredTurretAngle() {
@@ -62,15 +68,30 @@ public class TargetTrackerSubsystem extends Subsystem {
 
         if (enabled_)
         {
-            distance_ = ll_.getDistance() ;
+            if (ll_.isTargetDetected())
+            {
+                distance_ = ll_.getDistance() ;
+               
+                double yaw = ll_.getYaw() - camera_offset_angle_ ;
+                relative_angle_ = -yaw + turret_.getPosition() ;
+                logger.startMessage(MessageType.Debug, getLoggerID());
+                logger.add("targettracker:").add("yaw", yaw).add("distance", distance_) ;
+                logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
+                logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
+                logger.endMessage();
 
-            double yaw = ll_.getYaw() - camera_offset_angle_ ;
-            relative_angle_ = -yaw + turret_.getPosition() ;
-            logger.startMessage(MessageType.Debug, getLoggerID());
-            logger.add("targettracker:").add("yaw", yaw).add("distance", distance_) ;
-            logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
-            logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
-            logger.endMessage();
+                has_target_ = true ;
+                lost_count_ = 0 ;
+            }
+            else
+            {
+                if (lost_count_ > max_lost_count_)
+                    has_target_ = false ;
+
+                logger.startMessage(MessageType.Debug, getLoggerID());
+                logger.add("targettracker: lost target ").add(" lost count", lost_count_) ;
+                logger.add(" has_target", has_target_).endMessage();
+            }
         }
     }
 }

@@ -466,7 +466,9 @@ targettracker:target:y                                          30  # placeholde
 # This helps prevent us from trying to track the wrong target
 targettracker:camera_targetting_max_angle                       45
 
-targettracker:turret_lock_threshold                             1.0
+# The number of robot loops (20 ms) where the target is not seen until we
+# declare that firing must stop because we cannot see a target
+targettracker:lost_count                                        10
 
 #
 # The drive must be moving slower than this speed (in inches per second)
