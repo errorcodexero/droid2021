@@ -2,7 +2,6 @@ package org.frc2020.droid.automodes;
 
 import org.frc2020.droid.climber.ClimberMoveAction;
 import org.frc2020.droid.climber.ClimberSubsystem;
-import org.frc2020.droid.droidlimelight.DroidLimeLightSubsystem;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
 import org.frc2020.droid.gamepiecemanipulator.FireAction;
 import org.frc2020.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
@@ -54,7 +53,6 @@ public class DroidTestAutoMode extends TestAutoMode {
         ConveyorSubsystem conveyor = droid.getGamePieceManipulator().getConveyor() ;
         ShooterSubsystem shooter = droid.getGamePieceManipulator().getShooter() ;
         TurretSubsystem turret = droid.getTurret() ;
-        DroidLimeLightSubsystem ll = droid.getLimeLight() ;
         ClimberSubsystem climber = droid.getClimber() ;
         TargetTrackerSubsystem tracker = droid.getTracker() ;        
 
@@ -214,7 +212,7 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 42:                // Follow the target
-                addSubActionPair(turret, new FollowTargetAction(turret, ll, db, tracker), true);
+                addSubActionPair(turret, new FollowTargetAction(turret, tracker), true);
                 break ;
                 
             //
@@ -242,7 +240,7 @@ public class DroidTestAutoMode extends TestAutoMode {
 
             // 100+ Whole robot test modes
             case 100:
-                addSubActionPair(turret, new FollowTargetAction(turret, ll, db, tracker), false);
+                addSubActionPair(turret, new FollowTargetAction(turret, tracker), false);
                 addSubActionPair(intake, new CollectOnAction(intake), true);
                 addSubActionPair(conveyor, new ConveyorPrepareToReceiveAction(conveyor), true);
                 addSubActionPair(conveyor, new ConveyorReceiveAction(conveyor), true);

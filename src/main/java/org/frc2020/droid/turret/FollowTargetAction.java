@@ -1,23 +1,37 @@
 package org.frc2020.droid.turret;
 
-import org.frc2020.droid.droidlimelight.DroidLimeLightSubsystem;
 import org.frc2020.droid.targettracker.TargetTrackerSubsystem;
-import org.xero1425.base.limelight.LimeLightSubsystem.LedMode;
 import org.xero1425.base.motorsubsystem.MotorAction;
-import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
+//
+// This action is assigned to the turret in order to have the turret follow any target
+// seen by the limelight.  This action never completes and will have to be canceled by assigning
+// another action to the turret.
+//
 public class FollowTargetAction extends MotorAction {
-    public FollowTargetAction(TurretSubsystem sub, DroidLimeLightSubsystem ll, TankDriveSubsystem db, TargetTrackerSubsystem tracker)
+    
+    // The turret must be less than the threshold from the desired angle (as determined by the target tracker)
+    // in order to be ready to fire
+    private double threshold_ ;
+
+    // The PID controller that actually calculates the power required to have the turret track the target
+    private PIDCtrl pid_ ;
+
+    // The turret subsystem
+    private TurretSubsystem sub_ ;
+
+    // The target tacker subsystem, used to find the desired turret angle
+    private TargetTrackerSubsystem tracker_ ;
+
+    public FollowTargetAction(TurretSubsystem sub, TargetTrackerSubsystem tracker)
             throws BadParameterTypeException, MissingParameterException {
         super(sub);
 
-        db_ = db ;
-        ll_ = ll;
         sub_ = sub ;
         tracker_ = tracker ;
         threshold_ = sub.getRobot().getSettingsParser().get("turret:fire_threshold").getDouble() ;
@@ -26,20 +40,44 @@ public class FollowTargetAction extends MotorAction {
     @Override
     public void start() throws Exception {
         super.start() ;
+
+        //
+        // This PID controller does the work of following the target
+        //
         pid_ = new PIDCtrl(getSubsystem().getRobot().getSettingsParser(), "turret:follow", false);
-        ll_.setLedMode(LedMode.ForceOn);
+
+        //
+        // Enable the target tracker, this lights up the LED lights and starts the flow of data
+        //
+        tracker_.enable(true);
     }
 
     @Override
     public void run() {
+        //
+        // Ask the target tracker what angle the turret should be at to 
+        // point at the target.
+        //
         double desired = tracker_.getDesiredTurretAngle() ;
-        double error = Math.abs(desired - sub_.getPosition()) ;
+
+        //
+        // Update the turret motor power based on the current position of the turret and
+        // the desired positon of the turret.
+        //
         double out = pid_.getOutput(desired, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
         sub_.setPower(out) ;
 
+        //
+        // Determine if the turret is close enough to the desired position to enable 
+        // firing of the balls
+        //
+        double error = Math.abs(desired - sub_.getPosition()) ;
         boolean ready = error < threshold_ ;
         sub_.setReadyToFire(ready) ;
 
+        //
+        // Print debug messages for this action
+        //
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
         logger.add("FollowTargetAction:") ;
@@ -54,7 +92,15 @@ public class FollowTargetAction extends MotorAction {
     @Override
     public void cancel() {
         super.cancel() ;
-        ll_.setLedMode(LedMode.ForceOff);
+
+        //
+        // Disable the target tracker, this turns off the LED lights
+        //
+        tracker_.enable(false);
+
+        //
+        // Set the turret power to zero
+        //
         sub_.setPower(0.0) ;
     }
 
@@ -63,10 +109,4 @@ public class FollowTargetAction extends MotorAction {
         return prefix(indent) + "FollowTargetAction" ;
     }
 
-    double threshold_ ;
-    private PIDCtrl pid_ ;
-    TurretSubsystem sub_ ;
-    DroidLimeLightSubsystem ll_ ;
-    TankDriveSubsystem db_ ;
-    TargetTrackerSubsystem tracker_ ;
 }

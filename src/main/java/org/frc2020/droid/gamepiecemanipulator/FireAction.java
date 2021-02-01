@@ -103,7 +103,7 @@ public class FireAction extends Action {
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         ShooterSubsystem shooter = sub_.getShooter() ;
 
-        boolean tracker_ready = tracker_.hasValidSample() ;
+        boolean tracker_ready = tracker_.hasTarget() ;
         boolean turret_ready = turret_.isReadyToFire() ;
         boolean shooter_ready = shooter.isReadyToFire() ;
         boolean db_ready = (db_.getVelocity() < db_velocity_threshold_) ;

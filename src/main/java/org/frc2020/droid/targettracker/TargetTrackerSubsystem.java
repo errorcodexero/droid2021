@@ -2,6 +2,7 @@ package org.frc2020.droid.targettracker;
 import org.frc2020.droid.droidlimelight.DroidLimeLightSubsystem;
 import org.frc2020.droid.turret.TurretSubsystem;
 import org.xero1425.base.Subsystem;
+import org.xero1425.base.limelight.LimeLightSubsystem.LedMode;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -9,15 +10,13 @@ import org.xero1425.misc.MissingParameterException;
 
 //
 // The purpose of the tracker class is to generate two things.  It generates
-// an error value for the TURRET pid controller and it generates the distance
-// from the robot camera to the target.  The target tracker returns a boolean
-// that indicates if the target tracker is ready to fire.  This goes from 
-// false to true once the drivebase is stopped, the target is seen, and a value
-// for angle and distacne has been locked in.
+// the desired angle for the TURRET pid controller and it generates the distance
+// from the robot camera to the target.  This goes to false if the lime light loses
+// the target for an extended number of robot loops.
 //
 public class TargetTrackerSubsystem extends Subsystem {
     private boolean enabled_ ;
-    private double relative_angle_ ;
+    private double desired_turret_angle_ ;
     private DroidLimeLightSubsystem ll_ ;
     private TurretSubsystem turret_ ;
     private double distance_ ;
@@ -37,25 +36,50 @@ public class TargetTrackerSubsystem extends Subsystem {
         ll_ = ll ;
         turret_ = turret ;
 
-        relative_angle_ = 0.0 ;
-        enabled_ = true ;
+        desired_turret_angle_ = 0.0 ;
         lost_count_ = 0 ;
         has_target_ = false;
         
+        //
+        // Camera offset angle is determined empirically and deals with any angular offset in the
+        // mounting or manufacturing of the camera.
+        //
         camera_offset_angle_ = getRobot().getSettingsParser().get("targettracker:camera_offset_angle").getDouble() ;
+
+        //
+        // This is the number of robot loops that the lime light can lose the target before we assume
+        // the target is lost for firing.  When a ball is fired, it temporarily blocks the view of the target
+        // for the limelight.  Therefore if we lose the target for short amounts of time, we just maintain the
+        // values we last calculated until the target is seen again.  Only after this number of robot loops
+        // without a target do we actually consider the target lost and stop the firing operation.
+        //
         max_lost_count_ = getRobot().getSettingsParser().get("targettracker:lost_count").getInteger() ;
+
+        //
+        // Turn off the LEDs unless we are actually wanting to track a target
+        //
+        enable(false) ;
     }
 
     public void enable(boolean b) {
         enabled_ = b ;
+
+        if (b)
+        {
+            ll_.setLedMode(LedMode.ForceOn);
+        }
+        else
+        {
+            ll_.setLedMode(LedMode.ForceOff);
+        }
     }
 
-    public boolean hasValidSample() {
+    public boolean hasTarget() {
         return has_target_ ;
     }
 
     public double getDesiredTurretAngle() {
-        return relative_angle_ ;
+        return desired_turret_angle_ ;
     }
 
     public double getDistance() {
@@ -73,11 +97,11 @@ public class TargetTrackerSubsystem extends Subsystem {
                 distance_ = ll_.getDistance() ;
                
                 double yaw = ll_.getYaw() - camera_offset_angle_ ;
-                relative_angle_ = -yaw + turret_.getPosition() ;
+                desired_turret_angle_ = -yaw + turret_.getPosition() ;
                 logger.startMessage(MessageType.Debug, getLoggerID());
                 logger.add("targettracker:").add("yaw", yaw).add("distance", distance_) ;
                 logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;
-                logger.add(" tpos", turret_.getPosition()).add(" relative", relative_angle_);
+                logger.add(" tpos", turret_.getPosition()).add(" desired", desired_turret_angle_);
                 logger.endMessage();
 
                 has_target_ = true ;
@@ -92,6 +116,15 @@ public class TargetTrackerSubsystem extends Subsystem {
                 logger.add("targettracker: lost target ").add(" lost count", lost_count_) ;
                 logger.add(" has_target", has_target_).endMessage();
             }
+        }
+        else
+        {
+            //
+            // If the target tracker is disabled, we set the desired angle to zero, which is
+            // straight ahead.
+            //
+            distance_ = 0.0 ;
+            desired_turret_angle_ = 0.0 ;
         }
     }
 }

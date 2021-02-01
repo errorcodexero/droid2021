@@ -1,6 +1,5 @@
 package org.frc2020.droid.automodes;
 
-import org.frc2020.droid.droidlimelight.DroidLimeLightSubsystem;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
 import org.frc2020.droid.gamepiecemanipulator.FireAction;
 import org.frc2020.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
@@ -83,13 +82,11 @@ public class DroidAutoMode extends AutoMode {
 
     private SequenceAction setTurretToTrack(double angle) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
-        DroidLimeLightSubsystem ll = getDroidSubsystem().getLimeLight() ;
-        TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;
         TargetTrackerSubsystem tracker = getDroidSubsystem().getTracker() ;
         
         SequenceAction seq = new SequenceAction(getAutoController().getRobot().getMessageLogger()) ;
         seq.addSubActionPair(turret, new MotorEncoderGotoAction(turret, angle, false), true) ;
-        seq.addSubActionPair(turret, new FollowTargetAction(turret, ll, db, tracker), false);
+        seq.addSubActionPair(turret, new FollowTargetAction(turret, tracker), false);
 
         return seq ;
     }    

@@ -2,7 +2,6 @@ package org.frc2020.droid.droidoi;
 
 // import org.frc2020.droid.climber.ClimberMoveAction;
 // import org.frc2020.droid.climber.ClimberSubsystem;
-import org.frc2020.droid.droidlimelight.DroidLimeLightSubsystem;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
 import org.frc2020.droid.gamepiecemanipulator.FireAction;
 import org.frc2020.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
@@ -130,7 +129,6 @@ public class DroidOIDevice extends OIPanel {
         ConveyorSubsystem conveyor = gp.getConveyor() ;
 
         TurretSubsystem turret = getDroidSubsystem().getTurret();
-        DroidLimeLightSubsystem ll = getDroidSubsystem().getLimeLight() ;
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;
         TargetTrackerSubsystem tracker = getDroidSubsystem().getTracker() ;
         // ClimberSubsystem climber = getDroidSubsystem().getClimber() ;
@@ -142,7 +140,7 @@ public class DroidOIDevice extends OIPanel {
         intake_off_ = new CollectOffAction(intake);
 
         turret_goto_zero_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
-        turret_follow_target_ = new FollowTargetAction(turret, ll, db, tracker) ;
+        turret_follow_target_ = new FollowTargetAction(turret, tracker) ;
 
         eject_action_ = new ConveyorEjectAction(conveyor) ;
         conveyor_stop_ = new ConveyorStopAction(conveyor) ;
