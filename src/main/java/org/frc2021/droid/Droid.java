@@ -13,8 +13,6 @@ import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.frc2021.droid.automodes.DroidAutoController;
 import org.frc2021.droid.droidsubsystem.DroidRobotSubsystem;
-import org.frc2021.droid.targettracker.TargetTrackerSubsystem;
-import org.frc2021.droid.turret.TurretSubsystem;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.alarms.AlarmSubsystem;
@@ -83,30 +81,7 @@ public class Droid extends XeroRobot {
     }
 
     protected void enableMessages() {
-        MessageLogger logger = getMessageLogger() ;
-
-        // logger.enableSubsystem(Action.LoggerName) ;
-        // logger.enableSubsystem(XeroPathManager.LoggerName) ;
-        // logger.enableSubsystem(SettingsParser.LoggerName) ;
-        // logger.enableSubsystem(DroidOISubsystem.SubsystemName) ;
-        // logger.enableSubsystem(ConveyorSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(ConveyorSubsystem.SensorLoggerName) ;        
-        // logger.enableSubsystem(GamePieceManipulatorSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(IntakeSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(ShooterSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(ClimberSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(BlinkySubsystem.SubsystemName) ;
-        // logger.enableSubsystem(DroidLimeLightSubsystem.LoggerSubsystemNameName) ;
-        // logger.enableSubsystem(DroidRobotSubsystem.TankdriveLoggerName) ;
-        // logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(XeroPathManager.LoggerName) ;
-        // logger.enableSubsystem(SettingsParser.LoggerName) ;
-        // logger.enableSubsystem(XeroRobot.LoggerName) ;
-
-        logger.enableSubsystem(Action.LoggerName) ;
-        // logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
-        // logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
+        // MessageLogger logger = getMessageLogger() ;
 
         if (RobotBase.isSimulation()) {
             // logger.enableSubsystem(SimulationEngine.LoggerName) ;

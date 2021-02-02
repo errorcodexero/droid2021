@@ -67,6 +67,9 @@ public abstract class XeroRobot extends TimedRobot {
         // Read the parameters file
         readParamsFile();
 
+        // Enable messages in the message logger based on params file values
+        enableMessagesFromSettingsFile() ;
+
         // Read the paths files needed
         paths_ = new XeroPathManager(logger_, robot_paths_.pathsDirectory());
         try {
@@ -387,6 +390,26 @@ public abstract class XeroRobot extends TimedRobot {
     
     protected TeleopController createTeleopController() throws MissingParameterException, BadParameterTypeException {
         return new TeleopController(this, getName() + "-teleop") ;
+    }
+
+    private void enableMessagesFromSettingsFile() {
+        String suffix = ":messages" ;
+        SettingsParser p = getSettingsParser() ;
+        MessageLogger m = getMessageLogger() ;
+
+        for(String key : p.getAllKeys(suffix))
+        {
+            try {
+                if (p.get(key).isBoolean() && p.get(key).getBoolean())
+                {
+                    String module = key.substring(0, key.length() - suffix.length());
+                    m.enableSubsystem(module) ;
+                }
+            }
+            catch(Exception ex)
+            {
+            }
+        }
     }
 
     private void robotLoop(LoopType ltype) {

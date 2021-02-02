@@ -141,11 +141,7 @@ public class Subsystem {
             String pname = name_ + ":verbose";
             if (p.isDefined(pname) && p.get(pname).isBoolean() && p.get(pname).getBoolean())
                 verbose_ = true;
-
-            pname = name_ + ":messages" ;
-            if (p.isDefined(pname) && p.get(pname).isBoolean() && p.get(pname).getBoolean())
-                    getRobot().getMessageLogger().enableSubsystem(name_) ;
-
+            
         } catch (MissingParameterException e) {
             // Should never happen
             verbose_ = false ;
@@ -153,8 +149,6 @@ public class Subsystem {
             // Should never happen
             verbose_ = false ;
         }
-
-
     }
 
     public Subsystem(XeroRobot robot, final String name) {

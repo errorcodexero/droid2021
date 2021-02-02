@@ -23,16 +23,19 @@ intake:verbose                                                          false
 droid-limelight:verbose                                                 false
 targettracker:verbose                                                   false
 droidoi:verbose                                                         false
+blinky:verbose                                                          false
 
 #####################################################################################
 #
-# This section defines what subsystems are displaying message logger information.
+# This section defines what subsystems are displaying message logger information.  Each
+# subsystem can display log messages that get stored in a USB thumb drive in the
+# roborio.  Setting the appropriate item to true causes that subsystem to print messages.
 #
 #####################################################################################
 
 tankdrive:messages                                                      false
 turret:messages                                                         false
-shooter:messages                                                        true
+shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
@@ -41,7 +44,17 @@ intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
 droidoi:messages                                                        false
+blinky:messages                                                         false
+conveyor:sensors:messages                                               false
+pathmanager:messages                                                    false
+xerorobot:messages                                                      false
 
+#
+# Some special things we can turn on that are not associated with a subsystem
+#
+actions:messages                                                        true
+pathmanager:messages                                                    false
+robot:messages                                                          false
 
 #####################################################################################
 #

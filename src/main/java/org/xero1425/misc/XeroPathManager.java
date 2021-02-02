@@ -64,6 +64,7 @@ public class XeroPathManager
         basedir_ = basedir ;
         paths_ = new HashMap<String, XeroPath>() ;
         logger_id_ = logger.registerSubsystem(LoggerName) ;
+        logger_ = logger ;
 
         setExtensions("_left.csv", "_right.csv");
     }
@@ -210,6 +211,10 @@ public class XeroPathManager
             logger_.endMessage();   
             return false ;
         }
+
+        logger_.startMessage(MessageType.Debug, logger_id_) ;
+        logger_.add("loaded path '").add(name) ;
+        logger_.endMessage();    
 
         paths_.put(name, path) ;
         return true ;

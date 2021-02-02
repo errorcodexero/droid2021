@@ -8,11 +8,12 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
+import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SettingsValue;
 
 public class ConveyorSubsystem extends Subsystem {
     public static final String SubsystemName = "conveyor";
-    public static final String SensorLoggerName = "conveyor-sensors";
+    public static final String SensorLoggerName = "conveyor:sensors:messages";
     public static final int MAX_BALLS = 5;
     public static final int SENSOR_COUNT = Sensor.values().length;
     public static final String SensorSubsystemName = null;
@@ -20,6 +21,7 @@ public class ConveyorSubsystem extends Subsystem {
     public ConveyorSubsystem(Subsystem parent) throws BadParameterTypeException, MissingParameterException {
         super(parent, SubsystemName);
 
+        SettingsParser p = getRobot().getSettingsParser() ;
         sensor_logger_id_ = getRobot().getMessageLogger().registerSubsystem(SensorLoggerName);
 
         int num;
@@ -35,7 +37,7 @@ public class ConveyorSubsystem extends Subsystem {
 
         for (int i = 0; i < SENSOR_COUNT; i++) {
             String name = "hw:conveyor:sensor:" + (char) (basech + i);
-            num = getRobot().getSettingsParser().get(name).getInteger();
+            num = p.get(name).getInteger();
             sensors_[i] = new DigitalInput(num);
             sensor_states_[i] = false ;
             prev_sensor_states_[i] = false ;

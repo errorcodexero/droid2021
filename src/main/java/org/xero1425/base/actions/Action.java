@@ -9,7 +9,7 @@ import org.xero1425.misc.MessageType;
 public abstract class Action
 {
     // The name of the messages in the logger
-    public static final String LoggerName = "action" ;
+    public static final String LoggerName = "actions" ;
     
     // If true, the action is complete
     private boolean done_ ;

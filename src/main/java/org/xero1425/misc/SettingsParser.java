@@ -62,6 +62,21 @@ public final class SettingsParser
         skipping_ = false ;
     }
 
+    /// \brief returns all keys that end with a given suffix
+    /// \param suffix the suffix to search for
+    /// \returns all keys that end with a suffix
+    public List<String> getAllKeys(String suffix) {
+        ArrayList<String> ret = new ArrayList<String>() ;
+
+        for(String key : values_.keySet())
+        {
+            if (key.endsWith(suffix))
+                ret.add(key) ;
+        }
+
+        return ret ;
+    }
+
     /// \brief print all of the keys read and their values to the message logger
     public void dumpKeys() {
         logger_.startMessage(MessageType.Info) ;

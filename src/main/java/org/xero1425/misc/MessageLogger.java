@@ -160,7 +160,7 @@ public final class MessageLogger
     /// \param the name of the subsystem to enable
     /// \returns true if the messages are enabled sucessfully
     public boolean enableSubsystem(final String name) {
-        boolean ret = true;
+        boolean ret = false;
 
         for (final Integer key : subsystems_.keySet()) {
             final String subname = subsystems_.get(key);
@@ -171,8 +171,12 @@ public final class MessageLogger
             }
         }
 
-        if (!to_be_enabled_.contains(name))
-            to_be_enabled_.add(name) ;
+        if (!ret)
+        {   
+            if (!to_be_enabled_.contains(name))
+                to_be_enabled_.add(name) ;
+            ret = true ;
+        }
 
         return ret;
     }
