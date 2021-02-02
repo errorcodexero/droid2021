@@ -6,6 +6,12 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
 public class DroidLimeLightSubsystem extends LimeLightSubsystem {
+    private double distance_ ;
+    private double yaw_ ;
+    private double camera_angle_ ;
+    private double camera_height_ ;
+    private double target_height_ ;
+
     public static final String SubsystemName = "limelight" ;
 
     public DroidLimeLightSubsystem(Subsystem parent) throws BadParameterTypeException, MissingParameterException {
@@ -15,7 +21,6 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
         camera_height_ = getRobot().getSettingsParser().get("droidvision:camera_height").getDouble() ;
         target_height_ = getRobot().getSettingsParser().get("droidvision:target_height").getDouble() ;
         distance_ = 0 ;
-        sample_time_ = 0 ;
 
         setCamMode(CamMode.VisionProcessing) ;
         setLedMode(LedMode.ForceOff) ;
@@ -29,7 +34,6 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
         {
             distance_ = (target_height_ - camera_height_) / Math.tan(Math.toRadians(camera_angle_ + getTY())) ;
             yaw_ = getTX() ;
-            sample_time_ = getRobot().getTime() - getTotalLatency() ;
 
             putDashboard("vision-distance", DisplayType.Verbose, distance_);
             putDashboard("vision-yaw", DisplayType.Verbose, yaw_) ;
@@ -43,15 +47,4 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
     public double getYaw() {
         return yaw_ ;
     }
-
-    public double getSampleTime() {
-        return sample_time_ ;
-    }
-
-    private double distance_ ;
-    private double yaw_ ;
-    private double sample_time_;
-    private double camera_angle_ ;
-    private double camera_height_ ;
-    private double target_height_ ;
 }

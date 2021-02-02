@@ -25,6 +25,10 @@ import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
+//
+// This is the base class for the Droid automodes.  It basically provides some utility
+// methods that make it easy to create the complex automode sequences needed.
+//
 public class DroidAutoMode extends AutoMode {
     public DroidAutoMode(DroidAutoController ctrl, String name) {
         super(ctrl, name);
@@ -34,11 +38,20 @@ public class DroidAutoMode extends AutoMode {
         return (DroidRobotSubsystem) getAutoController().getRobot().getRobotSubsystem();
     }
 
+    //
+    // Add the actions to set the initial ball count
+    //
     protected void setInitialBallCount(int count) throws InvalidActionRequest {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
         addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, count), false);
     }
 
+    //
+    // Add a sequence that drives a path and fires the balls in the robot once the path is
+    // complete.
+    //
+    // If the path is null, then no driving is performed before firing the balls.
+    //
     protected void driveAndFire(String path, boolean reverse, double angle) throws Exception {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ; 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;
@@ -60,6 +73,11 @@ public class DroidAutoMode extends AutoMode {
         addSubActionPair(gp, new FireAction(gp, tracker, turret, db), true);
     }
 
+    //
+    // Add a sequence that drives a path and collects balls along the path.  This assumes that the
+    // collection sequence can be executed along the start of the path so that no delay is necessary
+    // before following the path to let the collection sequence start.
+    //
     protected void driveAndCollect(String path) throws Exception {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ; 
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
@@ -80,6 +98,10 @@ public class DroidAutoMode extends AutoMode {
         addSubActionPair(gp, new StopCollectAction(gp), true);
     }
 
+    //
+    // Add a sequence to move the turret to a specific angle and then set it up to track the
+    // target.
+    //
     private SequenceAction setTurretToTrack(double angle) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
         TargetTrackerSubsystem tracker = getDroidSubsystem().getTracker() ;

@@ -1,9 +1,20 @@
 package org.frc2020.droid.automodes;
 
+//
+// Start along the side of our trench at the start line against the edge of the field.
+// Drive to the front edge of the trench and shoot the three loaded in the robot.  Drive
+// through the trench and collect the first three balls in the trench.  Drive back to the front of
+// the trench and score the three.
+//
+// Status: works as planned
+//
 public class NearSideSixAuto extends DroidAutoMode {
     public NearSideSixAuto(DroidAutoController ctrl) throws Exception {
         super(ctrl, "NearSideSix") ;
 
+        //
+        // Initial ball count, 3 balls loaded into the robot at start
+        //
         setInitialBallCount(3);
 
         //

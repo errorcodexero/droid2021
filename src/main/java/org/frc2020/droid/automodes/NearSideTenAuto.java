@@ -1,9 +1,24 @@
 package org.frc2020.droid.automodes;
 
+//
+// Start along the side of our trench at the start line against the edge of the field.
+// Drive to collect the two balls on the edge of the rendezvous point.  Drive back to the
+// edge of the trench and score the five.  Then drive the trench collecting the five balls
+// there.  Drive back to the front of the trench and score these five.
+//
+// This mode will not work with the 2021 field as the balls in the rendezvous area have been
+// moved.  This mode is only for 2020.
+//
+// Status: never working completely, needed a collector that could quickly collect two balls
+//         in parallel to work.
+//
 public class NearSideTenAuto extends DroidAutoMode {
     public NearSideTenAuto(DroidAutoController ctrl) throws Exception {
         super(ctrl, "NearSideTen") ;
 
+        //
+        // Initial ball count, 3 balls loaded into the robot at start
+        //
         setInitialBallCount(3);
 
         // Collect two from the middle zone

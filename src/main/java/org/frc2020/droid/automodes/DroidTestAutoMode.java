@@ -26,6 +26,7 @@ import org.frc2020.droid.turret.TurretSubsystem;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
+import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderPowerAction;
@@ -35,13 +36,19 @@ import org.xero1425.base.tankdrive.TankDrivePowerAction;
 import org.xero1425.base.tankdrive.TankDriveScrubCharAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
+//
+// This is a test automode.  It is used to run tests on various aspects of
+// the robot.  Each subsystem has a set of tests that ensure the motors are
+// working and to also test higher level actions.  There are also tests to help
+// with the tuning of the robot.
+//
 public class DroidTestAutoMode extends TestAutoMode {
 
     private ShootTestingAction shoot_ = null ;
 
     public DroidTestAutoMode(DroidAutoController ctrl)
             throws Exception {
-        super(ctrl, "TestMode") ;
+        super(ctrl, "Droid-Test-Mode") ;
 
         ParallelAction parallel ;
         SequenceAction seq ;
@@ -169,11 +176,7 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 33:            // Set shooter to fixed velocity (hood up)
-                addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, 4), false);
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down), false);
-                addAction(new DelayAction(ctrl.getRobot(), 5.0));
-                addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), true);
-                addSubActionPair(conveyor, new ConveyorEmitAction(conveyor), true);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up), false);
                 break ;
                 
             case 34:            // Characterize the shooter, gets velocity from smartdashboard - hood up
@@ -198,7 +201,23 @@ public class DroidTestAutoMode extends TestAutoMode {
                 addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
                 addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down), false);             
-                break ;                                                                
+                break ;
+                
+            case 37:            // Manual shoot, hood down
+                addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, 5), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down), false);
+                addAction(new DelayAction(ctrl.getRobot(), 5.0));
+                addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), true);
+                addSubActionPair(conveyor, new ConveyorEmitAction(conveyor), true);
+                break ;
+
+            case 38:            // Manual shoot, hood up
+                addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, 5), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up), false);
+                addAction(new DelayAction(ctrl.getRobot(), 5.0));
+                addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), true);
+                addSubActionPair(conveyor, new ConveyorEmitAction(conveyor), true);
+                break ;
 
             //
             // Numbers 40 - 49 are for the turret
@@ -239,7 +258,7 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             // 100+ Whole robot test modes
-            case 100:
+            case 100:   // Complete shooting sequence
                 addSubActionPair(turret, new FollowTargetAction(turret, tracker), false);
                 addSubActionPair(intake, new CollectOnAction(intake), true);
                 addSubActionPair(conveyor, new ConveyorPrepareToReceiveAction(conveyor), true);

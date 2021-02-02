@@ -103,5 +103,4 @@ public abstract class AutoController extends BaseController {
         current_automode_ = m ;
         started_ = false ;
     }
-
 } ;

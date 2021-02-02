@@ -8,6 +8,10 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
+//
+// This class is the automode controller for Droid.  It basically creates all of the
+// automodes and picks one based on test mode and the automode controller selected.
+//
 public class DroidAutoController extends AutoController {
     private AutoMode test_mode_ ;
     private AutoMode near_side_eight_ ;
@@ -83,37 +87,31 @@ public class DroidAutoController extends AutoController {
     }
 
     public void updateAutoMode(int mode, String gamedata) {
-        try {
-            if (isTestMode()) {
-                setAutoMode(test_mode_) ;
-            }
-            else {
-                switch(mode) {
-                    case 0:
-                        setAutoMode(near_side_eight_) ;
-                        break ;
-
-                    case 1:
-                        setAutoMode(near_side_six_) ;
-                        break ;
-
-                    case 2:
-                        setAutoMode(near_side_ten_) ;
-                        break ;                        
-
-                    case 3:
-                        setAutoMode(middle_three_) ;
-                        break ;
-
-                    case 4:
-                        setAutoMode(far_side_five_) ;
-                        break ;
-                }
-            }
+        if (isTestMode()) {
+            setAutoMode(test_mode_) ;
         }
-        catch(Exception ex) {
-            setAutoMode(null);
+        else {
+            switch(mode) {
+                case 0:
+                    setAutoMode(near_side_eight_) ;
+                    break ;
+
+                case 1:
+                    setAutoMode(near_side_six_) ;
+                    break ;
+
+                case 2:
+                    setAutoMode(near_side_ten_) ;
+                    break ;                        
+
+                case 3:
+                    setAutoMode(middle_three_) ;
+                    break ;
+
+                case 4:
+                    setAutoMode(far_side_five_) ;
+                    break ;
+            }
         }
     }
-  
 }
