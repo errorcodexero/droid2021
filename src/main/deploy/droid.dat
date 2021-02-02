@@ -2,6 +2,32 @@
 # This file describes the droid robot.  This version is for the java robot.
 #
 
+
+#####################################################################################
+#
+# This section defines what subsystems are displaying verbose information.  subsystems
+# can display information on the smart dashboard.  A subsystem can ask to do this only
+# when a subsystem is in verbose mode.  These parameters set a subsystem into verbose
+# mode.
+#
+#####################################################################################
+droid-limelight:verbose                                                 false
+limelight:verbose                                                       false
+gamepiecemanipulator:verbose                                            false
+conveyor:verbose                                                        false
+shooter:verbose                                                         false
+tankdrive:verbose                                                       false
+climber:lifter:verbose                                                  false
+intake:verbose                                                          false
+shooter:verbose                                                         false
+turret:verbose                                                          false
+
+#####################################################################################
+#
+# This section describes the hardware connections
+#
+#####################################################################################
+
 # Drivebase motors
 hw:tankdrive:motors:left:1:canid                                1                           # CAN 1
 hw:tankdrive:motors:left:1:type                                 "talon_fx"

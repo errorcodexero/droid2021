@@ -48,12 +48,12 @@ public class Droid extends XeroRobot {
 
     protected void addRobotSimulationModels() {
         ModelFactory factory = SimulationEngine.getInstance().getModelFactory() ;
-        factory.registerModel("conveyor", "org.frc2020.models.ConveyorModel");
-        factory.registerModel("droidoi", "org.frc2020.models.DroidOIModel");
-        factory.registerModel("intake", "org.frc2020.models.IntakeModel");
-        factory.registerModel("shooter", "org.frc2020.models.ShooterModel");
-        factory.registerModel("droid_limelight", "org.frc2020.models.DroidLimelightModel") ;
-        factory.registerModel("turret", "org.frc2020.models.TurretModel") ;
+        factory.registerModel("conveyor", "org.frc2021.models.ConveyorModel");
+        factory.registerModel("droidoi", "org.frc2021.models.DroidOIModel");
+        factory.registerModel("intake", "org.frc2021.models.IntakeModel");
+        factory.registerModel("shooter", "org.frc2021.models.ShooterModel");
+        factory.registerModel("droid_limelight", "org.frc2021.models.DroidLimelightModel") ;
+        factory.registerModel("turret", "org.frc2021.models.TurretModel") ;
     }
 
     public String getName() {
@@ -105,8 +105,8 @@ public class Droid extends XeroRobot {
         // logger.enableSubsystem(XeroRobot.LoggerName) ;
 
         logger.enableSubsystem(Action.LoggerName) ;
-        logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
-        logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(TurretSubsystem.SubsystemName) ;
+        // logger.enableSubsystem(TargetTrackerSubsystem.SubsystemName) ;
 
         if (RobotBase.isSimulation()) {
             // logger.enableSubsystem(SimulationEngine.LoggerName) ;

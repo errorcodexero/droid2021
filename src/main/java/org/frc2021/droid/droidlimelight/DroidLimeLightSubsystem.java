@@ -12,7 +12,7 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
     private double camera_height_ ;
     private double target_height_ ;
 
-    public static final String SubsystemName = "limelight" ;
+    public static final String SubsystemName = "droid-limelight" ;
 
     public DroidLimeLightSubsystem(Subsystem parent) throws BadParameterTypeException, MissingParameterException {
         super(parent, SubsystemName) ;
@@ -35,8 +35,8 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
             distance_ = (target_height_ - camera_height_) / Math.tan(Math.toRadians(camera_angle_ + getTY())) ;
             yaw_ = getTX() ;
 
-            putDashboard("vision-distance", DisplayType.Verbose, distance_);
-            putDashboard("vision-yaw", DisplayType.Verbose, yaw_) ;
+            putDashboard("dll-distance", DisplayType.Verbose, distance_);
+            putDashboard("dll-yaw", DisplayType.Verbose, yaw_) ;
         }
     }
 

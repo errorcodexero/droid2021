@@ -16,8 +16,6 @@ public class DroidRobotSubsystem extends RobotSubsystem {
     public final static String SubsystemName = "droid" ;
     public final static String TankdriveSubsystemName = "tankdrive" ;
 
-    PWM p_ ;
-
     public DroidRobotSubsystem(XeroRobot robot, boolean climber) throws Exception {
         super(robot, SubsystemName) ;
 
@@ -53,7 +51,6 @@ public class DroidRobotSubsystem extends RobotSubsystem {
     @Override
     public void run() throws Exception {
         super.run() ;
-        p_.setSpeed(1.0) ;
     }
 
     public TankDriveSubsystem getTankDrive() {

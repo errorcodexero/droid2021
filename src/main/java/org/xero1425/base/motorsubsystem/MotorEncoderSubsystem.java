@@ -58,8 +58,8 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         double pos = encoder_.getPosition() ;
         speedometer_.update(getRobot().getDeltaTime(), pos) ;
 
-        putDashboard(getName() + ":pos", DisplayType.Verbose, speedometer_.getDistance()) ;
-        putDashboard(getName() + ":vel", DisplayType.Verbose, speedometer_.getVelocity()) ;
+        putDashboard(getName() + "-pos", DisplayType.Verbose, speedometer_.getDistance()) ;
+        putDashboard(getName() + "-vel", DisplayType.Verbose, speedometer_.getVelocity()) ;
 
         MessageLogger logger = getRobot().getMessageLogger()  ;
         logger.startMessage(MessageType.Debug, getLoggerID()) ;

@@ -6,7 +6,19 @@ import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
-public class ShooterSubsystem extends MotorEncoderSubsystem {
+public class ShooterSubsystem extends MotorEncoderSubsystem {    
+    private HoodPosition desired_ ;
+    private HoodPosition actual_ ;
+    private double change_time_ ;
+    private boolean ready_to_fire_ ;
+    private double hood_change_time_ ;
+    private double hood_down_speed_ ;
+    private double hood_up_pos_ ;
+    private double hood_down_pos_ ;
+    private Servo hood_servo_ ;
+    private TankDriveSubsystem db_ ;
+    private double hood_value_ ;
+
     public final static String SubsystemName = "shooter" ;
 
     public enum HoodPosition {
@@ -68,8 +80,8 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         super.computeMyState();
 
         double rpm = getVelocity() * 60.0 ;
-        putDashboard("shooter:rpm", DisplayType.Verbose, rpm);
-        putDashboard("hoodvalue", DisplayType.Always, hood_value_);
+        putDashboard("s-rpm", DisplayType.Verbose, rpm);
+        putDashboard("s-hood", DisplayType.Verbose, hood_value_);
     }
 
     @Override
@@ -101,16 +113,4 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
             setPhysicalHood(desired_);
         }
     }
-
-    private HoodPosition desired_ ;
-    private HoodPosition actual_ ;
-    private double change_time_ ;
-    private boolean ready_to_fire_ ;
-    private double hood_change_time_ ;
-    private double hood_down_speed_ ;
-    private double hood_up_pos_ ;
-    private double hood_down_pos_ ;
-    private Servo hood_servo_ ;
-    private TankDriveSubsystem db_ ;
-    private double hood_value_ ;
 } ;
