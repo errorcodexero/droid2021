@@ -1,7 +1,7 @@
 package org.frc2020.droid.droidoi;
 
-// import org.frc2020.droid.climber.ClimberMoveAction;
-// import org.frc2020.droid.climber.ClimberSubsystem;
+import org.frc2020.droid.climber.ClimberMoveAction;
+import org.frc2020.droid.climber.ClimberSubsystem;
 import org.frc2020.droid.droidsubsystem.DroidRobotSubsystem;
 import org.frc2020.droid.gamepiecemanipulator.FireAction;
 import org.frc2020.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
@@ -57,19 +57,19 @@ public class DroidOIDevice extends OIPanel {
     private int collect_ ;
     private int eject_ ;
 
-    // private int climb_lock_ ;
-    // private int climb_deploy_ ;
-    // private int climb_up_ ;
-    // private int climb_down_ ;
-    // private int climb_left_ ;
-    // private int climb_right_ ;
+    private int climb_lock_ ;
+    private int climb_deploy_ ;
+    private int climb_up_ ;
+    private int climb_down_ ;
+    private int climb_left_ ;
+    private int climb_right_ ;
 
     private int manual_shoot_mode_ ;
     private int manual_shoot_fire_ ;
 
     private CollectShootState collect_shoot_state_ ;
-    // private boolean climber_deployed_ ;
-    // private boolean started_deploy_ ;
+    private boolean climber_deployed_ ;
+    private boolean started_deploy_ ;
     private boolean rumbled_ ;
 
     private Action stop_collect_ ;
@@ -92,24 +92,27 @@ public class DroidOIDevice extends OIPanel {
     private Action shooter_shoot_manual_ ;
     private Action shooter_spinup_ ;    
 
-    // private Action deploy_climber_ ;
-    // private Action stop_climber_ ;
-    // private Action climber_up_ ;
-    // private Action climber_up_left_ ;
-    // private Action climber_up_right_ ;
-    // private Action climber_down_ ;
-    // private Action climber_down_left_ ;
-    // private Action climber_down_right_ ;
-    // private Action climber_left_ ;
-    // private Action climber_right_ ;
+    private Action deploy_climber_ ;
+    private Action stop_climber_ ;
+    private Action climber_up_ ;
+    private Action climber_up_left_ ;
+    private Action climber_up_right_ ;
+    private Action climber_down_ ;
+    private Action climber_down_left_ ;
+    private Action climber_down_right_ ;
+    private Action climber_left_ ;
+    private Action climber_right_ ;
 
-    public DroidOIDevice(DroidOISubsystem sub, int index, Gamepad gamepad)
+    private boolean climber_attached_ ;
+
+    public DroidOIDevice(DroidOISubsystem sub, int index, Gamepad gamepad, boolean climber)
             throws BadParameterTypeException, MissingParameterException {
         super(sub, index);
 
         collect_shoot_state_ = CollectShootState.InvalidMode;
-        // climber_deployed_ = false;
-        // started_deploy_ = false;
+        climber_deployed_ = false;
+        started_deploy_ = false;
+        climber_attached_ = climber ;
         rumbled_ = false;
         gamepad_ = gamepad ;
 
@@ -131,7 +134,10 @@ public class DroidOIDevice extends OIPanel {
         TurretSubsystem turret = getDroidSubsystem().getTurret();
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;
         TargetTrackerSubsystem tracker = getDroidSubsystem().getTracker() ;
-        // ClimberSubsystem climber = getDroidSubsystem().getClimber() ;
+        ClimberSubsystem climber = null ;
+        
+        if (climber_attached_)
+            climber = getDroidSubsystem().getClimber() ;
 
         stop_collect_ = new StopCollectAction(gp) ;
         start_collect_ = new StartCollectAction(gp) ;
@@ -153,92 +159,109 @@ public class DroidOIDevice extends OIPanel {
         shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 5500.0, ShooterSubsystem.HoodPosition.Up) ;
         shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down) ;
 
-        // deploy_climber_ = new MotorEncoderGotoAction(climber.getLifter(), "climber:climb_height", true) ;
-        // stop_climber_ = new ClimberMoveAction(climber, 0.0, 0.0) ;
-        // climber_left_ = new ClimberMoveAction(climber, 0.0, "climber:power:left") ;
-        // climber_right_ = new ClimberMoveAction(climber, 0.0, "climber:power:right") ;
-        // climber_up_ = new ClimberMoveAction(climber, "climber:power:up", 0.0) ;
-        // climber_down_ = new ClimberMoveAction(climber, "climber:power:down", 0.0) ;
-        // climber_up_left_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:left") ;
-        // climber_up_right_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:right") ;
-        // climber_down_left_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:left") ;
-        // climber_down_right_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:right") ;
+        if (climber_attached_)
+        {
+            deploy_climber_ = new MotorEncoderGotoAction(climber.getLifter(), "climber:climb_height", true) ;
+            stop_climber_ = new ClimberMoveAction(climber, 0.0, 0.0) ;
+            climber_left_ = new ClimberMoveAction(climber, 0.0, "climber:power:left") ;
+            climber_right_ = new ClimberMoveAction(climber, 0.0, "climber:power:right") ;
+            climber_up_ = new ClimberMoveAction(climber, "climber:power:up", 0.0) ;
+            climber_down_ = new ClimberMoveAction(climber, "climber:power:down", 0.0) ;
+            climber_up_left_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:left") ;
+            climber_up_right_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:right") ;
+            climber_down_left_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:left") ;
+            climber_down_right_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:right") ;
+        }
+        else
+        {
+            deploy_climber_ = null ;
+            stop_climber_ = null ;
+            climber_left_ = null ;
+            climber_right_ = null ;
+            climber_up_ = null ;
+            climber_down_ = null ;
+            climber_up_left_ = null ;
+            climber_up_right_ = null ;
+            climber_down_left_ = null ;
+            climber_down_right_ = null ;
+        }
     }
 
     @Override
     public void generateActions(SequenceAction seq) throws InvalidActionRequest {
         generateCollectShootActions(seq);
-        // generateClimbActions(seq);
+        if (climber_attached_)
+            generateClimbActions(seq);
     }
 
-    // private void generateClimbActions(SequenceAction seq) throws InvalidActionRequest {
-    //     ClimberSubsystem climber = getDroidSubsystem().getClimber() ;
+    private void generateClimbActions(SequenceAction seq) throws InvalidActionRequest {
+        ClimberSubsystem climber = getDroidSubsystem().getClimber() ;
 
-    //     if (getValue(climb_lock_) == 1)
-    //         return ;
+        if (getValue(climb_lock_) == 1)
+            return ;
 
-    //     if (!climber_deployed_) {
-    //         if (!climber.isInFieldMode() && !started_deploy_) {
-    //             climber_deployed_ = true ;
-    //             started_deploy_ = true ;
-    //         }
-    //         else {
-    //             if (getValue(climb_deploy_) == 1 && !climber.isBusy() && !climber.getLifter().isBusy()) {
-    //                 climber.setDefaultAction(null);
-    //                 climber.setAction(null) ;
-    //                 seq.addSubActionPair(climber.getLifter(), deploy_climber_, false);
-    //                 started_deploy_ = true ;
-    //             }
-    //             else if (started_deploy_ && !climber.isBusy() && !climber.getLifter().isBusy()) {
-    //                 climber_deployed_ = true ;
-    //             }
-    //         }
-    //     }
-    //     else {
-    //         if (getValue(climb_deploy_) == 1 && !climber.isBusy() && !climber.getLifter().isBusy()) {
-    //             seq.addSubActionPair(climber, deploy_climber_, false);
-    //             started_deploy_ = true ;
-    //             climber_deployed_ = false ;
-    //         }
-    //         else {
-    //             Action act = null ;
-    //             boolean up = (getValue(climb_up_) == 1) ;
-    //             boolean down = (getValue(climb_down_) == 1) ;
-    //             boolean left = (getValue(climb_left_) == 1) ;
-    //             boolean right = (getValue(climb_right_) == 1) ;
+        if (!climber_deployed_) {
+            if (!climber.isInFieldMode() && !started_deploy_) {
+                climber_deployed_ = true ;
+                started_deploy_ = true ;
+            }
+            else {
+                if (getValue(climb_deploy_) == 1 && !climber.isBusy() && !climber.getLifter().isBusy()) {
+                    climber.setDefaultAction(null);
+                    climber.setAction(null) ;
+                    seq.addSubActionPair(climber.getLifter(), deploy_climber_, false);
+                    started_deploy_ = true ;
+                }
+                else if (started_deploy_ && !climber.isBusy() && !climber.getLifter().isBusy()) {
+                    climber_deployed_ = true ;
+                }
+            }
+        }
+        else {
+            if (getValue(climb_deploy_) == 1 && !climber.isBusy() && !climber.getLifter().isBusy()) {
+                seq.addSubActionPair(climber, deploy_climber_, false);
+                started_deploy_ = true ;
+                climber_deployed_ = false ;
+            }
+            else {
+                Action act = null ;
+                boolean up = (getValue(climb_up_) == 1) ;
+                boolean down = (getValue(climb_down_) == 1) ;
+                boolean left = (getValue(climb_left_) == 1) ;
+                boolean right = (getValue(climb_right_) == 1) ;
 
-    //             if (up && left) {
-    //                 act = climber_up_left_ ;
-    //             }
-    //             else if (up & right) {
-    //                 act = climber_up_right_ ;
-    //             }
-    //             else if (down && left) {
-    //                 act = climber_down_left_ ;
-    //             }
-    //             else if (down && right) {
-    //                 act = climber_down_right_ ;
-    //             }
-    //             else if (up) {
-    //                 act = climber_up_ ;
-    //             }
-    //             else if (down) {
-    //                 act = climber_down_ ;
-    //             }
-    //             else if (left) {
-    //                 act = climber_left_ ;
-    //             }
-    //             else if (right) {
-    //                 act = climber_right_ ;
-    //             }
-    //             else {
-    //                 act = stop_climber_ ;
-    //             }
+                if (up && left) {
+                    act = climber_up_left_ ;
+                }
+                else if (up & right) {
+                    act = climber_up_right_ ;
+                }
+                else if (down && left) {
+                    act = climber_down_left_ ;
+                }
+                else if (down && right) {
+                    act = climber_down_right_ ;
+                }
+                else if (up) {
+                    act = climber_up_ ;
+                }
+                else if (down) {
+                    act = climber_down_ ;
+                }
+                else if (left) {
+                    act = climber_left_ ;
+                }
+                else if (right) {
+                    act = climber_right_ ;
+                }
+                else {
+                    act = stop_climber_ ;
+                }
                 
-    //             seq.addSubActionPair(climber, act, false);
-    //         }
-    //     }
-    // }
+                seq.addSubActionPair(climber, act, false);
+            }
+        }
+    }
 
     private void generateCollectShootActions(SequenceAction seq) throws InvalidActionRequest {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
@@ -479,30 +502,40 @@ public class DroidOIDevice extends OIPanel {
         num = settings.get("oi:eject").getInteger() ;
         eject_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
 
-        // num = settings.get("oi:climb_lock").getInteger() ;
-        // climb_lock_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
-        
-        // num = settings.get("oi:climb_deploy").getInteger() ;
-        // climb_deploy_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
-        
-        // num = settings.get("oi:climb_up").getInteger() ;
-        // climb_up_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
-        
-        // num = settings.get("oi:climb_down").getInteger() ;
-        // climb_down_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
-        
-        // num = settings.get("oi:traverse_left").getInteger() ;
-        // climb_left_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
-        
-        // num = settings.get("oi:traverse_right").getInteger() ;
-        // climb_right_ = mapButton(num, OIPanelButton.ButtonType.Level) ;        
+        if (climber_attached_)
+        {
+            num = settings.get("oi:climb_lock").getInteger() ;
+            climb_lock_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
+            
+            num = settings.get("oi:climb_deploy").getInteger() ;
+            climb_deploy_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
+            
+            num = settings.get("oi:climb_up").getInteger() ;
+            climb_up_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
+            
+            num = settings.get("oi:climb_down").getInteger() ;
+            climb_down_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
+            
+            num = settings.get("oi:traverse_left").getInteger() ;
+            climb_left_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
+            
+            num = settings.get("oi:traverse_right").getInteger() ;
+            climb_right_ = mapButton(num, OIPanelButton.ButtonType.Level) ;        
+        }
+        else
+        {
+            climb_lock_ = -1 ;
+            climb_deploy_ = -1 ;
+            climb_up_ = -1 ;
+            climb_down_ = -1 ;
+            climb_left_ = -1 ;
+            climb_right_ = -1 ;
+        }
 
         num = settings.get("oi:manual_shoot_mode").getInteger() ;
         manual_shoot_mode_ = mapButton(num, OIPanelButton.ButtonType.Level) ;  
         
         num = settings.get("oi:manual_shoot_fire").getInteger() ;
         manual_shoot_fire_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;          
-
     }
-
 }

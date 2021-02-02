@@ -14,7 +14,7 @@ public class DroidOISubsystem extends OISubsystem {
     private final static String DriverGamepadHIDIndexName = "hw:driverstation:hid:driver";
     private final static String OIHIDIndexName = "hw:driverstation:hid:oi";
 
-    public DroidOISubsystem(Subsystem parent, TankDriveSubsystem db) {
+    public DroidOISubsystem(Subsystem parent, TankDriveSubsystem db, boolean climber) {
         super(parent, SubsystemName);
 
         MessageLogger logger = getRobot().getMessageLogger() ;
@@ -61,7 +61,7 @@ public class DroidOISubsystem extends OISubsystem {
 
         if (index != -1) {
             try {
-                oi_ = new DroidOIDevice(this, index, gp_) ;
+                oi_ = new DroidOIDevice(this, index, gp_, climber) ;
                 addHIDDevice(oi_) ;
             }
             catch(Exception ex) {

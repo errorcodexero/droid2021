@@ -69,7 +69,13 @@ public class Droid extends XeroRobot {
     }
 
     protected void hardwareInit() throws Exception {
-        DroidRobotSubsystem robotsub = new DroidRobotSubsystem(this) ;
+        //
+        // We pulled the climber off for the at home challenges.  Set this to true to
+        // enable support for the climber in the software.
+        //
+        boolean climber_attached = false ;
+
+        DroidRobotSubsystem robotsub = new DroidRobotSubsystem(this, climber_attached) ;
         setRobotSubsystem(robotsub);
 
         AlarmSubsystem alarms = robotsub.getAlarms() ;

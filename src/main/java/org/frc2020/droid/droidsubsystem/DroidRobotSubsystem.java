@@ -18,14 +18,21 @@ public class DroidRobotSubsystem extends RobotSubsystem {
 
     PWM p_ ;
 
-    public DroidRobotSubsystem(XeroRobot robot) throws Exception {
+    public DroidRobotSubsystem(XeroRobot robot, boolean climber) throws Exception {
         super(robot, SubsystemName) ;
 
         db_ = new TankDriveSubsystem(this, TankdriveSubsystemName, "tankdrive") ;
         addChild(db_) ;
 
-        //climber_ = new ClimberSubsystem(this) ;
-        //addChild(climber_) ;
+        if (climber)
+        {
+            climber_ = new ClimberSubsystem(this) ;
+            addChild(climber_) ;
+        }
+        else
+        {
+            climber_ = null ;
+        }
 
         manip_ = new GamePieceManipulatorSubsystem(this, db_) ;
         addChild(manip_) ;
@@ -39,7 +46,7 @@ public class DroidRobotSubsystem extends RobotSubsystem {
         tracker_ = new TargetTrackerSubsystem(this, limelight_, turret_) ;
         addChild(tracker_) ;
 
-        oi_ = new DroidOISubsystem(this, db_) ;
+        oi_ = new DroidOISubsystem(this, db_, false) ;
         addChild(oi_) ;        
     }
 
