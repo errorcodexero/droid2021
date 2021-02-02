@@ -26,7 +26,6 @@ import org.frc2021.droid.turret.TurretSubsystem;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
-import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderPowerAction;
