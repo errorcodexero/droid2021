@@ -1,7 +1,7 @@
 package org.xero1425.base;
 
 import java.util.List;
-// import java.text.DecimalFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import org.xero1425.base.actions.Action;
 import org.xero1425.misc.BadParameterTypeException;
@@ -31,6 +31,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /// \li \c reset() - called after teleop as the robot enters the disabled state
 ///
 public class Subsystem {
+    //
+    // If true, we turn on subsystem timing
+    //
+    static private boolean timing_ = false ;
+
     //
     // The current action assigned to this subsystme
     //
@@ -75,27 +80,27 @@ public class Subsystem {
     // The total time spent running code in this subsystem.  This captures the compute state
     // run time since this is the method that takes a lot of time in time critical subsystem code.
     //
-    // private double total_time_ ;
+    private double total_time_ ;
 
     //
     // The number of times this subsystem has been run
     //
-    // private int total_cnt_ ;
+    private int total_cnt_ ;
 
     //
     // The maximum time spent on any one robot loop in the code for this subsystem
     //
-    // private double max_time_ ;
+    private double max_time_ ;
 
     //
     // The output format for logging information about the subsystem run times
     //
-    // private DecimalFormat fmt_ ;
+    private DecimalFormat fmt_ ;
 
     //
     // The minimum time spend on any one robot loop in the code for this subsystem
     //
-    // private double min_time_ ;
+    private double min_time_ ;
 
     //
     // If true, this subsystem logs much information
@@ -123,24 +128,33 @@ public class Subsystem {
         finished_default_ = false;
         verbose_ = false;
 
-        // total_time_ = 0.0;
-        // total_cnt_ = 0;
-        // min_time_ = Double.MAX_VALUE;
-        // max_time_ = 0.0;
-        // fmt_ = new DecimalFormat("00.000");
-
-        String pname = name_ + ":verbose";
-        SettingsParser p = getRobot().getSettingsParser();
+        if (timing_)
+        {
+            total_time_ = 0.0;
+            total_cnt_ = 0;
+            min_time_ = Double.MAX_VALUE;
+            max_time_ = 0.0;
+            fmt_ = new DecimalFormat("00.000");
+        }
         try {
+            SettingsParser p = getRobot().getSettingsParser();
+            String pname = name_ + ":verbose";
             if (p.isDefined(pname) && p.get(pname).isBoolean() && p.get(pname).getBoolean())
                 verbose_ = true;
+
+            pname = name_ + ":messages" ;
+            if (p.isDefined(pname) && p.get(pname).isBoolean() && p.get(pname).getBoolean())
+                    getRobot().getMessageLogger().enableSubsystem(name_) ;
+
         } catch (MissingParameterException e) {
             // Should never happen
             verbose_ = false ;
         } catch (BadParameterTypeException e) {
             // Should never happen
             verbose_ = false ;
-        }        
+        }
+
+
     }
 
     public Subsystem(XeroRobot robot, final String name) {
@@ -275,27 +289,30 @@ public class Subsystem {
         try {
             computeMyState() ;
 
-            // double start = getRobot().getTime() ;
-            // double elapsed = getRobot().getTime() - start ;
-            // total_time_ += elapsed ;
-            // total_cnt_++ ;
+            if (timing_)
+            {
+                double start = getRobot().getTime() ;
+                double elapsed = getRobot().getTime() - start ;
+                total_time_ += elapsed ;
+                total_cnt_++ ;
 
-            // min_time_ = Math.min(min_time_, elapsed) ;
-            // max_time_ = Math.max(max_time_, elapsed) ;
+                min_time_ = Math.min(min_time_, elapsed) ;
+                max_time_ = Math.max(max_time_, elapsed) ;
 
-            //
-            // Turn this on to see where execution is going
-            //
-            // if (total_cnt_ > 0 && (total_cnt_ % 500) == 0) {
-            //     MessageLogger logger = getRobot().getMessageLogger() ;
-            //     logger.startMessage(MessageType.Debug, getRobot().getLoggerID()) ;
-            //     logger.add("subsystem ").addQuoted(getName()) ;
-            //     logger.add("count", total_cnt_) ;
-            //     logger.add("min", fmt_.format(min_time_ * 1000)) ;
-            //     logger.add("average", fmt_.format(total_time_ / total_cnt_ * 1000)) ;
-            //     logger.add("max", fmt_.format(max_time_ * 1000)) ;
-            //     logger.endMessage();
-            // }
+                
+                // Turn this on to see where execution time is going
+                
+                if (total_cnt_ > 0 && (total_cnt_ % 500) == 0) {
+                    MessageLogger logger = getRobot().getMessageLogger() ;
+                    logger.startMessage(MessageType.Debug, getRobot().getLoggerID()) ;
+                    logger.add("subsystem ").addQuoted(getName()) ;
+                    logger.add("count", total_cnt_) ;
+                    logger.add("min", fmt_.format(min_time_ * 1000)) ;
+                    logger.add("average", fmt_.format(total_time_ / total_cnt_ * 1000)) ;
+                    logger.add("max", fmt_.format(max_time_ * 1000)) ;
+                    logger.endMessage();
+                }
+            }
         }
         catch(Exception ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;            
