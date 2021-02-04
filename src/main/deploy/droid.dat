@@ -465,7 +465,7 @@ droidvision:camera_angle                                        20.08
 shooter:aim:hood_down:a                                         0.0324
 shooter:aim:hood_down:b                                         -12.516
 shooter:aim:hood_down:c                                         5900
-targettracker:camera_offset_angle                               -2.0
+targettracker:camera_offset_angle                               0.0
 
 #
 # Bill

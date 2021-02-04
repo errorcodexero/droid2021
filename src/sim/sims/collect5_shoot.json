@@ -22,7 +22,7 @@
                     "values" : 
                     {
                         "comment" : "start the turret facing the outside wall",
-                        "angle" : -90.0
+                        "angle" : 0.0
                     }
                 },                   
                 {
@@ -31,7 +31,7 @@
                     "values" :
                     {
                         "comment" : "%%%% Collect/shoot mode switch set to collect",                             
-                        "button11" : 0
+                        "button11" : false
                     }
                 },
                 {
@@ -41,7 +41,7 @@
                     {
                         "comment" : "position the robot at the initiation line",
                         "xpos" : 505.0,
-                        "ypos" : 120.0,
+                        "ypos" : 92.0,
                         "angle" : 180.0
                     }
                 }
@@ -232,7 +232,7 @@
             ]
         },
         {
-            "time" : 12.0,
+            "time" : 10.6,
             "asserts" :
             [
                 {

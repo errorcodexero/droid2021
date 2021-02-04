@@ -14,6 +14,16 @@ import org.xero1425.misc.SettingsValue;
 import org.xero1425.misc.XeroMath;
 
 public class DroidLimelightModel extends SimulationModel {
+        
+    private TurretModel turret_ ;
+    private LimeLightModel limelight_ ;
+    private TankDriveModel db_ ;
+    private static final Translation2d target_pos_ = new Translation2d(625, 92) ;
+    private double target_height_ ;
+    private double camera_height_ ;
+    private double camera_angle_ ;
+    private Rotation2d shooter_rotation_ ;
+
     private static final String LimelightModelPropertyName = "limelight_model";
     private static final String LimelightInstancePropertyName = "limelight_instance";
     private static final String TankDriveModelPropertyName = "tankdrive_model";
@@ -24,13 +34,9 @@ public class DroidLimelightModel extends SimulationModel {
     private static final String CameraHeightParamName = "camera_height";
     private static final String CameraAngleParamName = "camera_angle" ;
 
-    private static final double TargetXPos = 625;
-    private static final double TargetYPos = 92;
-
     public DroidLimelightModel(SimulationEngine engine, String model, String inst) {
         super(engine, model, inst);
 
-        target_pos_ = new Translation2d(TargetXPos, TargetYPos);
         shooter_rotation_ = Rotation2d.fromDegrees(180.0);
     }
 
@@ -273,15 +279,18 @@ public class DroidLimelightModel extends SimulationModel {
         // shooter is mounted on the back of the robot
         //
         Rotation2d shooter = robot.getRotation().rotateBy(shooter_rotation_) ;
+        double shooterdeg = shooter.getDegrees() ;
         Rotation2d effective = shooter.rotateBy(turret_.getAngle()) ;
+        double effectivedeg = effective.getDegrees() ;
 
         //
         // Get the angle from the center of the robot to the target
         //
-        double dy = TargetYPos - robot.getTranslation().getY() ;
-        double dx = TargetXPos - robot.getTranslation().getX() ;
-        Rotation2d robottarget = new Rotation2d(Math.atan2(dy, dx)) ;
+        Translation2d delta = target_pos_.minus(robot.getTranslation()) ;
+        Rotation2d robottarget = new Rotation2d(Math.atan2(delta.getY(), delta.getX())) ;
+        double robottargetdeg = robottarget.getDegrees() ;
         Rotation2d result = robottarget.minus(effective) ;
+        double resultdeg = result.getDegrees() ;
 
         if (result.getDegrees() > -60.0 && result.getDegrees() < 60.0) {
             double dist = robot.getTranslation().getDistance(target_pos_) ;
@@ -294,13 +303,5 @@ public class DroidLimelightModel extends SimulationModel {
             limelight_.setTV(0.0) ;
         }
     }
-    
-    private TurretModel turret_ ;
-    private LimeLightModel limelight_ ;
-    private TankDriveModel db_ ;
-    private Translation2d target_pos_ ;
-    private double target_height_ ;
-    private double camera_height_ ;
-    private double camera_angle_ ;
-    private Rotation2d shooter_rotation_ ;
+
 }
