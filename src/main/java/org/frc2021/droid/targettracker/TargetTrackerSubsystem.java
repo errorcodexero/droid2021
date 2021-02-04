@@ -97,7 +97,7 @@ public class TargetTrackerSubsystem extends Subsystem {
                 distance_ = ll_.getDistance() ;
                
                 double yaw = ll_.getYaw() - camera_offset_angle_ ;
-                desired_turret_angle_ = -yaw + turret_.getPosition() ;
+                desired_turret_angle_ = yaw - turret_.getPosition() ;
                 logger.startMessage(MessageType.Debug, getLoggerID());
                 logger.add("yaw", yaw).add("distance", distance_) ;
                 logger.add(" ll", ll_.getYaw()).add(" offset", camera_offset_angle_) ;

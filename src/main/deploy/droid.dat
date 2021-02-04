@@ -34,7 +34,7 @@ blinky:verbose                                                          false
 #####################################################################################
 
 tankdrive:messages                                                      false
-turret:messages                                                         false
+turret:messages                                                         true
 shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
@@ -42,7 +42,7 @@ gamepiecemanipulator:messages                                           false
 conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
-targettracker:messages                                                  false
+targettracker:messages                                                  true
 droidoi:messages                                                        false
 blinky:messages                                                         false
 conveyor:sensors:messages                                               false
