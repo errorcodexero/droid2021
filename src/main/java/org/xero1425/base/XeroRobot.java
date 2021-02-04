@@ -28,6 +28,7 @@ import org.xero1425.misc.MessageDestinationThumbFile;
 import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SimArgs;
 import org.xero1425.misc.XeroPathManager;
+import org.xero1425.misc.XeroPathType;
 import org.xero1425.base.motors.MotorFactory;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
 import org.xero1425.base.actions.Action;
@@ -71,7 +72,7 @@ public abstract class XeroRobot extends TimedRobot {
         enableMessagesFromSettingsFile() ;
 
         // Read the paths files needed
-        paths_ = new XeroPathManager(logger_, robot_paths_.pathsDirectory());
+        paths_ = new XeroPathManager(logger_, robot_paths_.pathsDirectory(), getPathType());
         try {
             loadPathsFile();
         } catch (Exception ex) {
@@ -96,6 +97,8 @@ public abstract class XeroRobot extends TimedRobot {
     }
 
     protected abstract String getSimulationFileName() ;
+
+    protected abstract XeroPathType getPathType() ;
 
     public void setRobotSubsystem(RobotSubsystem sub) {
         robot_subsystem_ = sub;
@@ -587,7 +590,6 @@ public abstract class XeroRobot extends TimedRobot {
 
     protected void loadPathsFile() throws Exception {
         XeroPathManager mgr = getPathManager() ;
-        mgr.setExtensions("_left.csv", "_right.csv");
 
         try (Stream<Path> walk = Files.walk(Paths.get(mgr.getBaseDir()))) {
 

@@ -14,13 +14,12 @@ import org.xero1425.simulator.engine.SimulationEngine;
 import org.frc2021.droid.automodes.DroidAutoController;
 import org.frc2021.droid.droidsubsystem.DroidRobotSubsystem;
 import org.xero1425.base.XeroRobot;
-import org.xero1425.base.actions.Action;
 import org.xero1425.base.alarms.AlarmSubsystem;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SimArgs;
+import org.xero1425.misc.XeroPathType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,7 +40,7 @@ public class Droid extends XeroRobot {
         if (ret != null)
             return ret ;
 
-        return "auto_near_six" ;
+        return "collect5_shoot" ;
     }
 
     protected void addRobotSimulationModels() {
@@ -94,5 +93,9 @@ public class Droid extends XeroRobot {
 
     protected void loadPathsFile() throws Exception {
         super.loadPathsFile();
+    }
+
+    protected XeroPathType getPathType() {
+        return XeroPathType.Tank ;
     }
 }

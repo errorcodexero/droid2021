@@ -348,7 +348,23 @@ public final class MessageLogger
             per.message_.append(" ") ;
             per.message_.append(name) ;
             per.message_.append(" = ") ;
-            per.message_.append(value) ;
+            per.message_.append(String.format(java.util.Locale.US, "%.2f", value)) ;
+        }
+
+        return this;        
+    }
+
+    /// \brief add a name value pair to the message
+    /// \param name the name to add
+    /// \param value the value to add
+    /// \returns the MessageLogger object
+    public MessageLogger add(final String name, final float value) {
+        final ThreadData per = getPerThreadData();
+        if (per.enabled_&& per.in_message_) {
+            per.message_.append(" ") ;
+            per.message_.append(name) ;
+            per.message_.append(" = ") ;
+            per.message_.append(String.format(java.util.Locale.US, "%.2f", value)) ;
         }
 
         return this;        
@@ -467,7 +483,7 @@ public final class MessageLogger
     public MessageLogger add(final double value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
-            per.message_.append(value) ;
+            per.message_.append(String.format(java.util.Locale.US, "%.2f", value)) ;
 
         return this;
     }
@@ -478,7 +494,7 @@ public final class MessageLogger
     public MessageLogger add(final float value) {
         final ThreadData per = getPerThreadData();
         if (per.enabled_&& per.in_message_)
-            per.message_.append(value) ;
+            per.message_.append(String.format(java.util.Locale.US, "%.2f", value)) ;
 
         return this;
     }

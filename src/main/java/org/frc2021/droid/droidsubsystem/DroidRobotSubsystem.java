@@ -10,8 +10,6 @@ import org.xero1425.base.RobotSubsystem;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
-import edu.wpi.first.wpilibj.PWM;
-
 public class DroidRobotSubsystem extends RobotSubsystem {
     public final static String SubsystemName = "droid" ;
     public final static String TankdriveSubsystemName = "tankdrive" ;

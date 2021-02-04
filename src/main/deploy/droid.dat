@@ -48,6 +48,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
+fireaction:messages                                                     false
 
 #
 # Some special things we can turn on that are not associated with a subsystem

@@ -10,6 +10,9 @@ import org.xero1425.misc.XeroPath;
 import org.xero1425.misc.XeroPathSegment;
 
 public class TankDriveFollowPathAction extends TankDriveAction {
+    private final int LeftSide = 0 ;
+    private final int RightSide = 1 ;
+
     public TankDriveFollowPathAction(TankDriveSubsystem drive, String path, boolean reverse)
             throws MissingPathException, BadParameterTypeException, MissingParameterException {
         super(drive) ;
@@ -43,7 +46,7 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         index_ = 0 ;
         start_time_ = getSubsystem().getRobot().getTime() ;
         start_angle_ = getSubsystem().getAngle() ;
-        target_start_angle_ = path_.getLeftSegment(0).getHeading() ;
+        target_start_angle_ = path_.getSegment(LeftSide, 0).getHeading() ;
 
         getSubsystem().startPlot(plot_id_, plot_columns_);
         getSubsystem().startTrip("pathfollower") ;
@@ -59,8 +62,8 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         if (index_ < path_.getSize())
         {
             double dt = robot.getDeltaTime();
-            XeroPathSegment lseg = path_.getLeftSegment(index_) ;
-            XeroPathSegment rseg = path_.getRightSegment(index_) ;
+            XeroPathSegment lseg = path_.getSegment(LeftSide, index_) ;
+            XeroPathSegment rseg = path_.getSegment(RightSide, index_) ;
 
             double laccel, lvel, lpos ;
             double raccel, rvel, rpos ;

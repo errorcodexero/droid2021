@@ -14,11 +14,15 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsParser;
 
 public class FireAction extends Action {
+
+    static public final String moduleName = "fireaction" ;
+
+    static private int logger_id_ = -1 ;
     
-    GamePieceManipulatorSubsystem sub_ ;
-    TargetTrackerSubsystem tracker_ ;
-    TurretSubsystem turret_ ;
-    TankDriveSubsystem db_ ;
+    private GamePieceManipulatorSubsystem sub_ ;
+    private TargetTrackerSubsystem tracker_ ;
+    private TurretSubsystem turret_ ;
+    private TankDriveSubsystem db_ ;
 
     ShooterSubsystem.HoodPosition hood_pos_ ;
 
@@ -57,6 +61,11 @@ public class FireAction extends Action {
     public FireAction(GamePieceManipulatorSubsystem gp, TargetTrackerSubsystem tracker, 
                     TurretSubsystem turret, TankDriveSubsystem db) throws Exception {
         super(gp.getRobot().getMessageLogger()) ;
+
+        if (logger_id_ == -1)
+        {
+            logger_id_ = db.getRobot().getMessageLogger().registerSubsystem(moduleName) ;
+        }
 
         sub_ = gp ;
         tracker_ = tracker ;
@@ -127,7 +136,7 @@ public class FireAction extends Action {
                 setDone() ;
                 stopChildActions() ;
 
-                logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
+                logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, out of balls") ;
                 logger.endMessage();
             }
@@ -138,8 +147,12 @@ public class FireAction extends Action {
                 // 
                 emit_action_.stopFiring();
 
-                logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
+                logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, lost target") ;
+                logger.add(",tracker_ready", tracker_ready) ;
+                logger.add(",db_ready", db_ready) ;
+                logger.add(",turret_ready", turret_ready) ;
+                logger.add(",shooter_ready", shooter_ready) ;
                 logger.endMessage();                
             }
         }
@@ -149,7 +162,7 @@ public class FireAction extends Action {
                 setDone() ;
                 stopChildActions() ;  
 
-                logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
+                logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: out of balls, completing action") ;
                 logger.endMessage();    
             }
@@ -157,13 +170,13 @@ public class FireAction extends Action {
                 sub_.getConveyor().setAction(emit_action_, true);
                 is_firing_ = true ;
 
-                logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
+                logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: fire away ... !!!") ;
                 logger.endMessage();                   
             }
         }
 
-        logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
+        logger.startMessage(MessageType.Debug, logger_id_) ;
         logger.add("fire-action:") ;
         logger.add("tracker", tracker_ready) ;
         logger.add("turret", turret_ready) ;
