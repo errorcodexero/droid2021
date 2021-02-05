@@ -274,7 +274,7 @@ public class DroidLimelightModel extends SimulationModel {
         //
         Pose2d robot = db_.getPose() ;
 
-        if (Math.abs(turret_.getAngle().getDegrees()) > 0.25)
+        if (Math.abs(turret_.getAngle().getDegrees()) > 0.1)
             System.out.println("Testing") ;
 
         //
@@ -292,7 +292,7 @@ public class DroidLimelightModel extends SimulationModel {
         Translation2d delta = target_pos_.minus(robot.getTranslation()) ;
         Rotation2d robottarget = new Rotation2d(Math.atan2(-delta.getY(), delta.getX())) ;
         double robottargetdeg = robottarget.getDegrees() ;
-        Rotation2d result = robottarget.minus(effective) ;
+        Rotation2d result = robottarget.plus(effective) ;
         double resultdeg = result.getDegrees() ;
         double turretdeg = turret_.getAngle().getDegrees() ;
 

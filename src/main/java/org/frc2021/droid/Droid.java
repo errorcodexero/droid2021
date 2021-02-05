@@ -40,7 +40,7 @@ public class Droid extends XeroRobot {
         if (ret != null)
             return ret ;
 
-        return "collect1_shoot" ;
+        return "testmode" ;
     }
 
     protected void addRobotSimulationModels() {
