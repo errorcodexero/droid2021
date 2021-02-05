@@ -50,7 +50,7 @@ public abstract class ConveyorStateAction extends Action {
                 status = state.runState(this) ;
             }
             catch(Exception ex) {
-                logger.startMessage(MessageType.Error, getSubsystem().getLoggerID()) ;
+                logger.startMessage(MessageType.Error) ;
                 logger.add("conveyor state threw exception - ").add(ex.getMessage()) ;
                 logger.endMessage();
                 status = ConveyorStateStatus.ActionDone ;

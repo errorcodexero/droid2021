@@ -58,6 +58,9 @@ public final class MessageLogger
     // Serial number for each message
     static int global_serial_ = 1 ;
 
+    // Number of error messages printed
+    private int error_count_ ;
+
     public static final int NOSUBSYSTEM = 0 ;
 
     /// \brief Create a new message logger object
@@ -82,6 +85,12 @@ public final class MessageLogger
         lock_ = new Object() ;
 
         format_ = new DecimalFormat("000.0000") ;
+
+        error_count_ = 0 ;
+    }
+
+    public int getErrorMessageCount() {
+        return error_count_ ;
     }
 
     /// \brief register a new subsystem with the message logger
@@ -312,6 +321,8 @@ public final class MessageLogger
 
         if (per.message_.length() > 0) {
             if (enabled_types_.contains(per.type_) && subsystemEnabled(per.subsystem_)) {
+                if (per.type_ == MessageType.Error)
+                    error_count_++ ;
                 outputMessage(per) ;
             }
         }

@@ -47,6 +47,11 @@ public class XeroPathManager
     private String basedir_ ;
 
     //
+    // The extensions for the path data files
+    //
+    private String[] exts_ ;
+
+    //
     // The name of the messages for the logger
     //
     static final private String LoggerName = "pathmanager" ;
@@ -60,6 +65,52 @@ public class XeroPathManager
         paths_ = new HashMap<String, XeroPath>() ;
         logger_id_ = logger.registerSubsystem(LoggerName) ;
         logger_ = logger ;
+
+        if (path_type_ == XeroPathType.Tank)
+        {
+            exts_ = new String[2] ;
+            exts_[0] = "_left.csv" ;
+            exts_[1] = "_right.csv" ;
+        }
+        else if (path_type_ == XeroPathType.Swerve)
+        {
+            exts_ = new String[4] ;
+            exts_[0] = "_fl.csv" ;
+            exts_[1] = "_fr.csv" ;
+            exts_[2] = "_fr.csv" ;
+            exts_[3] = "_fr.csv" ;
+        }
+        else if (path_type_ == XeroPathType.Robot)
+        {
+            exts_ = new String[1] ;
+            exts_[0] = "_main.csv" ;
+        }
+    }
+
+    /// \brief return the extensions for the various data files needed to load
+    /// The exts argument must contain an array of strings that is the correct size
+    /// based on the XeroPathType given when the path manager was created.  For 
+    /// XeroPathType.Swerve this must be four.  For XeroPathType.Tank this must be
+    /// two.  For XeroPathType.Robot this must be one.
+    /// \param the array of extensions
+    public boolean setExtensions(String [] exts) {
+        if (exts.length != exts_.length)
+        {
+            logger_.startMessage(MessageType.Error) ;
+            logger_.add("setExtensions called with exts array equal to [") ;
+            for(int i = 0 ; i < exts.length ; i++)
+            {
+                if (i != 0)
+                    logger_.add(", ") ;
+                logger_.add(exts[i]) ;
+            }
+            logger_.add("], expected ").add(exts_.length).add(" entries") ;
+            logger_.endMessage();    
+            return false ;
+        }
+
+        exts_ = exts ;
+        return true ;
     }
 
     /// \brief return the base directory for the path manager
@@ -78,34 +129,14 @@ public class XeroPathManager
         String filename = null ;
         Reader [] rdrs = null ;
         CSVParser [] parsers = null ;
-        String [] exts = null; 
 
-        if (path_type_ == XeroPathType.Tank)
-        {
-            exts = new String[2] ;
-            exts[0] = "_left.csv" ;
-            exts[1] = "_right.csv" ;
-        }
-        else if (path_type_ == XeroPathType.Swerve)
-        {
-            exts = new String[4] ;
-            exts[0] = "_fl.csv" ;
-            exts[1] = "_fr.csv" ;
-            exts[2] = "_fr.csv" ;
-            exts[3] = "_fr.csv" ;
-        }
-        else if (path_type_ == XeroPathType.Robot)
-        {
-            exts = new String[1] ;
-            exts[0] = "_main.csv" ;
-        }
-        rdrs = new Reader[exts.length] ;
-        parsers = new CSVParser[exts.length] ;
+        rdrs = new Reader[exts_.length] ;
+        parsers = new CSVParser[exts_.length] ;
 
-        for(int i = 0 ; i < exts.length ; i++)
+        for(int i = 0 ; i < exts_.length ; i++)
         {
             try {
-                filename = basedir_ + "/" + name + exts[i];
+                filename = basedir_ + "/" + name + exts_[i];
                 rdrs[i] = Files.newBufferedReader(Paths.get(filename)) ;
             }
             catch(Exception ex) {
@@ -179,7 +210,7 @@ public class XeroPathManager
                 {
                     logger_.startMessage(MessageType.Error) ;
                     logger_.add("cannot load path '").add(name) ;
-                    logger_.add("' - ").add(exts[i]).add(" file contains invalid number of columns, line") ;
+                    logger_.add("' - ").add(exts_[i]).add(" file contains invalid number of columns, line") ;
                     logger_.add(recs[i].getRecordNumber()) ;
                     logger_.endMessage();   
                     return false ;
@@ -191,7 +222,7 @@ public class XeroPathManager
                 catch(Exception ex) {
                     logger_.startMessage(MessageType.Error) ;
                     logger_.add("cannot load path '").add(name) ;
-                    logger_.add("' - left file contains invalid floating point number, line") ;
+                    logger_.add("' - ").add(exts_[i]).add(" file contains invalid floating point number, line") ;
                     logger_.add(recs[i].getRecordNumber()) ;
                     logger_.endMessage();   
                     return false ;

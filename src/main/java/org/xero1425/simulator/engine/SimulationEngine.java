@@ -79,6 +79,13 @@ public class SimulationEngine {
             logger_.startMessage(MessageType.Info).add("    ").add(failed_count_).add(" asserts failed").endMessage();            
         }
 
+        //
+        // If the robot code issued any errors during the simulation, return a failed status as well so we track
+        // these down
+        //
+        if (logger_.getErrorMessageCount() > 0)
+            code = 1 ;
+
         java.lang.System.exit(code) ;
     }
 
