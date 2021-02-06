@@ -2,8 +2,9 @@ package org.frc2021.droid.gamepiecemanipulator.intake;
 
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
-
 
 public class CollectOnAction extends MotorEncoderGotoAction {
     private IntakeSubsystem sub_ ;
@@ -26,6 +27,14 @@ public class CollectOnAction extends MotorEncoderGotoAction {
     @Override
     public void run() throws Exception {
         super.run() ;
+
+        if (isDone())
+        {
+            MessageLogger logger = sub_.getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Error) ;
+            logger.add("CollectOnAction complete") ;
+            logger.endMessage();
+        }
     }
 
     @Override

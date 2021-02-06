@@ -35,6 +35,7 @@ public class CollectOffAction extends MotorEncoderGotoAction {
 
     @Override
     public void cancel() {
+        super.cancel() ;
         try {
             sub_.setCollectorPower(0.0) ;
         }

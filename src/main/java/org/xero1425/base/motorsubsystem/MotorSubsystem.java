@@ -9,6 +9,10 @@ import org.xero1425.misc.MessageType;
 
 public class MotorSubsystem extends Subsystem
 {
+    private static final double epsilon = 1e-3 ;
+    private MotorController controller_ ;
+    private double power_ ;
+
     public MotorSubsystem(Subsystem parent, String name) {
         super(parent, name) ;
 
@@ -69,8 +73,4 @@ public class MotorSubsystem extends Subsystem
     protected double limitPower(double p) {
         return p ;
     }
-
-    private static final double epsilon = 1e-3 ;
-    private MotorController controller_ ;
-    private double power_ ;
 } ;

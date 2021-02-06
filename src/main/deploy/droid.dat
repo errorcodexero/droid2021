@@ -2,7 +2,6 @@
 # This file describes the droid robot.  This version is for the java robot.
 #
 
-
 #####################################################################################
 #
 # This section defines what subsystems are displaying verbose information.  subsystems
@@ -78,15 +77,20 @@ hw:shooter:motor:1:type                                         "sparkmax_brushl
 hw:shooter:motor:1:canid                                        5                          # CAN 5
 hw:shooter:motor:2:type                                         "sparkmax_brushless"
 hw:shooter:motor:2:canid                                        6                          # CAN 6
+if COMPETITION
 hw:shooter:motor:1:inverted                                     true
+endif
+if PRACTICE
+hw:shooter:motor:2:inverted                                     true
+endif
 hw:shooter:motor:neutral_mode                                   "coast"
 
 if PRACTICE
-hw:shooter:motor:inverted                                       true
+#hw:shooter:motor:inverted                                       true
 endif
 
 hw:shooter:encoder:quad:motor                                   true                       # Use encoder in NEO motor
-hw:shooter:encoder:quad:m                                       0.0357142857142857143
+hw:shooter:encoder:quad:m                                       1.94714
 hw:shooter:encoder:quad:b                                       0
 
 if PRACTICE
@@ -177,7 +181,12 @@ hw:climber:servo:r:climb                                        0.0
 
 intake:collector:motor:power                                    1.0
 intake:collector:motor:revpower                                 -1.0
+if PRACTICE
+intake:arm:collecton:pos                                        1350
+endif
+if COMPETITION
 intake:arm:collecton:pos                                        1550
+endif
 intake:arm:collectoff:pos                                       0
 intake:hold:kp                                                   0.001
 intake:hold:ki                                                   0
@@ -186,11 +195,21 @@ intake:hold:kf                                                   0
 intake:hold:min                                                 -0.1
 intake:hold:max                                                 0.1
 intake:hold:imax                                                0
+if PRACTICE
+intake:follower:down:kp                                       0.0005
+endif
+if COMPETITION
 intake:follower:down:kp                                       0.001
+endif
 intake:follower:down:kd                                       0.0
 intake:follower:down:kv                                       0.00012407
 intake:follower:down:ka                                       0.0
+if PRACTICE
 intake:follower:up:kp                                         0.001
+endif
+if COMPETITION
+intake:follower:up:kp                                         0.001
+endif
 intake:follower:up:kd                                         0.0
 intake:follower:up:kv                                         0.000147929
 intake:follower:up:ka                                         0.0
@@ -204,8 +223,6 @@ intake:goto:maxv                                            14000.0     # maximu
 #
 hw:driverstation:hid:driver                                     0               # HID Device Index
 hw:driverstation:hid:oi                                         2               # HID Device Index
-
-
 
 ###################################################################################################
 #
@@ -266,7 +283,7 @@ shooter:hood:up                                                 0.1
 endif
 
 if PRACTICE
-shooter:hood:down                                               1.0
+shooter:hood:down                                               0.675
 shooter:hood:up                                                 0.1
 endif
 
@@ -302,7 +319,8 @@ turret:hold:min                                                 -0.3
 turret:hold:max                                                 0.3
 turret:hold:imax                                                0.0
 
-turret:follow:kp                                                 0.014084508
+# turret:follow:kp                                                 0.014084508
+turret:follow:kp                                                 0.03
 turret:follow:ki                                                 0
 turret:follow:kd                                                 0.0
 turret:follow:kf                                                 0
@@ -560,10 +578,10 @@ shoottest:hold                                                true
 # this active value below is ignored if we are connected to the field.
 #
 auto:testmode:active                                          true
-auto:testmode:which                                           42
-auto:testmode:distance                                        0
-auto:testmode:power                                           6000
-auto:testmode:duration                                        0
+auto:testmode:which                                           11
+auto:testmode:distance                                        800
+auto:testmode:power                                           5200
+auto:testmode:duration                                        2
 auto:testmode:name                                           "test_straight"
 
 #

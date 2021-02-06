@@ -23,16 +23,7 @@
                     "values" :
                     {
                         "comment" : "set to automode to number 0, middle",
-                        "axis0" : -0.4
-                    }
-                },
-                {
-                    "model" : "conveyor",
-                    "instance" : "1",
-                    "values" : 
-                    {
-                        "comment" : "place the initial three balls in the robot for an automode",
-                        "start3" : true
+                        "axis0" : -0.95
                     }
                 },
                 {
@@ -41,7 +32,7 @@
                     "values" : 
                     {
                         "comment" : "start the turret facing the outside wall",
-                        "angle" : -90.0
+                        "angle" : 0.0
                     }
                 },                
                 {

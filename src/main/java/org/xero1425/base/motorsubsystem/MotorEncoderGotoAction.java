@@ -9,6 +9,18 @@ import org.xero1425.misc.TrapezoidalProfile;
 import org.xero1425.misc.XeroMath;
 
 public class MotorEncoderGotoAction extends MotorAction {
+    
+    private double threshold_ ;
+    private double target_ ;
+    private double start_time_ ;
+    private double start_position_ ;
+    PIDACtrl ctrl_ ;
+    TrapezoidalProfile profile_ ;
+    boolean addhold_ ;
+
+    int plot_id_ ;
+    static final String [] plot_columns_ = { "time", "tpos", "apos", "tvel", "avel", "out" } ;
+
     public MotorEncoderGotoAction(MotorEncoderSubsystem sub, double target, boolean addhold)
             throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
@@ -24,7 +36,8 @@ public class MotorEncoderGotoAction extends MotorAction {
             throws BadParameterTypeException, MissingParameterException {
         super(sub) ;
         target_ = getSubsystem().getRobot().getSettingsParser().get(target).getDouble() ;
-
+        addhold_ = addhold ;
+        
         SettingsParser settings = sub.getRobot().getSettingsParser() ;
         profile_ = new TrapezoidalProfile(settings, sub.getName() + ":goto") ;
         plot_id_ = sub.initPlot(sub.getName() + "-" + toString(0)) ;        
@@ -113,15 +126,4 @@ public class MotorEncoderGotoAction extends MotorAction {
         }
     }
 
-    private double threshold_ ;
-    private double target_ ;
-    private double start_time_ ;
-    private double start_position_ ;
-    PIDACtrl ctrl_ ;
-    TrapezoidalProfile profile_ ;
-    boolean addhold_ ;
-
-    int plot_id_ ;
-    static final String [] plot_columns_ = { "time", "tpos", "apos", "tvel", "avel", "out" } ;
 }
-

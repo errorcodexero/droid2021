@@ -23,7 +23,9 @@ public class StartCollectAction extends Action {
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception {
+        super.run() ;
+        
         if (!sub_.getIntake().isBusy() && !sub_.getConveyor().isBusy())
             setDone() ;
     }

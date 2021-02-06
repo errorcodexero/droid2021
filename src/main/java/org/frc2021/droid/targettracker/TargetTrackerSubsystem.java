@@ -62,6 +62,7 @@ public class TargetTrackerSubsystem extends Subsystem {
     }
 
     public void enable(boolean b) {
+        b = true ;
         enabled_ = b ;
 
         if (b)
