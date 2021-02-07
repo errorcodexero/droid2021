@@ -14,7 +14,10 @@ import org.xero1425.misc.MissingParameterException;
 //
 public class DroidAutoController extends AutoController {
     private AutoMode test_mode_ ;
-    private AutoMode bounce_ ;    
+    private AutoMode bounce_ ;
+    private AutoMode galactic_search_ ;
+    private AutoMode barrel_ ;
+    private AutoMode slalom_ ;
 
     public DroidAutoController(Droid robot) throws MissingParameterException, BadParameterTypeException {
         super(robot, "droid-auto");
