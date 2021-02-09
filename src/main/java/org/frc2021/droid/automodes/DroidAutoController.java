@@ -61,6 +61,9 @@ public class DroidAutoController extends AutoController {
                 case 2:
                     setAutoMode(slalom_) ;
                     break ;
+                case 3:
+                    setAutoMode(galactic_search_) ;
+                    break ;
             }
         }
     }
