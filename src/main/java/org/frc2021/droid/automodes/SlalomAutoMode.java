@@ -13,6 +13,6 @@ public class SlalomAutoMode extends DroidAutoMode {
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "SutoNav_Slalom", false), true);
+        addSubActionPair(db, new TankDriveFollowPathAction(db, "AutoNav_Slalom", false), true);
     }
 }
