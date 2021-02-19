@@ -44,6 +44,36 @@ public class DroidAutoController extends AutoController {
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }
+
+        try {
+            barrel_ = new BarrelAutoMode(this);
+        }
+        catch(Exception e) {
+            logger.startMessage(MessageType.Error) ;
+            logger.add("cannot create automode 'BarrelAutoMode', exception caught - ") ;
+            logger.add(e.getMessage()) ;
+            logger.endMessage();
+        }
+
+        try {
+            slalom_ = new SlalomAutoMode(this);
+        }
+        catch(Exception e) {
+            logger.startMessage(MessageType.Error) ;
+            logger.add("cannot create automode 'SlalomAutoMode', exception caught - ") ;
+            logger.add(e.getMessage()) ;
+            logger.endMessage();
+        }
+
+        try {
+            galactic_search_ = new GalacticSearchAutoMode(this);
+        }
+        catch(Exception e) {
+            logger.startMessage(MessageType.Error) ;
+            logger.add("cannot create automode 'GalacticSearchAutoMode', exception caught - ") ;
+            logger.add(e.getMessage()) ;
+            logger.endMessage();
+        }
     }
 
     public void updateAutoMode(int mode, String gamedata) {
