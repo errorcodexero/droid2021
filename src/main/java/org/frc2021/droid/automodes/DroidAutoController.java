@@ -36,11 +36,11 @@ public class DroidAutoController extends AutoController {
         }
 
         try {
-            bounce_ = new NearSideEightAuto(this);
+            bounce_ = new BounceAutoMode(this);
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'NearSideEightAuto', exception caught - ") ;
+            logger.add("cannot create automode 'BounceAutoMode', exception caught - ") ;
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }

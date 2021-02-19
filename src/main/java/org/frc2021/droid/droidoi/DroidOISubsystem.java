@@ -10,6 +10,10 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 public class DroidOISubsystem extends OISubsystem {
+    
+    private TankDriveGamepad gp_ ;
+    private DroidOIDevice oi_ ;
+
     public final static String SubsystemName = "droidoi";
     private final static String DriverGamepadHIDIndexName = "hw:driverstation:hid:driver";
     private final static String OIHIDIndexName = "hw:driverstation:hid:oi";
@@ -75,6 +79,4 @@ public class DroidOISubsystem extends OISubsystem {
         return gp_ ;
     }
 
-    private TankDriveGamepad gp_ ;
-    private DroidOIDevice oi_ ;
 }
