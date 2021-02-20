@@ -13,7 +13,7 @@ public class BarrelAutoMode extends DroidAutoMode {
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "AutoNav_Barrel", false), true);
+        addSubActionPair(db, new TankDriveFollowPathAction(db, "Barrel_Path", false), true);
     
     }
 }

@@ -32,7 +32,7 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      false
+tankdrive:messages                                                      true
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
@@ -238,18 +238,18 @@ hw:driverstation:hid:oi                                         2               
 #
 # Variables for the tankdrive subsystem code.
 #
-tankdrive:inches_per_tick                                       0.00085
+tankdrive:inches_per_tick                                       0.00083
 tankdrive:width                                                 26.75
 tankdrive:scrub                                                 0.9
 
 tankdrive:follower:left:ka                                      0.0003
-tankdrive:follower:left:kv                                      0.005425            # 0.005
-tankdrive:follower:left:kp                                      0.03                # Recommended 0.02032 - 0.03048
+tankdrive:follower:left:kv                                      0.006               # 0.005
+tankdrive:follower:left:kp                                      0.035                # Recommended 0.02032 - 0.03048
 tankdrive:follower:left:kd                                      0.0
 
 tankdrive:follower:right:ka                                     0.0003
-tankdrive:follower:right:kv                                     0.005425            # 0.005
-tankdrive:follower:right:kp                                     0.032               # Recommended 0.02032 - 0.03048
+tankdrive:follower:right:kv                                     0.006               # 0.005
+tankdrive:follower:right:kp                                     0.035               # Recommended 0.02032 - 0.03048
 tankdrive:follower:right:kd                                     0.0
 
 tankdrive:follower:turn_correction                              0
@@ -577,12 +577,12 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          true
-auto:testmode:which                                           11
-auto:testmode:distance                                        800
-auto:testmode:power                                           5200
-auto:testmode:duration                                        2
-auto:testmode:name                                           "test_straight"
+auto:testmode:active                                          false
+auto:testmode:which                                           4
+auto:testmode:distance                                        1800
+auto:testmode:power                                           -0.4
+auto:testmode:duration                                        1.0
+auto:testmode:name                                           "Slalom_Path"
 
 #
 # Short shot, 6" elevation of the front of the bumper @ 3900 ready_margin_percent

@@ -13,9 +13,9 @@ public class BounceAutoMode extends DroidAutoMode {
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "AutoNav_Bounce1", false), true);
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "AutoNav_Bounce2", true), true);
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "AutoNav_Bounce3", false), true);
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "AutoNav_Bounce4", true), true);
+        addSubActionPair(db, new TankDriveFollowPathAction(db, "Bounce_P1", false), true);
+        addSubActionPair(db, new TankDriveFollowPathAction(db, "Bounce_P2", true), true);
+        addSubActionPair(db, new TankDriveFollowPathAction(db, "Bounce_P3", false), true);
+        addSubActionPair(db, new TankDriveFollowPathAction(db, "Bounce_P4", true), true);
     }
 }

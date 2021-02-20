@@ -1,0 +1,39 @@
+{
+    "_version": "1",
+    "groups": [
+        {
+            "name": "test",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endangle": 0,
+                    "endangledelay": 0,
+                    "endvelocity": 0,
+                    "flags": [
+                    ],
+                    "maxacceleration": 300,
+                    "maxjerk": 1500,
+                    "maxvelocity": 150,
+                    "name": "straight2",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "x": 18,
+                            "y": 95
+                        },
+                        {
+                            "heading": 0,
+                            "x": 298,
+                            "y": 95
+                        }
+                    ],
+                    "startangle": 0,
+                    "startangledelay": 0,
+                    "startvelocity": 0
+                }
+            ]
+        }
+    ],
+    "outdir": "C:/cygwin64/home/bwg/rtools/droid2021/src/main/deploy/paths"
+}
