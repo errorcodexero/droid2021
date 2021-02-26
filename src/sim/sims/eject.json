@@ -211,6 +211,7 @@
                     "instance" : "1",
                     "values" : 
                     {
+                        "comment" : "Press the eject button",    
                         "button8" : true
                     }
                 }
@@ -228,7 +229,7 @@
             ]
         },
         {
-            "time" : 14.0,
+            "time" : 13.5,
             "events" :
             [
                 {
@@ -236,6 +237,7 @@
                     "instance" : "1",
                     "values" : 
                     {
+                        "comment" : "Release the collect button",    
                         "button8" : false
                     }
                 }
@@ -265,6 +267,7 @@
                     "instance" : "1",
                     "values" : 
                     {
+                        "comment" : "Present ball 1 to the intake",
                         "ball" : true
                     }
                 }               
@@ -300,6 +303,7 @@
                     "instance" : "1",
                     "values" : 
                     {
+                        "comment" : "Present ball 2 to the intake",                        
                         "ball" : true
                     }
                 }               
@@ -335,13 +339,14 @@
                     "instance" : "1",
                     "values" : 
                     {
+                        "comment" : "Present ball 3 to the intake",
                         "ball" : true
                     }
                 }               
             ]
         },
         {
-            "time" : 17.95,
+            "time" : 18.95,
             "asserts" :
             [
                 {
@@ -362,7 +367,7 @@
             ]
         },           
         {
-            "time" : 18.0,
+            "time" : 19.0,
             "events" :
             [
                 {
@@ -373,27 +378,6 @@
                         "button14" : false
                     }
                 }
-            ]
-        },
-        {
-            "time" : 19.0,
-            "asserts" :
-            [
-                {
-                    "subsystem" : "conveyor",
-                    "property" : "readyToCollect",
-                    "value" : true
-                },
-                {
-                    "subsystem" : "conveyor",
-                    "property" : "readyToFire",
-                    "value" : false
-                },
-                {
-                    "subsystem" : "conveyor",
-                    "property" : "ballcount",
-                    "value" : 0
-                }               
             ]
         }
     ]

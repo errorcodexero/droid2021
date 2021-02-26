@@ -24,6 +24,6 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
 
     @Override
     public void postHWInit() {
-        //setDefaultAction(new MotorEncoderHoldAction(this)) ;
+        setDefaultAction(new MotorEncoderHoldAction(this)) ;
     }
 }

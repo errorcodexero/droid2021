@@ -274,9 +274,6 @@ public class DroidLimelightModel extends SimulationModel {
         //
         Pose2d robot = db_.getPose() ;
 
-        if (Math.abs(turret_.getAngle().getDegrees()) > 0.1)
-            System.out.println("Testing") ;
-
         //
         // Get the shooter angle, which is the robot angle rotated by 180 degrees.  The
         // shooter is mounted on the back of the robot
