@@ -35,7 +35,6 @@ import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsParser;
 
 public class DroidOIDevice extends OIPanel {
-
     
     private enum CollectShootState
     {
@@ -156,7 +155,7 @@ public class DroidOIDevice extends OIPanel {
 
         shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down) ;
         shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down) ;
-        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 5500.0, ShooterSubsystem.HoodPosition.Up) ;
+        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 7000.0, ShooterSubsystem.HoodPosition.Up) ;
         shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down) ;
 
         if (climber_attached_)
@@ -464,7 +463,7 @@ public class DroidOIDevice extends OIPanel {
         ShooterSubsystem shooter = getDroidSubsystem().getGamePieceManipulator().getShooter() ;
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ;
 
-        collect_shoot_state_ = CollectShootState.Ejecting ;
+        collect_shoot_state_ = CollectShootState.InvalidMode ;
         seq.addSubActionPair(conveyor, conveyor_stop_, false);
         seq.addSubActionPair(shooter, shooter_stop_, false);        
     }

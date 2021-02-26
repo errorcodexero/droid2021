@@ -32,7 +32,7 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      true
+tankdrive:messages                                                      false
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
@@ -42,7 +42,7 @@ conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
-droidoi:messages                                                        false
+droidoi:messages                                                        true
 blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false

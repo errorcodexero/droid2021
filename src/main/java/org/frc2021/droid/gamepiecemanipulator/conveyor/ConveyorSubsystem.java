@@ -12,6 +12,18 @@ import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SettingsValue;
 
 public class ConveyorSubsystem extends Subsystem {
+    
+    private int ball_count_ ;
+    private boolean staged_for_collect_ ;
+    private boolean staged_for_fire_ ;
+    private boolean collecting_ ;
+    private DigitalInput [] sensors_ ;
+    private boolean [] sensor_states_ ;
+    private boolean [] prev_sensor_states_ ;
+    private MotorController intake_motor_ ;
+    private MotorController shooter_motor_ ;
+    private int sensor_logger_id_ ;
+    
     public static final String SubsystemName = "conveyor";
     public static final String SensorLoggerName = "conveyor:sensors:messages";
     public static final int MAX_BALLS = 5;
@@ -225,14 +237,4 @@ public class ConveyorSubsystem extends Subsystem {
         }
     }     
 
-    private int ball_count_ ;
-    private boolean staged_for_collect_ ;
-    private boolean staged_for_fire_ ;
-    private boolean collecting_ ;
-    private DigitalInput [] sensors_ ;
-    private boolean [] sensor_states_ ;
-    private boolean [] prev_sensor_states_ ;
-    private MotorController intake_motor_ ;
-    private MotorController shooter_motor_ ;
-    private int sensor_logger_id_ ;
 } ;
