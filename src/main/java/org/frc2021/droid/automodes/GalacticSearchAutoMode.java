@@ -2,6 +2,7 @@ package org.frc2021.droid.automodes;
 
 import org.frc2021.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.StartCollectAction;
+import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.actions.ParallelAction.DonePolicy;
@@ -18,6 +19,7 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
         String which= "redb" ;
 
         ParallelAction pact = new ParallelAction(getMessageLogger(), DonePolicy.All);
+
         pact.addSubActionPair(gm, new StartCollectAction(gm), false) ;
 
         if (which.equals("reda")) {
