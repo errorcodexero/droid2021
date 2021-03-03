@@ -279,19 +279,14 @@ public class DroidLimelightModel extends SimulationModel {
         // shooter is mounted on the back of the robot
         //
         Rotation2d shooter = robot.getRotation().rotateBy(shooter_rotation_) ;
-        double shooterdeg = shooter.getDegrees() ;
         Rotation2d effective = shooter.rotateBy(turret_.getAngle()) ;
-        double effectivedeg = effective.getDegrees() ;
 
         //
         // Get the angle from the center of the robot to the target
         //
         Translation2d delta = target_pos_.minus(robot.getTranslation()) ;
         Rotation2d robottarget = new Rotation2d(Math.atan2(-delta.getY(), delta.getX())) ;
-        double robottargetdeg = robottarget.getDegrees() ;
         Rotation2d result = robottarget.plus(effective) ;
-        double resultdeg = result.getDegrees() ;
-        double turretdeg = turret_.getAngle().getDegrees() ;
 
         if (result.getDegrees() > -60.0 && result.getDegrees() < 60.0) {
             double dist = robot.getTranslation().getDistance(target_pos_) ;
