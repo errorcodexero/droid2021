@@ -21,8 +21,8 @@ public class ConveyorPrepareToReceiveAction extends ConveyorStateAction {
             new BranchState(SetStagedLabel, (ConveyorStateAction act) -> {
                 return act.getSubsystem().isEmpty(); }),
 
-                new BranchState(SetStagedLabel, (ConveyorStateAction act) -> {
-                    return act.getSubsystem().isStagedForCollect(); }),                
+            new BranchState(SetStagedLabel, (ConveyorStateAction act) -> {
+                return act.getSubsystem().isStagedForCollect(); }),                
 
             new DoWorkState("set motors prepare receive power forward", (ConveyorStateAction act) -> {
                 act.getSubsystem().setMotorsPower(prepare_receive_intake_to_intake_power_, prepare_receive_shooter_to_intake_power_) ;

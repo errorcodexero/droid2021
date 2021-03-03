@@ -13,16 +13,16 @@ import org.xero1425.misc.SettingsValue;
 
 public class ConveyorSubsystem extends Subsystem {
     
-    private int ball_count_ ;
-    private boolean staged_for_collect_ ;
-    private boolean staged_for_fire_ ;
-    private boolean collecting_ ;
-    private DigitalInput [] sensors_ ;
-    private boolean [] sensor_states_ ;
-    private boolean [] prev_sensor_states_ ;
-    private MotorController intake_motor_ ;
-    private MotorController shooter_motor_ ;
-    private int sensor_logger_id_ ;
+    private int ball_count_ ;                       // The number of balls stored in the conveyor
+    private boolean staged_for_collect_ ;           // Is true, if balls are positioned for collecting
+    private boolean staged_for_fire_ ;              // Is true, if balls are positioned for firing
+    private boolean collecting_ ;                   // Is true, when when collecting balls
+    private DigitalInput [] sensors_ ;              // The array of ball detect sensors
+    private boolean [] sensor_states_ ;             // The states of ball detect sensors
+    private boolean [] prev_sensor_states_ ;        // The states of ball detect sensors last robot loop
+    private MotorController intake_motor_ ;         // The motor for the flash intake piece
+    private MotorController shooter_motor_ ;        // The motor for the shooter sidef of the conveyor
+    private int sensor_logger_id_ ;                 // The message logger id just for sensors
     
     public static final String SubsystemName = "conveyor";
     public static final String SensorLoggerName = "conveyor:sensors:messages";
@@ -163,10 +163,7 @@ public class ConveyorSubsystem extends Subsystem {
         logger.endMessage();
 
         if (prev_sensor_states_[Sensor.D.value] == true && sensor_states_[Sensor.D.value] == false) {
-            staged_for_fire_ = true ;
-            logger.startMessage(MessageType.Debug, getLoggerID()) ;
-            logger.add("setting iStagedForFire() to true in subsystem") ;
-            logger.endMessage(); ;
+            setStagedForFire(true) ;
         }
 
         putDashboard("staged-fire", DisplayType.Verbose, staged_for_fire_) ;
