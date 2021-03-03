@@ -816,6 +816,195 @@
                     "startvelocity": 0
                 }
             ]
+        },
+        {
+            "name": "GalacticSearch",
+            "paths": [
+                {
+                    "constraints": [
+                    ],
+                    "endangle": 0,
+                    "endangledelay": 0,
+                    "endvelocity": 0,
+                    "flags": [
+                    ],
+                    "markers": [
+                        {
+                            "type": 1,
+                            "x": 90,
+                            "y": 90
+                        },
+                        {
+                            "type": 1,
+                            "x": 149.67914438502675,
+                            "y": 60.48128342245988
+                        },
+                        {
+                            "type": 1,
+                            "x": 180.4812834224599,
+                            "y": 151.6042780748663
+                        }
+                    ],
+                    "maxacceleration": 180,
+                    "maxcentripetal": 1200,
+                    "maxjerk": 1800,
+                    "maxvelocity": 180,
+                    "name": "RedA",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "x": 21.336898395721924,
+                            "y": 105.40106951871658
+                        },
+                        {
+                            "heading": -22.380135051959563,
+                            "x": 75.24064171122996,
+                            "y": 105.40106951871658
+                        },
+                        {
+                            "heading": 34.438989308803606,
+                            "x": 143.2620320855615,
+                            "y": 75.24064171122996
+                        },
+                        {
+                            "heading": 0,
+                            "x": 163.79679144385028,
+                            "y": 159.3048128342246
+                        },
+                        {
+                            "heading": -6.5198017516569795,
+                            "x": 399.3048128342246,
+                            "y": 117.59358288770053
+                        }
+                    ],
+                    "startangle": 0,
+                    "startangledelay": 0,
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endangle": 0,
+                    "endangledelay": 0,
+                    "endvelocity": 0,
+                    "flags": [
+                    ],
+                    "markers": [
+                        {
+                            "type": 1,
+                            "x": 90,
+                            "y": 120.16042780748663
+                        },
+                        {
+                            "type": 1,
+                            "x": 150.32085561497325,
+                            "y": 60.48128342245988
+                        },
+                        {
+                            "type": 1,
+                            "x": 210,
+                            "y": 120.80213903743315
+                        }
+                    ],
+                    "maxacceleration": 180,
+                    "maxcentripetal": 600,
+                    "maxjerk": 1800,
+                    "maxvelocity": 180,
+                    "name": "RedB",
+                    "points": [
+                        {
+                            "heading": -37.092837297041555,
+                            "x": 48.930481283422466,
+                            "y": 154.81283422459893
+                        },
+                        {
+                            "heading": -42.13759477388828,
+                            "x": 94.49197860962568,
+                            "y": 113.74331550802138
+                        },
+                        {
+                            "heading": 0,
+                            "x": 148.3957219251337,
+                            "y": 74.59893048128342
+                        },
+                        {
+                            "heading": 0,
+                            "x": 207.4331550802139,
+                            "y": 132.35294117647058
+                        },
+                        {
+                            "heading": 0,
+                            "x": 322.2994652406417,
+                            "y": 132.35294117647058
+                        }
+                    ],
+                    "startangle": 0,
+                    "startangledelay": 0,
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endangle": 0,
+                    "endangledelay": 0,
+                    "endvelocity": 0,
+                    "flags": [
+                    ],
+                    "markers": [
+                    ],
+                    "maxacceleration": 180,
+                    "maxcentripetal": 100000,
+                    "maxjerk": 1800,
+                    "maxvelocity": 180,
+                    "name": "BlueA",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "x": 0,
+                            "y": 0
+                        },
+                        {
+                            "heading": 0,
+                            "x": 100,
+                            "y": 0
+                        }
+                    ],
+                    "startangle": 0,
+                    "startangledelay": 0,
+                    "startvelocity": 0
+                },
+                {
+                    "constraints": [
+                    ],
+                    "endangle": 0,
+                    "endangledelay": 0,
+                    "endvelocity": 0,
+                    "flags": [
+                    ],
+                    "markers": [
+                    ],
+                    "maxacceleration": 180,
+                    "maxcentripetal": 100000,
+                    "maxjerk": 1800,
+                    "maxvelocity": 180,
+                    "name": "BlueB",
+                    "points": [
+                        {
+                            "heading": 0,
+                            "x": 0,
+                            "y": 0
+                        },
+                        {
+                            "heading": 0,
+                            "x": 100,
+                            "y": 0
+                        }
+                    ],
+                    "startangle": 0,
+                    "startangledelay": 0,
+                    "startvelocity": 0
+                }
+            ]
         }
     ],
     "outdir": "C:/cygwin64/home/bwg/rtools/droid2021/src/main/deploy/paths"

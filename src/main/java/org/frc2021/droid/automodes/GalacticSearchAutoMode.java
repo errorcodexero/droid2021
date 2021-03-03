@@ -1,31 +1,38 @@
 package org.frc2021.droid.automodes;
 
-import org.xero1425.base.actions.InvalidActionRequest;
+import org.frc2021.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
+import org.frc2021.droid.gamepiecemanipulator.StartCollectAction;
+import org.xero1425.base.actions.ParallelAction;
+import org.xero1425.base.actions.SequenceAction;
+import org.xero1425.base.actions.ParallelAction.DonePolicy;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MissingParameterException;
-import org.xero1425.misc.MissingPathException;
 
 public class GalacticSearchAutoMode extends DroidAutoMode {
-    public GalacticSearchAutoMode(DroidAutoController ctrl) throws InvalidActionRequest, MissingPathException, BadParameterTypeException, MissingParameterException {
+    public GalacticSearchAutoMode(DroidAutoController ctrl) throws Exception {
         super(ctrl, "GalacticSearchAutoMode") ;
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
-        String which= "reda" ;
+        GamePieceManipulatorSubsystem gm = getDroidSubsystem().getGamePieceManipulator() ;
+
+        String which= "redb" ;
+
+        ParallelAction pact = new ParallelAction(getMessageLogger(), DonePolicy.All);
+        pact.addSubActionPair(gm, new StartCollectAction(gm), false) ;
 
         if (which.equals("reda")) {
-            addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
+            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
         }
         else if (which.equals("redb")) {
-            addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
+            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
         }
         else if (which.equals("bluea")) {
-            addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);
+            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);
         }
         else if (which.equals("blueb")) {
-            addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueB", false), true);
-        }
-        
+            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueB", false), true);
+        }        
+
+        addAction(pact) ;
     }
 }
