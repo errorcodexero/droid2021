@@ -419,10 +419,12 @@ public class DroidOIDevice extends OIPanel {
     private void collectMode(SequenceAction seq) throws InvalidActionRequest {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ;
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
+        ShooterSubsystem shooter = getDroidSubsystem().getGamePieceManipulator().getShooter() ;
         
         collect_shoot_state_ = CollectShootState.PreparingForCollect ;
         seq.addSubActionPair(conveyor, queue_prep_collect_, false) ;
         seq.addSubActionPair(turret, turret_goto_zero_, false) ;
+        seq.addSubActionPair(shooter, shooter_stop_, false);
     }
 
     private void shootMode(SequenceAction seq) throws InvalidActionRequest {

@@ -1,6 +1,6 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
-import edu.wpi.first.wpilibj.shuffleboard.* ;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToEmitAction;
@@ -9,6 +9,8 @@ import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorReceiveAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;
 import org.xero1425.base.actions.Action;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 
 public class ShootTestingAction extends Action {
     public ShootTestingAction(GamePieceManipulatorSubsystem gp, ShooterSubsystem.HoodPosition pos) throws Exception {
@@ -31,7 +33,7 @@ public class ShootTestingAction extends Action {
         super.start() ;
 
         state_ = State.WaitPrepareReceive ;
-        fire_.setTarget(0.0);
+        fire_.setTarget(4000.0);
         sub_.getShooter().setAction(fire_, true) ;
         sub_.getConveyor().setAction(prepare_receive_, true) ;
     }
@@ -41,9 +43,13 @@ public class ShootTestingAction extends Action {
         double current = sub_.getShooter().getVelocity() ;
         double target = widget_.getEntry().getDouble(current) ;
 
-        if (Math.abs(current - target) < 5) {
-            fire_.setTarget(target) ;
-        }
+        fire_.setTarget(target) ;
+
+        MessageLogger logger = sub_.getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Debug, sub_.getLoggerID());
+        logger.add("current velocity ", current) ;
+        logger.add("target velocity ", target) ;
+        logger.endMessage();
 
         switch(state_) {
             case WaitPrepareReceive:
@@ -55,6 +61,11 @@ public class ShootTestingAction extends Action {
 
             case WaitReceive:
                 if (!sub_.getConveyor().isBusy()) {
+                    state_ = State.WaitPrepareShoot ;
+                    sub_.getConveyor().setAction(prepare_emit_, true) ;
+                }
+
+                if (sub_.getConveyor().getBallCount() == 1) {
                     state_ = State.WaitPrepareShoot ;
                     sub_.getConveyor().setAction(prepare_emit_, true) ;
                 }

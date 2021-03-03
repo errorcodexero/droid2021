@@ -188,10 +188,20 @@ public class ConveyorSubsystem extends Subsystem {
 
     protected void incrementBallCount() {
         ball_count_++ ;
+
+        MessageLogger logger = getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Debug, getLoggerID());
+        logger.add("Conveyor:").add("ballcount", ball_count_);
+        logger.endMessage();
     }
 
     protected void decrementBallCount() {
         ball_count_-- ;
+
+        MessageLogger logger = getRobot().getMessageLogger();
+        logger.startMessage(MessageType.Debug, getLoggerID());
+        logger.add("Conveyor:").add("ballcount", ball_count_);
+        logger.endMessage();
     }    
 
     public boolean getSensorState(Sensor s) {

@@ -193,13 +193,13 @@ public class DroidTestAutoMode extends TestAutoMode {
             case 36:            // Test the hood
                 addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);
-                addAction(new DelayAction(ctrl.getRobot(), 3.0));
                 addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
                 addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down), false);             
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down), false);
+                addAction(new DelayAction(ctrl.getRobot(), 3.0));
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);             
                 break ;
                 
             case 37:            // Manual shoot, hood down
