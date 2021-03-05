@@ -41,6 +41,7 @@ public class FireAction extends Action {
     private double min_hood_down_distance_ ;
 
     private ShooterVelocityAction shooter_velocity_action_ ;
+    private ShooterVelocityAction shooter_stop_action_ ;
     private ConveyorEmitAction emit_action_ ;
 
     private double start_time_ ;
@@ -73,6 +74,7 @@ public class FireAction extends Action {
         db_ = db ;
 
         shooter_velocity_action_ = new ShooterVelocityAction(gp.getShooter(), 4500.0, ShooterSubsystem.HoodPosition.Down) ;
+        shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down) ;
         emit_action_ = new ConveyorEmitAction(gp.getConveyor()) ;
 
         SettingsParser settings = gp.getRobot().getSettingsParser() ;
@@ -139,6 +141,11 @@ public class FireAction extends Action {
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, out of balls") ;
                 logger.endMessage();
+
+                //
+                // When we are out of balls, stop the shooter motor
+                //
+                sub_.getShooter().setAction(shooter_stop_action_, true) ;
             }
             else if (!ready_to_fire_except_shooter) {
                 //
@@ -146,6 +153,7 @@ public class FireAction extends Action {
                 // are no longer aiming at the target
                 // 
                 emit_action_.stopFiring();
+                is_firing_ = false ;
 
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, lost target") ;

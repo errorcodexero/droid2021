@@ -3,6 +3,11 @@ package org.frc2021.droid.gamepiecemanipulator.conveyor;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.WaitForSensor.SensorEvent;
 
 public class ConveyorEmitAction extends ConveyorStateAction {
+    
+    private double emit_intake_power_ ;
+    private double emit_shooter_power_ ;
+    private boolean should_stop_firing_ ;
+    
     private static final String LoopLabel = "loop" ;
     private static final String DoneLabel = "done" ;
     private static final String NotFiringLastBallLabel = "lastball" ;
@@ -91,7 +96,4 @@ public class ConveyorEmitAction extends ConveyorStateAction {
         return prefix(indent) + "ConveyorEmitAction" ;
     }
 
-    private double emit_intake_power_ ;
-    private double emit_shooter_power_ ;
-    private boolean should_stop_firing_ ;
 }
