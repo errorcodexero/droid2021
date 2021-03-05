@@ -16,7 +16,7 @@ turret:verbose                                                          false
 shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            false
+gamepiecemanipulator:verbose                                            true
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -34,11 +34,11 @@ blinky:verbose                                                          false
 
 tankdrive:messages                                                      false
 turret:messages                                                         false
-shooter:messages                                                        false
+shooter:messages                                                        true
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       false
+conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -47,7 +47,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     false
+fireaction:messages                                                     true
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -259,10 +259,10 @@ tankdrive:follower:angle_correction                             -0.03
 # shooter
 ###################################################################################################
 
-shooter:velocity:kp                                             0
+shooter:velocity:kp                                             0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
-shooter:velocity:kf                                             0.0001311853912
+shooter:velocity:kf                                             0.000134549119179
 shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
@@ -287,12 +287,13 @@ shooter:hood:down                                               0.32
 shooter:hood:up                                                 -0.1
 endif
 
-shooter:aim:hood_up:a                                           0
-shooter:aim:hood_up:b                                           0
-shooter:aim:hood_up:c                                           3600
 
-shooter:aim:max_hood_up                                         120
-shooter:aim:min_hood_down                                       110
+shooter:aim:hood_up:a                                           0.4356
+shooter:aim:hood_up:b                                           -86.431
+shooter:aim:hood_up:c                                           7965.1
+
+shooter:aim:max_hood_up                                         130
+shooter:aim:min_hood_down                                       120
 
 shooter:hood:change_time					0.8
 
@@ -480,10 +481,10 @@ climber:lifter:hold:imax                                                0
 # Amy
 #
 droidvision:camera_angle                                        20.08
-shooter:aim:hood_down:a                                         0.0324
-shooter:aim:hood_down:b                                         -12.516
-shooter:aim:hood_down:c                                         5900
-targettracker:camera_offset_angle                               0.0
+shooter:aim:hood_down:a                                         0.3292
+shooter:aim:hood_down:b                                         -127.02
+shooter:aim:hood_down:c                                         18103
+targettracker:camera_offset_angle                               -2
 
 #
 # Bill
@@ -577,10 +578,10 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
-auto:testmode:which                                           35
+auto:testmode:active                                          true
+auto:testmode:which                                           32
 auto:testmode:distance                                        1800
-auto:testmode:power                                           -0.4
+auto:testmode:power                                           4000
 auto:testmode:duration                                        1.0
 auto:testmode:name                                           "Slalom_Path"
 

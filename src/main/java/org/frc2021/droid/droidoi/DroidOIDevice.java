@@ -276,7 +276,8 @@ public class DroidOIDevice extends OIPanel {
         CollectShootState prev = collect_shoot_state_ ;
 
         if (getValue(eject_) == 1) {
-            startEject(seq) ;
+            if (collect_shoot_state_ != CollectShootState.Ejecting)
+                startEject(seq) ;
         } else {
             switch(collect_shoot_state_) {
                 case PreparingForCollect:
