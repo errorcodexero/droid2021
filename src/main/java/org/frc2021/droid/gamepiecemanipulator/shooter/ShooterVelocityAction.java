@@ -9,6 +9,10 @@ import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.XeroMath;
 
 public class ShooterVelocityAction extends MotorEncoderVelocityAction {
+    ShooterSubsystem sub_ ;
+    private double ready_percent_ ;
+    private ShooterSubsystem.HoodPosition pos_ ;
+
     public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos)
             throws BadParameterTypeException, MissingParameterException {
         super(shooter, target, 30.0) ;
@@ -69,7 +73,4 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
             sub_.setReadyToFire(false);
     }
 
-    ShooterSubsystem sub_ ;
-    private double ready_percent_ ;
-    private ShooterSubsystem.HoodPosition pos_ ;
 }

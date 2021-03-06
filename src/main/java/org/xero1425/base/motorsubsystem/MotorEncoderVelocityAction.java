@@ -7,6 +7,8 @@ import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
 public class MotorEncoderVelocityAction extends MotorAction {   
+    private static int which_ = 1 ;
+
     private double target_ ;
     private double duration_ ;
     private double start_ ;
@@ -35,7 +37,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
         duration_ = duration ;
         
         if (duration_ <= MaxPlotDuration)
-            plot_id_ = sub.initPlot(toString()) ;
+            plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;
         else
             plot_id_ = -1 ;
     }    
@@ -59,7 +61,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
         duration_ = getSubsystem().getRobot().getSettingsParser().get(duration).getDouble() ;
 
         if (duration_ <= MaxPlotDuration)
-            plot_id_ = sub.initPlot(toString()) ;
+            plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;
         else
             plot_id_ = -1 ;
     }    
