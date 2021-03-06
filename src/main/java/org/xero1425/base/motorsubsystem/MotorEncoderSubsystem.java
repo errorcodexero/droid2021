@@ -18,6 +18,17 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         encoder_ = new XeroEncoder(parent.getRobot(), encname, angle, getMotorController()) ;
     }
 
+    public MotorEncoderSubsystem(Subsystem parent, String name, boolean angle, int samples) throws Exception {
+        super(parent, name) ;
+
+        smart_dashboard_when_enabled_ = false ;
+        speedometer_ = new Speedometer(name, samples, angle) ;
+        angular_ = angle ;
+
+        String encname = "hw:" + name + ":encoder" ;
+        encoder_ = new XeroEncoder(parent.getRobot(), encname, angle, getMotorController()) ;
+    }
+
     public boolean isAngular() {
         return angular_ ;
     }

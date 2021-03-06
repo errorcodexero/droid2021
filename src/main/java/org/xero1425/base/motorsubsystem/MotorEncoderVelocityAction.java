@@ -6,7 +6,14 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.PIDCtrl;
 
-public class MotorEncoderVelocityAction extends MotorAction {
+public class MotorEncoderVelocityAction extends MotorAction {   
+    private double target_ ;
+    private double duration_ ;
+    private double start_ ;
+    private PIDCtrl pid_ ;
+    private int plot_id_ ;
+    private static String [] columns_ = { "time", "pos", "velocity", "accel" }  ;
+
     static private final double MaxPlotDuration = 60.0 ;
 
     public MotorEncoderVelocityAction(MotorEncoderSubsystem sub, double target)
@@ -119,10 +126,4 @@ public class MotorEncoderVelocityAction extends MotorAction {
         return prefix(indent) + "MotorEncoderVelocityAction " + Double.toString(target_) ;
     }
 
-    private double target_ ;
-    private double duration_ ;
-    private double start_ ;
-    private PIDCtrl pid_ ;
-    private int plot_id_ ;
-    private static String [] columns_ = { "time", "pos", "velocity", "accel" }  ;
 }

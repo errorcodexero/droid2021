@@ -28,7 +28,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     } ;
 
     public ShooterSubsystem(Subsystem parent, TankDriveSubsystem db) throws Exception {
-        super(parent, SubsystemName, false) ;
+        super(parent, SubsystemName, false, 4) ;
 
         setSmartDashboardWhenEnabled(true);
 
