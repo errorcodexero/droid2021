@@ -11,7 +11,7 @@ import org.xero1425.misc.XeroMath;
 public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos)
             throws BadParameterTypeException, MissingParameterException {
-        super(shooter, target) ;
+        super(shooter, target, 30.0) ;
 
         ready_percent_ = shooter.getRobot().getSettingsParser().get("shooter:velocity:ready_margin_percent").getDouble() ;
         pos_ = pos ;

@@ -12,7 +12,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
     private double start_ ;
     private PIDCtrl pid_ ;
     private int plot_id_ ;
-    private static String [] columns_ = { "time", "pos", "velocity", "accel" }  ;
+    private static String [] columns_ = { "time", "target", "actual" }  ;
 
     static private final double MaxPlotDuration = 60.0 ;
 
@@ -103,9 +103,8 @@ public class MotorEncoderVelocityAction extends MotorAction {
         if (plot_id_ != -1) {
             Double[] data = new Double[columns_.length] ;
             data[0] = getSubsystem().getRobot().getTime() - start_ ;
-            data[1] = me.getPosition() ;
-            data[2] = me.getVelocity() ;
-            data[3] = me.getAcceleration() ;
+            data[1] = me.getVelocity() ;
+            data[3] = target_ ;
             getSubsystem().addPlotData(plot_id_, data);
         }
 
