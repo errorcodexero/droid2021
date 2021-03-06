@@ -104,7 +104,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
             Double[] data = new Double[columns_.length] ;
             data[0] = getSubsystem().getRobot().getTime() - start_ ;
             data[1] = me.getVelocity() ;
-            data[3] = target_ ;
+            data[2] = target_ ;
             getSubsystem().addPlotData(plot_id_, data);
         }
 

@@ -16,7 +16,7 @@ turret:verbose                                                          false
 shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            true
+gamepiecemanipulator:verbose                                            false
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -38,7 +38,7 @@ shooter:messages                                                        true
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       true
+conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -47,7 +47,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     true
+fireaction:messages                                                     false
 
 #
 # Some special things we can turn on that are not associated with a subsystem
