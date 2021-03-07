@@ -421,8 +421,11 @@ public class DroidOIDevice extends OIPanel {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ;
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
         ShooterSubsystem shooter = getDroidSubsystem().getGamePieceManipulator().getShooter() ;
+        GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
         
+
         collect_shoot_state_ = CollectShootState.PreparingForCollect ;
+        gp.cancelAction(); ;
         seq.addSubActionPair(conveyor, queue_prep_collect_, false) ;
         seq.addSubActionPair(turret, turret_goto_zero_, false) ;
         seq.addSubActionPair(shooter, shooter_stop_, false);

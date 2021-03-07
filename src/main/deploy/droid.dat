@@ -13,7 +13,7 @@
 
 tankdrive:verbose                                                       false
 turret:verbose                                                          false
-shooter:verbose                                                         false
+shooter:verbose                                                         true
 droid:verbose                                                           false
 alarms:verbose                                                          false
 gamepiecemanipulator:verbose                                            true

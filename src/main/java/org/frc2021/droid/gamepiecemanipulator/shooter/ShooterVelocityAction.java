@@ -1,5 +1,6 @@
 package org.frc2021.droid.gamepiecemanipulator.shooter;
 
+import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.misc.BadParameterTypeException;
@@ -52,6 +53,9 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
         logger.add("target", getTarget()) ;
         logger.add("actual", me.getVelocity()) ;
         logger.endMessage();
+
+        sub_.putDashboard("sh-target", DisplayType.Verbose, getTarget());
+        sub_.putDashboard("sh-actual", DisplayType.Verbose, me.getVelocity());
     }
 
     @Override

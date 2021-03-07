@@ -503,14 +503,17 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void deleteBallFromIntake() {
-        int i = 0 ; 
+        int i = 0 ;
 
-        while (i < balls_.length - 1)
+        while (i < balls_.length - 2)
         {
-            balls_[i].setPosition(balls_[i].getPosition()) ;
-            balls_[i].setPresent(balls_[i].isPresent()) ;
+            if (!balls_[i+1].isPresent())
+                break ;
+            balls_[i].setPosition(balls_[i + 1].getPosition()) ;
+            balls_[i].setPresent(balls_[i + 1].isPresent()) ;
             i++ ;
         }
+        balls_[i].setPresent(false);
         MessageLogger logger = getEngine().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, getLoggerID()) ;
         logger.add("ball exited via intake").endMessage();
