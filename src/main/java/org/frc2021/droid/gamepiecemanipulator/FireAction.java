@@ -118,10 +118,10 @@ public class FireAction extends Action {
         boolean shooter_ready = shooter.isReadyToFire() ;
         boolean db_ready = (db_.getVelocity() < db_velocity_threshold_) ;
 
-        sub_.putDashboard("tracker-ready", DisplayType.Verbose, tracker_ready) ;
-        sub_.putDashboard("turret-ready", DisplayType.Verbose, turret_ready) ;
-        sub_.putDashboard("shooter-ready", DisplayType.Verbose, shooter_ready);
-        sub_.putDashboard("db-ready", DisplayType.Verbose, db_ready) ;
+        sub_.putDashboard("tracker-ready", DisplayType.Always, tracker_ready) ;
+        sub_.putDashboard("turret-ready", DisplayType.Always, turret_ready) ;
+        sub_.putDashboard("shooter-ready", DisplayType.Always, shooter_ready);
+        sub_.putDashboard("db-ready", DisplayType.Always, db_ready) ;
 
         if (tracker_ready)
             setTargetVelocity(); 

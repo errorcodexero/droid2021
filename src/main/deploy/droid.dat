@@ -16,7 +16,7 @@ turret:verbose                                                          false
 shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            false
+gamepiecemanipulator:verbose                                            true
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -34,7 +34,7 @@ blinky:verbose                                                          false
 
 tankdrive:messages                                                      false
 turret:messages                                                         false
-shooter:messages                                                        true
+shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
@@ -42,12 +42,12 @@ conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
-droidoi:messages                                                        false
+droidoi:messages                                                        true
 blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     true
+fireaction:messages                                                     false
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -578,7 +578,7 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          true
+auto:testmode:active                                          false
 auto:testmode:which                                           32
 auto:testmode:distance                                        1800
 auto:testmode:power                                           4000

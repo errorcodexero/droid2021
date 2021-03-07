@@ -17,8 +17,7 @@ public class DroidAutoController extends AutoController {
     private AutoMode bounce_ ;
     private AutoMode barrel_ ;
     private AutoMode slalom_ ;
-    private AutoMode galactic_search_ ;
-
+    private GalacticSearchAutoMode galactic_search_ ;
 
     public DroidAutoController(Droid robot) throws MissingParameterException, BadParameterTypeException {
         super(robot, "droid-auto");
@@ -93,6 +92,12 @@ public class DroidAutoController extends AutoController {
                     break ;
                 case 3:
                     setAutoMode(galactic_search_) ;
+                    try {
+                        galactic_search_.updateWhich() ;
+                    } 
+                    catch(Exception ex)
+                    {
+                    }
                     break ;
             }
         }

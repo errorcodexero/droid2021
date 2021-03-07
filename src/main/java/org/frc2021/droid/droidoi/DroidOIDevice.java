@@ -477,7 +477,6 @@ public class DroidOIDevice extends OIPanel {
 
     private boolean isCollectButtonPressed() {
 
-
         if (getValue(collect_) == 1)
             return true ;
 
