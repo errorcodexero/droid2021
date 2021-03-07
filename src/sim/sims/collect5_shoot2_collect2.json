@@ -248,15 +248,72 @@
             ]
         },
         {
-            "time" : 15.0,
+            "time" : 11.0,
+            "events" : [
+                {   
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" :
+                    {
+                        "comment" : "%%%% Collect/shoot mode switch set to collect",                             
+                        "button11" : false
+                    }
+                }
+            ]
+        },
+        {
+            "time" : 11.5,
+            "events" :
+            [
+                {
+                    "model" : "droidoi",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "comment" : "%%%% Press the collect button",                               
+                        "button14" : true
+                    }
+                }
+            ]
+        }, 
+        {
+            "time" : 12.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },    
+        {
+            "time" : 13.0,
+            "events" :
+            [
+                {
+                    "model" : "conveyor",
+                    "instance" : "1",
+                    "values" : 
+                    {
+                        "ball" : true
+                    }
+                }               
+            ]
+        },      
+        {
+            "time" : 13.95,
             "asserts" :
             [
                 {
                     "subsystem" : "conveyor",
                     "property" : "ballcount",
-                    "value" : 0
-                }
+                    "value" : 5
+                }               
             ]
-        }         
+        }
     ]
 }

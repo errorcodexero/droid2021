@@ -69,15 +69,17 @@ public class DispatchAction extends ActionGroup {
     /// \returns a human readable string descrbing this DispatchAction
     @Override
     public String toString(int indent) {
-        String ret = prefix(indent) + "DispatchAction [" ;
+        String ret = prefix(indent) + "DispatchAction, ";
 
-        ret += "\n" ;
-        ret += spaces(indent + 4) + sub_.getName() + ", " + act_.toString(0);
+        ret += sub_.getName() ;
         if (block_)
             ret += ", BLOCKING";
         else
             ret += ", NONBLOCKING";
 
+        ret += "  [" ;
+        ret += "\n" ;
+        ret += act_.toString(indent + 4) ;
         ret += "\n" ;
         ret += spaces(indent) + "]" ;
         return ret;

@@ -18,6 +18,29 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsValue;
 
 public class ConveyorModel extends SimulationModel {
+    
+    private SimMotorController intake_ ;
+    private SimMotorController shooter_ ;
+
+    private int [] sensor_io_ ;
+    private double [] sensor_pos_ ;
+
+    private Ball [] balls_ ;
+
+    private double dist_per_second_per_volt_ ;
+    private double dist_per_second_stopped_ ;
+
+    private DecimalFormat fmt_ ;
+
+    private int ball_position_logger_id_ ;
+    private boolean [] state_ ;
+
+    private double minpos_ ;
+    private double maxpos_ ;
+    private double midpos_ ;
+
+    private IntakeModel intake_model_ ;
+
     public static final String LogBallPosition = "conveyor_model_balls" ;
     private static final String IntakeModelPropertyName = "intake_model" ;
     private static final String IntakeInstancePropertyName = "intake_instance" ;    
@@ -515,30 +538,9 @@ public class ConveyorModel extends SimulationModel {
         }
         balls_[i].setPresent(false);
         MessageLogger logger = getEngine().getMessageLogger() ;
-        logger.startMessage(MessageType.Debug, getLoggerID()) ;
+        logger.startMessage(MessageType.Debug) ;
         logger.add("ball exited via intake").endMessage();
         balls_[balls_.length - 1].setPresent(false);
     }
 
-    private SimMotorController intake_ ;
-    private SimMotorController shooter_ ;
-
-    private int [] sensor_io_ ;
-    private double [] sensor_pos_ ;
-
-    private Ball [] balls_ ;
-
-    private double dist_per_second_per_volt_ ;
-    private double dist_per_second_stopped_ ;
-
-    private DecimalFormat fmt_ ;
-
-    private int ball_position_logger_id_ ;
-    private boolean [] state_ ;
-
-    private double minpos_ ;
-    private double maxpos_ ;
-    private double midpos_ ;
-
-    private IntakeModel intake_model_ ;
 }

@@ -124,7 +124,6 @@ public class MotorEncoderVelocityAction extends MotorAction {
 
     @Override
     public String toString(int indent) {
-        return prefix(indent) + "MotorEncoderVelocityAction " + Double.toString(target_) ;
+        return prefix(indent) + "MotorEncoderVelocityAction (" + getSubsystem().getName() + ") " +  Double.toString(target_) ;
     }
-
 }
