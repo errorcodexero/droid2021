@@ -55,10 +55,10 @@ public class MotorEncoderHoldAction extends MotorAction {
     public String toString(int indent) {
         String ret = prefix(indent) + "MotorEncoderHoldAction" ;
         if (has_explicit_target_)
-            ret += "-explicit" ;
+            ret += ", explicit" ;
         else
-            ret += "-implicit" ;
-        ret += " target=" + Double.toString(target_) ;
+            ret += ", implicit" ;
+        ret += ", target=" + Double.toString(target_) ;
         return ret ;
     }
 

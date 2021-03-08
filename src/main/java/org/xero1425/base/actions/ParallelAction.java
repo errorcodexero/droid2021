@@ -141,11 +141,17 @@ public class ParallelAction extends ActionGroup
     @Override
     public String toString(int indent) {
         String ret = prefix(indent) + "ParallelAction [" ;
+        boolean first = true ;
 
         for(Action act : actions_)
         {
+            if (!first)
+                ret += "," ;
+
             ret += "\n" ;
             ret += act.toString(indent + 4) ;
+
+            first = false ;
         }
         ret += "\n" ;
         ret += spaces(indent) + "]" ;
