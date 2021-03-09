@@ -155,7 +155,7 @@ public class DroidOIDevice extends OIPanel {
 
         shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down) ;
         shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down) ;
-        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 7000.0, ShooterSubsystem.HoodPosition.Up) ;
+        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 6500.0, ShooterSubsystem.HoodPosition.Up) ;
         shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down) ;
 
         if (climber_attached_)
@@ -341,9 +341,12 @@ public class DroidOIDevice extends OIPanel {
     }    
 
     private void processShootReady(SequenceAction seq) throws InvalidActionRequest {
+        GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator();
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
         
         if (getValue(collect_v_shoot_) == 0) {
+            if (gp.isBusy())
+                gp.cancelAction();
             collectMode(seq) ;
         }
         else if (getValue(manual_shoot_mode_) == 1 && getValue(manual_shoot_fire_) == 1) {
@@ -445,20 +448,22 @@ public class DroidOIDevice extends OIPanel {
         }
         else {
             seq.addSubActionPair(turret, turret_follow_target_, false);
+            seq.addSubActionPair(shooter, shooter_spinup_, false) ;
         }
 
         seq.addSubActionPair(conveyor, queue_prep_shoot_, false) ;
-        seq.addSubActionPair(shooter, shooter_spinup_, false) ;
         seq.addSubActionPair(intake, intake_off_, false);
     }    
 
     private void startEject(SequenceAction seq) throws InvalidActionRequest {
+        GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
         ShooterSubsystem shooter = getDroidSubsystem().getGamePieceManipulator().getShooter() ;
         IntakeSubsystem intake = getDroidSubsystem().getGamePieceManipulator().getIntake() ;
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ;
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
 
         collect_shoot_state_ = CollectShootState.Ejecting ;
+        gp.cancelAction();
         seq.addSubActionPair(intake, intake_off_, false) ;
         seq.addSubActionPair(turret, turret_goto_zero_, false) ;
         seq.addSubActionPair(conveyor, eject_action_, false);
