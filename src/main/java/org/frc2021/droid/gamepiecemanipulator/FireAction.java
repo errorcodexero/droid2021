@@ -232,6 +232,7 @@ public class FireAction extends Action {
 
     private void setTargetVelocity() {
         double dist = tracker_.getDistance() ;
+        dist = 100.0 ;
 
         if (dist > max_hood_up_distance_)
             hood_pos_ = HoodPosition.Down ;
@@ -253,5 +254,9 @@ public class FireAction extends Action {
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
+
+        sub_.putDashboard("shoot-distance", DisplayType.Always, dist);
+        sub_.putDashboard("shoot-target", DisplayType.Always, target);
+        sub_.putDashboard("shoot-velocity", DisplayType.Always, sub_.getShooter().getVelocity());
     }
 }

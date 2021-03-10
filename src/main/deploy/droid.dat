@@ -13,11 +13,11 @@
 
 tankdrive:verbose                                                       false
 turret:verbose                                                          false
-shooter:verbose                                                         true
+shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            true
-conveyor:verbose                                                        false
+gamepiecemanipulator:verbose                                            false
+conveyor:verbose                                                        true
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
 targettracker:verbose                                                   false
@@ -42,13 +42,13 @@ conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
-droidoi:messages                                                        true
+droidoi:messages                                                        false
 blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
 fireaction:messages                                                     false
-conveyor_model:messages                                                 true
+conveyor_model:messages                                                 false
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -134,7 +134,7 @@ hw:turret:encoder:analog:ec                                     2.45
 endif
 
 if COMPETITION
-hw:turret:encoder:analog:ec                                     1.33
+hw:turret:encoder:analog:ec                                     1.55
 endif
 
 hw:turret:encoder:analog:rc                                     0.0
@@ -260,10 +260,10 @@ tankdrive:follower:angle_correction                             -0.03
 # shooter
 ###################################################################################################
 
-shooter:velocity:kp                                             0.0
+shooter:velocity:kp                                             0.0001
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
-shooter:velocity:kf                                             0.000134549119179
+shooter:velocity:kf                                             0.00014407573346281248912909418078435
 shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
@@ -348,7 +348,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.5
+turret:fire_threshold                                           2.0
 turret:min                                                      -40 # The minimum safe angle.
 turret:max                                                      40  # The maximum safe angle.
 

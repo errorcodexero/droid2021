@@ -10,6 +10,19 @@ import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsValue;
 
 public class LimeLightSubsystem extends Subsystem {
+    private CamMode cam_mode_ ;
+    private LedMode led_mode_ ;
+    private int pipeline_ ;
+    private boolean tv_ ;
+    private boolean connected_ ;
+    private double tx_ ;
+    private double ty_ ;
+    private double ta_ ;
+    private double total_latency_ ;
+    private double camera_latency_ ;
+    private double network_latency_ ;
+    private NetworkTable nt_ ;
+
     public final static String LimeLightTableName = "limelight";
     public final static String CamModeKeyName = "camMode" ;
     public final static String LedModeKeyName = "ledMode" ;
@@ -72,7 +85,9 @@ public class LimeLightSubsystem extends Subsystem {
             if (nt_.containsKey("tv"))
             {
                 connected_ = true ;
-                if (nt_.getEntry("tv").getNumber(0.0).doubleValue() < 0.01)
+                double value = nt_.getEntry("tv").getNumber(0.0).doubleValue() ;
+                // if (value < 0.01)
+                if (false)
                 {
                     tv_ = false ;
                 }
@@ -201,16 +216,4 @@ public class LimeLightSubsystem extends Subsystem {
         return "limelight" ;
     }
 
-    private CamMode cam_mode_ ;
-    private LedMode led_mode_ ;
-    private int pipeline_ ;
-    private boolean tv_ ;
-    private boolean connected_ ;
-    private double tx_ ;
-    private double ty_ ;
-    private double ta_ ;
-    private double total_latency_ ;
-    private double camera_latency_ ;
-    private double network_latency_ ;
-    private NetworkTable nt_ ;
 } ;
