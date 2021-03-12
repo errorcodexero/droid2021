@@ -127,10 +127,5 @@ public class TargetTrackerSubsystem extends Subsystem {
             distance_ = 0.0 ;
             desired_turret_angle_ = 0.0 ;
         }
-
-        // Remove Me
-        has_target_ = true ;
-        distance_ = 140.0 ;
-        desired_turret_angle_ = 0.0 ;
     }
 }

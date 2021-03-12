@@ -2,7 +2,10 @@ package org.frc2021.droid.automodes;
 
 import org.frc2021.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.StartCollectAction;
+import org.frc2021.droid.gamepiecemanipulator.StopCollectAction;
+import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.ParallelAction;
+import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.actions.ParallelAction.DonePolicy;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
@@ -63,8 +66,12 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
             SmartDashboard.putString("GSearch", which_);
 
             ParallelAction pact = new ParallelAction(getMessageLogger(), DonePolicy.All);
+            SequenceAction sact = new SequenceAction(getMessageLogger()) ;
 
-            pact.addSubActionPair(gm, new StartCollectAction(gm), false);
+            sact.addSubActionPair(gm, new StartCollectAction(gm), false);
+            sact.addAction(new DelayAction(db.getRobot(), 5.0));
+            sact.addSubActionPair(gm, new StopCollectAction(gm), false) ;
+            pact.addAction(sact) ;
 
             if (which_.equals("red-a")) {
                 pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);

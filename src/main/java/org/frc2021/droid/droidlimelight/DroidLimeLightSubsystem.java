@@ -30,17 +30,14 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
     public void computeMyState() {
         super.computeMyState();
         
-        // if (isLimeLightConnected() && isTargetDetected())
-        // {
-        //     distance_ = (target_height_ - camera_height_) / Math.tan(Math.toRadians(camera_angle_ + getTY())) ;
-        //     yaw_ = getTX() ;
+        if (isLimeLightConnected() && isTargetDetected())
+        {
+            distance_ = (target_height_ - camera_height_) / Math.tan(Math.toRadians(camera_angle_ + getTY())) ;
+            yaw_ = getTX() ;
 
-        //     putDashboard("dll-distance", DisplayType.Verbose, distance_);
-        //     putDashboard("dll-yaw", DisplayType.Verbose, yaw_) ;
-        // }
-
-        distance_ = 140.0 ;
-        yaw_ = 0.0 ;
+            putDashboard("dll-distance", DisplayType.Verbose, distance_);
+            putDashboard("dll-yaw", DisplayType.Verbose, yaw_) ;
+        }
     }
 
     public double getDistance() {

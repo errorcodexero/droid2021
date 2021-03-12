@@ -86,8 +86,7 @@ public class LimeLightSubsystem extends Subsystem {
             {
                 connected_ = true ;
                 double value = nt_.getEntry("tv").getNumber(0.0).doubleValue() ;
-                // if (value < 0.01)
-                if (false)
+                if (value < 0.01)
                 {
                     tv_ = false ;
                 }
