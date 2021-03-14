@@ -19,7 +19,7 @@ public class ShootTestingAction extends Action {
         sub_ = gp ;
 
         widget_ = makeWidget() ;
-        fire_ = new ShooterVelocityAction(gp.getShooter(), 0, pos) ;
+        fire_ = new ShooterVelocityAction(gp.getShooter(), 0, pos, true) ;
         prepare_receive_ = new ConveyorPrepareToReceiveAction(gp.getConveyor()) ;
         receive_ = new ConveyorReceiveAction(gp.getConveyor()) ;
         prepare_emit_ = new ConveyorPrepareToEmitAction(gp.getConveyor()) ;

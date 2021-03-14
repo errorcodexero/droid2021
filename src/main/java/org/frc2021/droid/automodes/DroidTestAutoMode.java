@@ -171,11 +171,11 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 32:            // Set shooter to fixed velocity (hood down)
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down), true);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down, true), true);
                 break ;
 
             case 33:            // Set shooter to fixed velocity (hood up)
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up, true), false);
                 break ;
                 
             case 34:            // Characterize the shooter, gets velocity from smartdashboard - hood up
@@ -191,20 +191,20 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 36:            // Test the hood
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up, false), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down, false), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up, false), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Down, false), false);
                 addAction(new DelayAction(ctrl.getRobot(), 3.0));
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up), false);             
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, 0.0, HoodPosition.Up, false), false);             
                 break ;
                 
             case 37:            // Manual shoot, hood down
                 addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, 5), false);
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Down, true), false);
                 addAction(new DelayAction(ctrl.getRobot(), 5.0));
                 addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), true);
                 addSubActionPair(conveyor, new ConveyorEmitAction(conveyor), true);
@@ -212,7 +212,7 @@ public class DroidTestAutoMode extends TestAutoMode {
 
             case 38:            // Manual shoot, hood up
                 addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, 5), false);
-                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up), false);
+                addSubActionPair(shooter, new ShooterVelocityAction(shooter, getPower(), HoodPosition.Up, true), false);
                 addAction(new DelayAction(ctrl.getRobot(), 5.0));
                 addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), true);
                 addSubActionPair(conveyor, new ConveyorEmitAction(conveyor), true);

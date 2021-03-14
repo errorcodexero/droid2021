@@ -10,17 +10,19 @@ import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.XeroMath;
 
 public class ShooterVelocityAction extends MotorEncoderVelocityAction {
-    ShooterSubsystem sub_ ;
+    private ShooterSubsystem sub_ ;
     private double ready_percent_ ;
     private ShooterSubsystem.HoodPosition pos_ ;
+    private boolean setready_ ;
 
-    public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos)
+    public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos, boolean setready)
             throws BadParameterTypeException, MissingParameterException {
         super(shooter, target, 30.0) ;
 
         ready_percent_ = shooter.getRobot().getSettingsParser().get("shooter:velocity:ready_margin_percent").getDouble() ;
         pos_ = pos ;
         sub_ = shooter ;
+        setready_ = setready ;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
         if (pos_ == ShooterSubsystem.HoodPosition.Up)
             ret += " Up" ;
         else
-            ret += "Down" ;
+            ret += " Down" ;
         return ret ;
     }
 
@@ -82,9 +84,16 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     }
 
     private void updateReadyToFire() {
-        if (getTarget() > 0.01 && XeroMath.equalWithinPercentMargin(getTarget(), sub_.getVelocity(), ready_percent_))
-            sub_.setReadyToFire(true);
-        else
+        if (setready_ == false)
+        {
             sub_.setReadyToFire(false);
+        }
+        else
+        {
+            if (XeroMath.equalWithinPercentMargin(getTarget(), sub_.getVelocity(), ready_percent_))
+                sub_.setReadyToFire(true);
+            else
+                sub_.setReadyToFire(false);
+        }
     }
 }

@@ -67,7 +67,7 @@ public class DroidAutoMode extends AutoMode {
         parallel.addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), false);
         if (path != null)
             parallel.addSubActionPair(db, new TankDriveFollowPathAction(db, path, reverse), true);
-        parallel.addSubActionPair(shooter, new ShooterVelocityAction(shooter, 4150, HoodPosition.Down), false);
+        parallel.addSubActionPair(shooter, new ShooterVelocityAction(shooter, 4150, HoodPosition.Down, false), false);
 
         addAction(parallel);
         addSubActionPair(gp, new FireAction(gp, tracker, turret, db), true);

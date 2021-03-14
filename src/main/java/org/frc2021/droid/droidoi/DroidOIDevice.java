@@ -153,10 +153,10 @@ public class DroidOIDevice extends OIPanel {
         queue_prep_shoot_ = new ConveyorPrepareToEmitAction(conveyor) ;
         emit_ = new ConveyorEmitAction(conveyor) ;
 
-        shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down) ;
-        shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down) ;
-        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 10000.0, ShooterSubsystem.HoodPosition.Up) ;
-        shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down) ;
+        shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down, false) ;
+        shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down, false) ;
+        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 10000.0, ShooterSubsystem.HoodPosition.Up, true) ;
+        shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down, false) ;
 
         if (climber_attached_)
         {

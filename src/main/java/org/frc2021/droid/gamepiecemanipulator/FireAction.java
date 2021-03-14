@@ -73,8 +73,8 @@ public class FireAction extends Action {
         turret_ = turret ;
         db_ = db ;
 
-        shooter_velocity_action_ = new ShooterVelocityAction(gp.getShooter(), 4500.0, ShooterSubsystem.HoodPosition.Down) ;
-        shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down) ;
+        shooter_velocity_action_ = new ShooterVelocityAction(gp.getShooter(), 4500.0, ShooterSubsystem.HoodPosition.Down, true) ;
+        shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down, false) ;
         emit_action_ = new ConveyorEmitAction(gp.getConveyor()) ;
 
         SettingsParser settings = gp.getRobot().getSettingsParser() ;
