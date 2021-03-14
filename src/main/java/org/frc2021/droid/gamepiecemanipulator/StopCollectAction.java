@@ -41,7 +41,7 @@ public class StopCollectAction extends Action {
 
     @Override
     public String toString(int indent) {
-        return prefix(indent) + "StartCollectAction" ;
+        return prefix(indent) + "StopCollectAction" ;
     }
 
     private GamePieceManipulatorSubsystem sub_ ;

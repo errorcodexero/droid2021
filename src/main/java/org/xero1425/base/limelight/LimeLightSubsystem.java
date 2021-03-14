@@ -4,8 +4,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import org.xero1425.base.Subsystem;
 import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsValue;
 
@@ -104,10 +102,10 @@ public class LimeLightSubsystem extends Subsystem {
                 connected_ = false ;
                 if (getRobot().getTime() > 4.0)
                 {
-                    MessageLogger logger = getRobot().getMessageLogger() ;
-                    logger.startMessage(MessageType.Error) ;
-                    logger.add("did not detect limelight (after 4 seconds)") ;
-                    logger.endMessage() ;
+                    // MessageLogger logger = getRobot().getMessageLogger() ;
+                    // logger.startMessage(MessageType.Error) ;
+                    // logger.add("did not detect limelight (after 4 seconds)") ;
+                    // logger.endMessage() ;
                 }
             }
         }

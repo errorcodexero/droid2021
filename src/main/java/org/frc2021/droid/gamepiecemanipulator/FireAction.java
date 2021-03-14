@@ -101,7 +101,7 @@ public class FireAction extends Action {
         super.start() ;
 
         is_firing_ = false ;
-        shooter_velocity_action_.setTarget(4501.0) ;
+        shooter_velocity_action_.setTarget(4500.0) ;
         sub_.getShooter().setAction(shooter_velocity_action_, true) ;
 
         start_time_ = sub_.getRobot().getTime() ;
@@ -118,16 +118,20 @@ public class FireAction extends Action {
         boolean shooter_ready = shooter.isReadyToFire() ;
         boolean db_ready = (db_.getVelocity() < db_velocity_threshold_) ;
 
+        boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready ;
+        boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready ;
+
         sub_.putDashboard("tracker-ready", DisplayType.Always, tracker_ready) ;
         sub_.putDashboard("turret-ready", DisplayType.Always, turret_ready) ;
         sub_.putDashboard("shooter-ready", DisplayType.Always, shooter_ready);
         sub_.putDashboard("db-ready", DisplayType.Always, db_ready) ;
+        sub_.putDashboard("rtf", DisplayType.Always, ready_to_fire);
+        sub_.putDashboard("isfiring", DisplayType.Always, is_firing_);
 
         if (tracker_ready)
+        {
             setTargetVelocity(); 
-
-        boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready ;
-        boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready ;
+        }
 
         if (is_firing_) {
             if (sub_.getConveyor().isEmpty() && !sub_.getConveyor().isBusy()) {
@@ -147,7 +151,8 @@ public class FireAction extends Action {
                 //
                 sub_.getShooter().setAction(shooter_stop_action_, true) ;
             }
-            else if (!ready_to_fire_except_shooter) {
+            // else if (!ready_to_fire_except_shooter) {
+            else if (!ready_to_fire) {
                 //
                 // We lost the target or the driver started driving or we got bumped and
                 // are no longer aiming at the target
@@ -232,7 +237,6 @@ public class FireAction extends Action {
 
     private void setTargetVelocity() {
         double dist = tracker_.getDistance() ;
-        dist = 100.0 ;
 
         if (dist > max_hood_up_distance_)
             hood_pos_ = HoodPosition.Down ;
@@ -258,5 +262,14 @@ public class FireAction extends Action {
         sub_.putDashboard("shoot-distance", DisplayType.Always, dist);
         sub_.putDashboard("shoot-target", DisplayType.Always, target);
         sub_.putDashboard("shoot-velocity", DisplayType.Always, sub_.getShooter().getVelocity());
+
+        MessageLogger logger = sub_.getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Info, logger_id_) ;
+        logger.add("FIRE ACTION: ") ;
+        logger.add("distance", dist) ;
+        logger.add(" target", target) ;
+        logger.add(" velocity", sub_.getShooter().getVelocity()) ;
+        logger.add(" hood", hood_pos_.toString()) ;
+        logger.endMessage();
     }
 }

@@ -102,7 +102,8 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         {
             hood_servo_.set(hood_up_pos_) ;  
             actual_ = pos  ;              
-            hood_value_ = hood_up_pos_ ;        
+            hood_value_ = hood_up_pos_ ;     
+               
         }
     }
 

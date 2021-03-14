@@ -52,6 +52,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
         logger.add("shooter velocity:") ;
         logger.add("target", getTarget()) ;
         logger.add("actual", me.getVelocity()) ;
+        logger.add("ready", sub_.isReadyToFire()) ;
         logger.endMessage();
 
         sub_.putDashboard("sh-target", DisplayType.Verbose, getTarget());
@@ -64,9 +65,19 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     }
 
     @Override
-    public String toString() {
-        String ret = "ShooterVelocityAction" ;
+    public String toString(int indent) {
+        String ret = prefix(indent) + "ShooterVelocityAction" ;
         ret += " target = " +  Double.toString(getTarget()) ;
+        if (pos_ == ShooterSubsystem.HoodPosition.Up)
+            ret += " Up" ;
+        else
+            ret += "Down" ;
+        return ret ;
+    }
+
+    @Override
+    public String toString() {
+        String ret = "ShooterVelocity " + Double.toString(getTarget()) ;
         return ret ;
     }
 
@@ -76,5 +87,4 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
         else
             sub_.setReadyToFire(false);
     }
-
 }

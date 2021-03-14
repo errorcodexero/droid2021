@@ -61,7 +61,7 @@ public class TankDriveSubsystem extends Subsystem {
 
         automode_neutral_ = MotorController.NeutralMode.Brake;
         teleop_neutral_ = MotorController.NeutralMode.Brake;
-        disabled_neutral_ = MotorController.NeutralMode.Coast;
+        disabled_neutral_ = MotorController.NeutralMode.Brake;
 
         navx_ = new AHRS(SPI.Port.kMXP) ;
         double start = getRobot().getTime() ;

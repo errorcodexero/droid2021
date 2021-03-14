@@ -18,72 +18,66 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GalacticSearchAutoMode extends DroidAutoMode {
     private String which_ ;
+    private String last_which_ ;
 
     public GalacticSearchAutoMode(DroidAutoController ctrl) throws Exception {
         super(ctrl, "GalacticSearchAutoMode");
 
-        TankDriveSubsystem db = getDroidSubsystem().getTankDrive();
-        GamePieceManipulatorSubsystem gm = getDroidSubsystem().getGamePieceManipulator();
-
         which_ = "" ;
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Vision");
-        which_ = table.getEntry("Result").getString("");
-
-        SmartDashboard.putString("GSearch", which_);
-
-        MessageLogger logger = getAutoController().getRobot().getMessageLogger();
-        logger.startMessage(MessageType.Info).add("WHICH", which_);
-        logger.endMessage();
-
-        ParallelAction pact = new ParallelAction(getMessageLogger(), DonePolicy.All);
-
-        pact.addSubActionPair(gm, new StartCollectAction(gm), false);
-
-        if (which_.equals("reda")) {
-            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
-        } else if (which_.equals("redb")) {
-            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
-        } else if (which_.equals("bluea")) {
-            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);
-        } else if (which_.equals("blueb")) {
-            pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueB", false), true);
-        }
-
-        addAction(pact);
+        last_which_ = "" ;
+        updateWhich();
     }
 
     public void updateWhich() throws Exception {
-        clear() ;
 
-        TankDriveSubsystem db = getDroidSubsystem().getTankDrive();
-        GamePieceManipulatorSubsystem gm = getDroidSubsystem().getGamePieceManipulator();
-
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Vision");
-        which_ = table.getEntry("Result").getString("");
-
-        if (!which_.isEmpty())
+        which_ = getWhich() ;
+        if (!which_.equals(last_which_))
         {
-            SmartDashboard.putString("GSearch", which_);
+            clear() ;
 
-            ParallelAction pact = new ParallelAction(getMessageLogger(), DonePolicy.All);
-            SequenceAction sact = new SequenceAction(getMessageLogger()) ;
+            if (!which_.isEmpty())
+            {
+                TankDriveSubsystem db = getDroidSubsystem().getTankDrive();
+                GamePieceManipulatorSubsystem gm = getDroidSubsystem().getGamePieceManipulator();
 
-            sact.addSubActionPair(gm, new StartCollectAction(gm), false);
-            sact.addAction(new DelayAction(db.getRobot(), 5.0));
-            sact.addSubActionPair(gm, new StopCollectAction(gm), false) ;
-            pact.addAction(sact) ;
+                SmartDashboard.putString("GSearch", which_);
 
-            if (which_.equals("red-a")) {
-                pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
-            } else if (which_.equals("red-b")) {
-                pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
-            } else if (which_.equals("blue-a")) {
-                pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);
-            } else if (which_.equals("blue-b")) {
-                pact.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueB", false), true);
+                ParallelAction pact = new ParallelAction(getMessageLogger(), DonePolicy.All);
+                SequenceAction collseq = new SequenceAction(getMessageLogger()) ;
+                SequenceAction pathseq = new SequenceAction(getMessageLogger()) ;
+        
+                collseq.addSubActionPair(gm, new StartCollectAction(gm), false);
+                collseq.addAction(new DelayAction(db.getRobot(), 4.5));
+                collseq.addSubActionPair(gm, new StopCollectAction(gm), false) ;
+                pact.addAction(collseq) ;
+        
+                if (which_.equals("red-a")) {
+                    pathseq.addAction(new DelayAction(db.getRobot(), 1.0));
+                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
+                } else if (which_.equals("red-b")) {
+                    pathseq.addAction(new DelayAction(db.getRobot(), 1.0));
+                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
+                } else if (which_.equals("blue-a")) {
+                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);
+                } else if (which_.equals("blue-b")) {
+                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueB", false), true);
+                }
+        
+                pact.addAction(pathseq);
+                addAction(pact);
             }
-
-            addAction(pact);
         }
+
+        last_which_ = which_ ;
+    }
+
+    private String getWhich() {
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Vision");
+        String which = table.getEntry("Result").getString("");
+
+        MessageLogger logger = getAutoController().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Info).add("Configuration Detected", which) ;
+        logger.endMessage();
+        return which ;
     }
 }

@@ -42,7 +42,7 @@ public class ConveyorEmitAction extends ConveyorStateAction {
             new BranchState(NotFiringLastBallLabel, (ConveyorStateAction act) -> {
                 return act.getSubsystem().getBallCount() != 1 ;}),
 
-            new DelayState(2.0),
+            new DelayState(0.5),
 
             new DoWorkState("decrement ball count", (ConveyorStateAction act) -> {
                 act.getSubsystem().decrementBallCount();

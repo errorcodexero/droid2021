@@ -35,6 +35,7 @@ public class ParallelAction extends ActionGroup
 
         actions_ = new ArrayList<Action>() ;
         running_ = false ;
+        done_policy_ = done ;
     }
 
     /// \brief get the done policy for this parallel action

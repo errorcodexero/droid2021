@@ -17,7 +17,7 @@ shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
 gamepiecemanipulator:verbose                                            false
-conveyor:verbose                                                        true
+conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
 targettracker:verbose                                                   false
@@ -34,11 +34,11 @@ blinky:verbose                                                          false
 
 tankdrive:messages                                                      false
 turret:messages                                                         false
-shooter:messages                                                        false
+shooter:messages                                                        true
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       false
+conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -47,7 +47,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     false
+fireaction:messages                                                     true
 conveyor_model:messages                                                 false
 
 #
@@ -180,10 +180,10 @@ hw:climber:servo:r:release                                      1.0
 hw:climber:servo:l:climb                                        0.0
 hw:climber:servo:r:climb                                        0.0
 
-intake:collector:motor:power                                    1.0
-intake:collector:motor:revpower                                 -1.0
+intake:collector:motor:power                                    -1.0
+intake:collector:motor:revpower                                 1.0
 if PRACTICE
-intake:arm:collecton:pos                                        1350
+intake:arm:collecton:pos                                        1400
 endif
 if COMPETITION
 intake:arm:collecton:pos                                        1550
@@ -260,7 +260,8 @@ tankdrive:follower:angle_correction                             -0.03
 # shooter
 ###################################################################################################
 
-shooter:velocity:kp                                             0.0001
+# shooter:velocity:kp                                             0.0001
+shooter:velocity:kp                                             0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.00014407573346281248912909418078435
@@ -268,7 +269,7 @@ shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
-shooter:velocity:ready_margin_percent                           5.0      # If velocity is within % margin from target, consider it ready to shoot
+shooter:velocity:ready_margin_percent                           2.0      # If velocity is within % margin from target, consider it ready to shoot
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -285,13 +286,10 @@ endif
 
 if PRACTICE
 shooter:hood:down                                               0.32
-shooter:hood:up                                                 -0.1
+shooter:hood:up                                                 -0.4
 endif
 
 
-shooter:aim:hood_up:a                                           0.4356
-shooter:aim:hood_up:b                                           -86.431
-shooter:aim:hood_up:c                                           7965.1
 
 shooter:aim:max_hood_up                                         130
 shooter:aim:min_hood_down                                       120
@@ -322,7 +320,7 @@ turret:hold:max                                                 0.3
 turret:hold:imax                                                0.0
 
 # turret:follow:kp                                                 0.014084508
-turret:follow:kp                                                 0.03
+turret:follow:kp                                                 0.06
 turret:follow:ki                                                 0
 turret:follow:kd                                                 0.0
 turret:follow:kf                                                 0
@@ -348,7 +346,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           2.0
+turret:fire_threshold                                           1.0
 turret:min                                                      -40 # The minimum safe angle.
 turret:max                                                      40  # The maximum safe angle.
 
@@ -482,10 +480,14 @@ climber:lifter:hold:imax                                                0
 # Amy
 #
 droidvision:camera_angle                                        20.08
-shooter:aim:hood_down:a                                         0.3292
-shooter:aim:hood_down:b                                         -127.02
-shooter:aim:hood_down:c                                         18103
+shooter:aim:hood_down:a                                         0.1902
+shooter:aim:hood_down:b                                         -72.493
+shooter:aim:hood_down:c                                         12013
 targettracker:camera_offset_angle                               -2
+
+shooter:aim:hood_up:a                                           0.1729
+shooter:aim:hood_up:b                                           -33.818
+shooter:aim:hood_up:c                                           5011.4
 
 #
 # Bill
@@ -579,8 +581,8 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
-auto:testmode:which                                           32
+auto:testmode:active                                          true
+auto:testmode:which                                           34
 auto:testmode:distance                                        1800
 auto:testmode:power                                           4000
 auto:testmode:duration                                        1.0
