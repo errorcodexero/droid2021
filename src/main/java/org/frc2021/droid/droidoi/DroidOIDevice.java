@@ -78,6 +78,8 @@ public class DroidOIDevice extends OIPanel {
     private Action intake_off_ ;
 
     private Action turret_goto_zero_ ;
+    private Action turret_goto_90_ ;
+    private Action turret_goto_manual_ ;
     private Action turret_follow_target_ ;
 
     private Action eject_action_ ;
@@ -145,6 +147,8 @@ public class DroidOIDevice extends OIPanel {
         intake_off_ = new CollectOffAction(intake);
 
         turret_goto_zero_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
+        turret_goto_90_ = new MotorEncoderGotoAction(turret, -90.0, true) ;
+        turret_goto_manual_ = new MotorEncoderGotoAction(turret, -70.0, true) ;
         turret_follow_target_ = new FollowTargetAction(turret, tracker) ;
 
         eject_action_ = new ConveyorEjectAction(conveyor) ;
@@ -155,7 +159,7 @@ public class DroidOIDevice extends OIPanel {
 
         shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down, false) ;
         shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down, false) ;
-        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 10000.0, ShooterSubsystem.HoodPosition.Up, true) ;
+        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 4000.0, ShooterSubsystem.HoodPosition.Up, true) ;
         shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down, false) ;
 
         if (climber_attached_)
@@ -430,7 +434,16 @@ public class DroidOIDevice extends OIPanel {
         collect_shoot_state_ = CollectShootState.PreparingForCollect ;
         gp.cancelAction(); ;
         seq.addSubActionPair(conveyor, queue_prep_collect_, false) ;
-        seq.addSubActionPair(turret, turret_goto_zero_, false) ;
+
+        if (getValue(climb_lock_) == 1)
+        {
+            seq.addSubActionPair(turret, turret_goto_zero_, false) ;
+        }
+        else
+        {
+            seq.addSubActionPair(turret, turret_goto_90_, false) ;
+        }
+
         seq.addSubActionPair(shooter, shooter_stop_, false);
     }
 
@@ -443,7 +456,7 @@ public class DroidOIDevice extends OIPanel {
         collect_shoot_state_ = CollectShootState.PreparingForShoot ;
 
         if (getValue(manual_shoot_mode_) == 1) {
-            seq.addSubActionPair(turret, turret_goto_zero_, false) ;
+            seq.addSubActionPair(turret, turret_goto_manual_, false) ;
             seq.addSubActionPair(shooter, shooter_shoot_manual_, false);
         }
         else {
@@ -511,11 +524,11 @@ public class DroidOIDevice extends OIPanel {
         num = settings.get("oi:eject").getInteger() ;
         eject_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
 
+        num = settings.get("oi:climb_lock").getInteger() ;
+        climb_lock_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
+
         if (climber_attached_)
-        {
-            num = settings.get("oi:climb_lock").getInteger() ;
-            climb_lock_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
-            
+        {          
             num = settings.get("oi:climb_deploy").getInteger() ;
             climb_deploy_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
             
@@ -533,7 +546,6 @@ public class DroidOIDevice extends OIPanel {
         }
         else
         {
-            climb_lock_ = -1 ;
             climb_deploy_ = -1 ;
             climb_up_ = -1 ;
             climb_down_ = -1 ;

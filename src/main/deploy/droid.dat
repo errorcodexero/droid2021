@@ -34,7 +34,7 @@ blinky:verbose                                                          false
 
 tankdrive:messages                                                      false
 turret:messages                                                         false
-shooter:messages                                                        false
+shooter:messages                                                        true
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
@@ -47,7 +47,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     false
+fireaction:messages                                                     true
 conveyor_model:messages                                                 false
 
 #
@@ -86,20 +86,10 @@ hw:shooter:motor:2:inverted                                     true
 endif
 hw:shooter:motor:neutral_mode                                   "coast"
 
-if PRACTICE
-#hw:shooter:motor:inverted                                       true
-endif
-
 hw:shooter:encoder:quad:motor                                   true                       # Use encoder in NEO motor
 hw:shooter:encoder:quad:m                                       1.94714
 hw:shooter:encoder:quad:b                                       0
-
-if PRACTICE
 hw:shooter:hood                                                 3
-endif
-if COMPETITION
-hw:shooter:hood                                                 3
-endif
 
 hw:conveyor:motors:intake:type                                  "sparkmax_brushless"
 hw:conveyor:motors:intake:canid                                 7                          # CAN 7
@@ -196,24 +186,30 @@ intake:hold:kf                                                   0
 intake:hold:min                                                 -0.1
 intake:hold:max                                                 0.1
 intake:hold:imax                                                0
+
 if PRACTICE
 intake:follower:down:kp                                       0.0005
 endif
 if COMPETITION
-intake:follower:down:kp                                       0.001
+intake:follower:down:kp                                       0.002
 endif
 intake:follower:down:kd                                       0.0
 intake:follower:down:kv                                       0.00012407
 intake:follower:down:ka                                       0.0
+
 if PRACTICE
 intake:follower:up:kp                                         0.001
 endif
 if COMPETITION
 intake:follower:up:kp                                         0.001
 endif
+
 intake:follower:up:kd                                         0.0
-intake:follower:up:kv                                         0.000147929
-intake:follower:up:ka                                         0.0
+intake:follower:up:kv                                         0.000035
+#intake:follower:up:kv                                         0.000147929
+intake:follower:up:ka                                         0
+
+
 intake:goto:threshold                                       10.0       # Within 10 ticks degrees
 intake:goto:maxd                                            -14000.0     # maximum deceleration
 intake:goto:maxa                                            14000.0     # maximum acceleration
@@ -260,8 +256,8 @@ tankdrive:follower:angle_correction                             -0.03
 # shooter
 ###################################################################################################
 
-# shooter:velocity:kp                                             0.0001
-shooter:velocity:kp                                             0.0
+#shooter:velocity:kp                                           0.0001
+ shooter:velocity:kp                                             0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.00014407573346281248912909418078435
@@ -306,7 +302,7 @@ shooter:hood:down_speed						1.0
 # turret
 ###################################################################################################
 
-turret:goto:threshold                                           3.0
+turret:goto:threshold                                           1.5
 turret:goto:maxa                                                250
 turret:goto:maxd                                                -250
 turret:goto:maxv                                                250
@@ -347,8 +343,8 @@ turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
 turret:fire_threshold                                           1.0
-turret:min                                                      -40 # The minimum safe angle.
-turret:max                                                      40  # The maximum safe angle.
+turret:min                                                      -100 # The minimum safe angle.
+turret:max                                                      100  # The maximum safe angle.
 
 # If we apply more than safety_threshold_power for longer than safety_threshold_time
 # and the turret doesn't move more than safety_threshold_dist degrees, the turret
@@ -480,14 +476,15 @@ climber:lifter:hold:imax                                                0
 # Amy
 #
 droidvision:camera_angle                                        20.08
-shooter:aim:hood_down:a                                         0.1902
-shooter:aim:hood_down:b                                         -72.493
-shooter:aim:hood_down:c                                         12013
+shooter:aim:hood_down:a                                         0.1742
+shooter:aim:hood_down:b                                         -67.115
+shooter:aim:hood_down:c                                         11672
+
 targettracker:camera_offset_angle                               -2
 
-shooter:aim:hood_up:a                                           0.1729
-shooter:aim:hood_up:b                                           -33.818
-shooter:aim:hood_up:c                                           5011.4
+shooter:aim:hood_up:a                                           1.5047
+shooter:aim:hood_up:b                                           -292.76
+shooter:aim:hood_up:c                                           17394
 
 #
 # Bill
@@ -582,7 +579,7 @@ shoottest:hold                                                true
 # this active value below is ignored if we are connected to the field.
 #
 auto:testmode:active                                          true
-auto:testmode:which                                           34
+auto:testmode:which                                           35
 auto:testmode:distance                                        1800
 auto:testmode:power                                           4000
 auto:testmode:duration                                        1.0
