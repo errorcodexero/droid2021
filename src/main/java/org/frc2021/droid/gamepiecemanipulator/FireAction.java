@@ -38,6 +38,8 @@ public class FireAction extends Action {
     private double hood_up_a_ ;
     private double hood_up_b_ ;
     private double hood_up_c_ ;
+    private double hood_up_d_ ;
+    private double hood_up_e_ ;
 
     private double max_hood_up_distance_ ;
     private double min_hood_down_distance_ ;
@@ -91,6 +93,8 @@ public class FireAction extends Action {
         hood_up_a_ = settings.get("shooter:aim:hood_up:a").getDouble() ;
         hood_up_b_ = settings.get("shooter:aim:hood_up:b").getDouble() ;
         hood_up_c_ = settings.get("shooter:aim:hood_up:c").getDouble() ;
+        hood_up_d_ = settings.get("shooter:aim:hood_up:d").getDouble() ;
+        hood_up_e_ = settings.get("shooter:aim:hood_up:e").getDouble() ;
 
         max_hood_up_distance_ = settings.get("shooter:aim:max_hood_up").getDouble() ;
         min_hood_down_distance_ = settings.get("shooter:aim:min_hood_down").getDouble() ;
@@ -252,14 +256,21 @@ public class FireAction extends Action {
             //
             // Fit to a fifth order polynomial
             //
-            target = hood_down_a_ * dist * dist * dist * dist + hood_down_b_ * dist * dist * dist + hood_down_c_ * dist * dist + hood_down_d_ * dist + hood_down_d_ ;
+            target = hood_down_a_ * dist * dist * dist * dist + hood_down_b_ * dist * dist * dist + hood_down_c_ * dist * dist + hood_down_d_ * dist + hood_down_e_ ;
         }
         else {
             //
-            // Fit to a quadratic polynomial
+            // Fit to a fifth order polynomial
             //
-            target = hood_up_a_ * dist * dist + hood_up_b_ * dist + hood_up_c_ ;
+            target = hood_up_a_ * dist * dist * dist * dist + hood_up_b_ * dist * dist * dist + hood_up_c_ * dist * dist + hood_up_d_ * dist + hood_up_e_ ;
         }
+
+        if (dist > 200 && dist < 210)
+            target = 5310 ;
+        else if (dist >= 210)
+            target = 5350 ;
+        else if (dist > 90 && dist < 110)
+            target = 3400 ;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
