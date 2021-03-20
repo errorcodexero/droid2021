@@ -476,11 +476,11 @@ climber:lifter:hold:imax                                                0
 # Amy
 #
 droidvision:camera_angle                                        20.08
-shooter:aim:hood_down:a                                         0.1742
-shooter:aim:hood_down:b                                         -67.115
-shooter:aim:hood_down:c                                         11672
-shooter:aim:hood_down:d                                         11672
-shooter:aim:hood_down:e                                         11672
+shooter:aim:hood_down:a                                         4.0e-5
+shooter:aim:hood_down:b                                         -0.0303
+shooter:aim:hood_down:c                                         8.7224
+shooter:aim:hood_down:d                                         -1120.6
+shooter:aim:hood_down:e                                         59430
 
 targettracker:camera_offset_angle                               -2
 
