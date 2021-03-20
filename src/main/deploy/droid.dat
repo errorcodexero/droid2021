@@ -479,6 +479,8 @@ droidvision:camera_angle                                        20.08
 shooter:aim:hood_down:a                                         0.1742
 shooter:aim:hood_down:b                                         -67.115
 shooter:aim:hood_down:c                                         11672
+shooter:aim:hood_down:d                                         11672
+shooter:aim:hood_down:e                                         11672
 
 targettracker:camera_offset_angle                               -2
 

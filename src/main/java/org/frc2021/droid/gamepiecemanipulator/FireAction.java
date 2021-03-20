@@ -32,6 +32,8 @@ public class FireAction extends Action {
     private double hood_down_a_ ;
     private double hood_down_b_ ;
     private double hood_down_c_ ;
+    private double hood_down_d_ ;
+    private double hood_down_e_ ;
     
     private double hood_up_a_ ;
     private double hood_up_b_ ;
@@ -83,7 +85,9 @@ public class FireAction extends Action {
         hood_down_a_ = settings.get("shooter:aim:hood_down:a").getDouble() ;
         hood_down_b_ = settings.get("shooter:aim:hood_down:b").getDouble() ;
         hood_down_c_ = settings.get("shooter:aim:hood_down:c").getDouble() ;
-        
+        hood_down_d_ = settings.get("shooter:aim:hood_down:d").getDouble() ;
+        hood_down_e_ = settings.get("shooter:aim:hood_down:e").getDouble() ;
+
         hood_up_a_ = settings.get("shooter:aim:hood_up:a").getDouble() ;
         hood_up_b_ = settings.get("shooter:aim:hood_up:b").getDouble() ;
         hood_up_c_ = settings.get("shooter:aim:hood_up:c").getDouble() ;
@@ -243,18 +247,19 @@ public class FireAction extends Action {
         else if (dist < min_hood_down_distance_)
             hood_pos_ = HoodPosition.Up ;
 
-        double a, b, c ;
+        double target ;
         if (hood_pos_ == HoodPosition.Down) {
-            a = hood_down_a_ ;
-            b = hood_down_b_ ;
-            c = hood_down_c_ ;
+            //
+            // Fit to a fifth order polynomial
+            //
+            target = hood_down_a_ * dist * dist * dist * dist + hood_down_b_ * dist * dist * dist + hood_down_c_ * dist * dist + hood_down_d_ * dist + hood_down_d_ ;
         }
         else {
-            a = hood_up_a_ ;
-            b = hood_up_b_ ;
-            c = hood_up_c_ ;
+            //
+            // Fit to a quadratic polynomial
+            //
+            target = hood_up_a_ * dist * dist + hood_up_b_ * dist + hood_up_c_ ;
         }
-        double target = a * dist * dist + b * dist + c ;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
