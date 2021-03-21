@@ -3,6 +3,8 @@ package org.frc2021.droid.automodes;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+
 //
 // Start in the middle position aligned with the goal.  Score the three balls loaded
 // into the robot and then back up to get off the starting line.
@@ -11,7 +13,7 @@ import org.xero1425.base.tankdrive.TankDriveSubsystem;
 //
 public class MiddleAuto extends DroidAutoMode {
     public MiddleAuto(DroidAutoController ctrl) throws Exception {
-        super(ctrl, "MiddleAuto") ;
+        super(ctrl, "MiddleAuto", new Pose2d()) ;
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;        
 

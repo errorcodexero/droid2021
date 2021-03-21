@@ -35,6 +35,29 @@ import org.xero1425.base.actions.Action;
 import org.xero1425.base.controllers.*;
 
 public abstract class XeroRobot extends TimedRobot {
+    private final RobotPaths robot_paths_;
+    private final double period_ ;
+    private double delta_time_ ;
+    private MessageLogger logger_ ;
+    private SettingsParser settings_ ;
+    private PlotManager plot_mgr_ ;
+    private XeroPathManager paths_ ;
+    private MotorFactory motors_ ;
+    private double last_time_;
+    private byte[] mac_addr_ ;
+    private RobotSubsystem robot_subsystem_ ;
+
+    private int automode_ ;
+    private String game_data_ ;
+    private boolean fms_connection_ ;
+    private int loop_count_ ;
+    private int logger_id_ ;
+
+    private BaseController current_controller_ ;
+    private AutoController auto_controller_ ;
+    private TeleopController teleop_controller_ ;
+    private TestController test_controller_ ;
+
     public static final String LoggerName = "xerorobot" ;
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
@@ -296,7 +319,9 @@ public abstract class XeroRobot extends TimedRobot {
 
         double initial_time = getTime();
         delta_time_ = initial_time - last_time_;
+
         updateAutoMode();
+        
         try {
             robot_subsystem_.computeState();
         } catch (Exception ex) {
@@ -548,8 +573,15 @@ public abstract class XeroRobot extends TimedRobot {
                 automode_ = sel ;
                 game_data_ = msg ;
                 fms_connection_ = ds.isFMSAttached() ;
-                auto_controller_.updateAutoMode(automode_, game_data_) ;
                 displayAutoModeState() ;
+            }
+
+            try {
+                auto_controller_.updateAutoMode(automode_, game_data_) ;
+            }
+            catch(Exception ex)
+            {
+                logger_.startMessage(MessageType.Error).add("Exception thrown in updateAutoMode - ").add(ex.getMessage()).endMessage(); ;
             }
         }
     }
@@ -680,26 +712,4 @@ public abstract class XeroRobot extends TimedRobot {
         }
     }
 
-    private final RobotPaths robot_paths_;
-    private final double period_ ;
-    private double delta_time_ ;
-    private MessageLogger logger_ ;
-    private SettingsParser settings_ ;
-    private PlotManager plot_mgr_ ;
-    private XeroPathManager paths_ ;
-    private MotorFactory motors_ ;
-    private double last_time_;
-    private byte[] mac_addr_ ;
-    private RobotSubsystem robot_subsystem_ ;
-
-    private int automode_ ;
-    private String game_data_ ;
-    private boolean fms_connection_ ;
-    private int loop_count_ ;
-    private int logger_id_ ;
-
-    private BaseController current_controller_ ;
-    private AutoController auto_controller_ ;
-    private TeleopController teleop_controller_ ;
-    private TestController test_controller_ ;
 }

@@ -14,6 +14,7 @@ import org.xero1425.misc.MessageType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GalacticSearchAutoMode extends DroidAutoMode {
@@ -21,14 +22,14 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
     private String last_which_ ;
 
     public GalacticSearchAutoMode(DroidAutoController ctrl) throws Exception {
-        super(ctrl, "GalacticSearchAutoMode");
+        super(ctrl, "GalacticSearchAutoMode", new Pose2d());
 
         which_ = "" ;
         last_which_ = "" ;
-        updateWhich();
+        update("");
     }
 
-    public void updateWhich() throws Exception {
+    public void update(String gamedata) throws Exception {
 
         which_ = getWhich() ;
         if (!which_.equals(last_which_))

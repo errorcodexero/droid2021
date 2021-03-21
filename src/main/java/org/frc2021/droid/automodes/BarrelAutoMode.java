@@ -7,9 +7,11 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.MissingPathException;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+
 public class BarrelAutoMode extends DroidAutoMode {
     public BarrelAutoMode(DroidAutoController ctrl) throws InvalidActionRequest, MissingPathException, BadParameterTypeException, MissingParameterException {
-        super(ctrl, "BarrelAutoMode") ;
+        super(ctrl, "BarrelAutoMode", new Pose2d()) ;
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 

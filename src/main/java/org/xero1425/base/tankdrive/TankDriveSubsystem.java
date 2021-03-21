@@ -3,6 +3,8 @@ package org.xero1425.base.tankdrive;
 import java.util.Map;
 import java.util.HashMap;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+
 import com.kauailabs.navx.frc.AHRS;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.PositionTracker;
@@ -186,6 +188,10 @@ public class TankDriveSubsystem extends Subsystem {
 
     public void run() throws Exception {
         super.run();
+    }
+
+    public void setPosition(Pose2d pose) {
+        tracker_.setPose(pose);
     }
 
     public void computeMyState() {

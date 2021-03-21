@@ -1,5 +1,7 @@
 package org.frc2021.droid.automodes;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+
 //
 // Start on the side with the opponents trench.  Go get the two balls in the
 // trench then drive to a spot where we can shoot all five.
@@ -10,7 +12,7 @@ package org.frc2021.droid.automodes;
 //
 public class FarSideAuto extends DroidAutoMode {
     public FarSideAuto(DroidAutoController ctrl) throws Exception {
-        super(ctrl, "FarSide") ;
+        super(ctrl, "FarSide", new Pose2d()) ;
 
         //
         // Initial ball count, 3 balls loaded into the robot at start
