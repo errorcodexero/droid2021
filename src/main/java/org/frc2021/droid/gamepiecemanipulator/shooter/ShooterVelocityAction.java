@@ -1,15 +1,15 @@
 package org.frc2021.droid.gamepiecemanipulator.shooter;
 
 import org.xero1425.base.Subsystem.DisplayType;
+import org.xero1425.base.motorsubsystem.MotorEncoderHWVelocityAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
-import org.xero1425.base.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.XeroMath;
 
-public class ShooterVelocityAction extends MotorEncoderVelocityAction {
+public class ShooterVelocityAction extends MotorEncoderHWVelocityAction {
     private ShooterSubsystem sub_ ;
     private double ready_percent_ ;
     private ShooterSubsystem.HoodPosition pos_ ;
