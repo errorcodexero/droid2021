@@ -6,7 +6,12 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.Speedometer;
 
 public class MotorEncoderSubsystem extends MotorSubsystem
-{
+{    
+    private Speedometer speedometer_ ;
+    private XeroEncoder encoder_ ;
+    private boolean smart_dashboard_when_enabled_ ;
+    private boolean angular_ ;
+
     public MotorEncoderSubsystem(Subsystem parent, String name, boolean angle) throws Exception {
         super(parent, name) ;
 
@@ -100,8 +105,11 @@ public class MotorEncoderSubsystem extends MotorSubsystem
         return smart_dashboard_when_enabled_ ;
     }
 
-    private Speedometer speedometer_ ;
-    private XeroEncoder encoder_ ;
-    private boolean smart_dashboard_when_enabled_ ;
-    private boolean angular_ ;
+    public double toTicks(double v) {
+        return encoder_.toTicks(v) ;
+    }
+
+    public double fromTicks(double v) {
+        return encoder_.fromTicks(v) ;
+    }
 }

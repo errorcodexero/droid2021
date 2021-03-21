@@ -209,6 +209,18 @@ public class CTREMotorController extends MotorController
         return ret ;
     }
 
+    public boolean hasEmbeddedVelocityControl() throws BadMotorRequestException {
+        return false ;
+    }
+
+    public void setVelocity(double ticks_per_second) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "motor does not support setVelocity()") ;
+    }
+
+    public void initializeHWPID(double kp, double ki, double kd, double iz, double ff, double minrange, double maxrange) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "motor does not support setVelocity()") ;
+    }
+
     public void resetEncoder() throws BadMotorRequestException {
         if (type_ != MotorType.TalonFX)
             throw new BadMotorRequestException(this, "motor does not support getPosition()") ;

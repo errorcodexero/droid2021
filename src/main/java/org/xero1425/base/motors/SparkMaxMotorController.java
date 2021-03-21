@@ -1,7 +1,9 @@
 package org.xero1425.base.motors;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.hal.SimBoolean;
@@ -11,6 +13,19 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 public class SparkMaxMotorController extends MotorController
 {
+    private CANSparkMax controller_ ;
+    private CANEncoder encoder_ ;
+    private boolean inverted_ ;
+    private boolean brushless_ ;
+
+    private SimDevice sim_ ;
+    private SimDouble sim_power_ ;
+    private SimDouble sim_encoder_ ;
+    private SimBoolean sim_motor_inverted_ ;
+    private SimBoolean sim_neutral_mode_ ;
+
+    private CANPIDController hwpid_ ;
+
     public final static String SimDeviceNameBrushed = "SparkMaxBrushed" ;
     public final static String SimDeviceNameBrushless = "SparkMaxBrushless" ;
     public final static int TicksPerRevolution = 42 ;
@@ -74,6 +89,25 @@ public class SparkMaxMotorController extends MotorController
     public boolean isInverted() {
         return inverted_ ;
     }    
+
+    public boolean hasEmbeddedVelocityControl() throws BadMotorRequestException {
+        return true ;
+    }
+
+    public void initializeHWPID(double kp, double ki, double kd, double iz, double ff, double minrange, double maxrange) throws BadMotorRequestException {
+        hwpid_ = controller_.getPIDController() ;
+
+        hwpid_.setP(kp) ;
+        hwpid_.setI(ki) ;
+        hwpid_.setD(kd) ;
+        hwpid_.setIZone(iz) ;
+        hwpid_.setFF(ff) ;
+        hwpid_.setOutputRange(minrange, maxrange) ;
+    }
+
+    public void setVelocity(double ticks_per_second) {
+        hwpid_.setReference(ticks_per_second, ControlType.kVelocity) ;
+    }
 
     public void reapplyInverted() {
         if (sim_ != null) {
@@ -175,14 +209,4 @@ public class SparkMaxMotorController extends MotorController
         }
     }      
 
-    private CANSparkMax controller_ ;
-    private CANEncoder encoder_ ;
-    private boolean inverted_ ;
-    private boolean brushless_ ;
-
-    private SimDevice sim_ ;
-    private SimDouble sim_power_ ;
-    private SimDouble sim_encoder_ ;
-    private SimBoolean sim_motor_inverted_ ;
-    private SimBoolean sim_neutral_mode_ ;
 } ;

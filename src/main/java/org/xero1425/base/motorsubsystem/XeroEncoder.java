@@ -11,7 +11,15 @@ import org.xero1425.misc.EncoderMapper;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsParser;
 
-public class XeroEncoder {
+public class XeroEncoder {   
+    private Encoder quad_ ;
+    private double quad_m_ ;
+    private double quad_b_ ;
+    private MotorController motor_ ;
+    private AnalogInput analog_ ;
+    private Counter pwm_ ;
+    private EncoderMapper mapper_ ;
+
     public XeroEncoder(XeroRobot robot, String cname, boolean angular, MotorController ctrl)
             throws BadParameterTypeException, MissingParameterException, EncoderConfigException,
             BadMotorRequestException {
@@ -30,6 +38,14 @@ public class XeroEncoder {
 
         if (pwm_ == null && analog_ == null && quad_ == null && motor_ == null)
             throw new EncoderConfigException("motor '" + cname + "' - must define a QUAD, PWM, MOTOR, or ANALOG encoder");
+    }
+
+    public double toTicks(double v) {
+        return mapper_.toEncoder(v) ;
+    }
+
+    public double fromTicks(double v) {
+        return mapper_.toRobot(v) ;
     }
 
     public double getRawCount() {
@@ -233,11 +249,4 @@ public class XeroEncoder {
         }
     }
 
-    private Encoder quad_ ;
-    private double quad_m_ ;
-    private double quad_b_ ;
-    private MotorController motor_ ;
-    private AnalogInput analog_ ;
-    private Counter pwm_ ;
-    private EncoderMapper mapper_ ;
 } ;

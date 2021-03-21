@@ -30,6 +30,10 @@ public abstract class MotorController
     public abstract void setNeutralMode(NeutralMode mode) throws BadMotorRequestException;
     public abstract void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException;
     public abstract String getType()  throws BadMotorRequestException;
+    public abstract boolean hasEmbeddedVelocityControl() throws BadMotorRequestException ;
+    public abstract void initializeHWPID(double kp, double ki, double kd, 
+                double iz, double ff, double minrange, double maxrange) throws BadMotorRequestException ;
+    public abstract void setVelocity(double ticks_per_second) throws BadMotorRequestException ;
     
     public boolean hasPosition() throws BadMotorRequestException {
         return false ;

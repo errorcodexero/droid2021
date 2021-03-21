@@ -63,6 +63,27 @@ public class MotorGroupController extends MotorController
             ctrl.setNeutralMode(mode);
     }
 
+    public boolean hasEmbeddedVelocityControl() throws BadMotorRequestException {
+        if (motors_.size() == 0)
+            throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        return motors_.get(0).hasEmbeddedVelocityControl() ;
+    }
+
+    public void initializeHWPID(double kp, double ki, double kd, double iz, double ff, double minrange, double maxrange) throws BadMotorRequestException {
+        if (motors_.size() == 0)
+            throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        motors_.get(0).initializeHWPID(kp, ki, kd, iz, ff, minrange, maxrange);
+    }
+
+    public void setVelocity(double ticks_per_second) throws BadMotorRequestException {
+        if (motors_.size() == 0)
+            throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        motors_.get(0).setVelocity(ticks_per_second);
+    }
+
     public void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "a motor group cannot follow other motors") ;
     }
