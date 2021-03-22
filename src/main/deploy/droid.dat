@@ -257,7 +257,7 @@ tankdrive:follower:angle_correction                             -0.03
 ###################################################################################################
 
 #shooter:velocity:kp                                           0.0001
- shooter:velocity:kp                                             0.0
+shooter:velocity:kp                                             0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.00014407573346281248912909418078435
@@ -290,7 +290,7 @@ endif
 shooter:aim:max_hood_up                                         130
 shooter:aim:min_hood_down                                       120
 
-shooter:hood:change_time					0.8
+shooter:hood:change_time			                    		0.8
 
 #
 # If the drivebase is going faster than this, the hood is
