@@ -114,4 +114,11 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
             setPhysicalHood(desired_);
         }
     }
+
+    protected double limitPower(double p) {
+        if (p < 0.1)
+            p = 0.0 ;
+
+        return p ;
+    }
 } ;

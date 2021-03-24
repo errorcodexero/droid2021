@@ -270,7 +270,7 @@ public class FireAction extends Action {
         else if (dist >= 210)
             target = 5350 ;
         else if (dist > 90 && dist < 110)
-            target = 3400 ;
+            target = 3450 ;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
