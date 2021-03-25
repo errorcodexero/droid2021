@@ -9,12 +9,13 @@ import org.xero1425.misc.PIDCtrl;
 public class MotorEncoderVelocityAction extends MotorAction {   
     private static int which_ = 1 ;
 
+    private double shooting_ ;
     private double target_ ;
     private double duration_ ;
     private double start_ ;
     private PIDCtrl pid_ ;
     private int plot_id_ ;
-    private static String [] columns_ = { "time", "target", "actual" }  ;
+    private static String [] columns_ = { "time", "target", "actual", "shooting" }  ;
 
     static private final double MaxPlotDuration = 60.0 ;
 
@@ -25,7 +26,8 @@ public class MotorEncoderVelocityAction extends MotorAction {
         target_ = target;
         pid_ = new PIDCtrl(sub.getRobot().getSettingsParser(), sub.getName() + ":velocity", false);
         duration_ = Double.MAX_VALUE ;
-        plot_id_ = - 1 ;        
+        plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;     
+        shooting_ = 0.0 ;
     }
 
     public MotorEncoderVelocityAction(MotorEncoderSubsystem sub, double target, double duration)
@@ -40,6 +42,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
             plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;
         else
             plot_id_ = -1 ;
+        shooting_ = 0.0 ;
     }    
 
     public MotorEncoderVelocityAction(MotorEncoderSubsystem sub, String target)
@@ -64,7 +67,12 @@ public class MotorEncoderVelocityAction extends MotorAction {
             plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;
         else
             plot_id_ = -1 ;
+        shooting_ = 0.0 ;
     }    
+
+    public void setShooting(double shooting) {
+        shooting_ = shooting ;
+    }
 
     public void setTarget(double target) {
         target_ = target ;
@@ -105,9 +113,16 @@ public class MotorEncoderVelocityAction extends MotorAction {
         if (plot_id_ != -1) {
             Double[] data = new Double[columns_.length] ;
             data[0] = getSubsystem().getRobot().getTime() - start_ ;
-            data[1] = me.getVelocity() ;
-            data[2] = target_ ;
+            data[1] = target_ ;
+            data[2] = me.getVelocity() ;
+            data[3] = shooting_ ;
             getSubsystem().addPlotData(plot_id_, data);
+
+            if (getSubsystem().getRobot().getTime() - start_ > 10.0)
+            {
+                getSubsystem().endPlot(plot_id_) ;
+                plot_id_ = -1 ;
+            }
         }
 
         if (getSubsystem().getRobot().getTime() - start_ > duration_) {

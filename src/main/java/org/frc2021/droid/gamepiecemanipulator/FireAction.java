@@ -124,7 +124,7 @@ public class FireAction extends Action {
         boolean tracker_ready = tracker_.hasTarget() ;
         boolean turret_ready = turret_.isReadyToFire() ;
         boolean shooter_ready = shooter.isReadyToFire() ;
-        boolean db_ready = (db_.getVelocity() < db_velocity_threshold_) ;
+        boolean db_ready = (Math.abs(db_.getVelocity()) < db_velocity_threshold_) ;
 
         boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready ;
         boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready ;
@@ -158,9 +158,11 @@ public class FireAction extends Action {
                 // When we are out of balls, stop the shooter motor
                 //
                 sub_.getShooter().setAction(shooter_stop_action_, true) ;
+
+                shooter_velocity_action_.setShooting(0.0);
             }
             // else if (!ready_to_fire_except_shooter) {
-            else if (!ready_to_fire) {
+            else if (!ready_to_fire_except_shooter) {
                 //
                 // We lost the target or the driver started driving or we got bumped and
                 // are no longer aiming at the target
@@ -174,7 +176,10 @@ public class FireAction extends Action {
                 logger.add(",db_ready", db_ready) ;
                 logger.add(",turret_ready", turret_ready) ;
                 logger.add(",shooter_ready", shooter_ready) ;
-                logger.endMessage();                
+                logger.add(",db_velocity", db_.getVelocity()) ;
+                logger.endMessage();       
+                
+                shooter_velocity_action_.setShooting(0.0);
             }
         }
         else {
@@ -186,11 +191,14 @@ public class FireAction extends Action {
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: out of balls, completing action") ;
                 logger.endMessage();    
+
+                shooter_velocity_action_.setShooting(0.0);
             }
             else if (ready_to_fire && !sub_.getConveyor().isBusy()) {
                 sub_.getConveyor().setAction(emit_action_, true);
                 is_firing_ = true ;
 
+                shooter_velocity_action_.setShooting(1.0);
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: fire away ... !!!") ;
                 logger.endMessage();                   
@@ -205,6 +213,7 @@ public class FireAction extends Action {
         logger.add("drivebase", db_ready) ;
         logger.add("hood", hood_pos_.toString()) ;
         logger.add("balls", sub_.getConveyor().getBallCount()) ;
+        logger.add("db_velocity", db_.getVelocity()) ;
         logger.endMessage();
 
         Double[] data = new Double[plot_columns_.length] ;
@@ -271,6 +280,10 @@ public class FireAction extends Action {
             target = 5350 ;
         else if (dist > 90 && dist < 110)
             target = 3450 ;
+        else if (dist > 140 && dist < 155)
+            target = 5355 ;
+        else if (dist >= 155 && dist < 170)
+            target = 5325;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);

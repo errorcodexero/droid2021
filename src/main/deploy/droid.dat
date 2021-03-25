@@ -34,7 +34,7 @@ blinky:verbose                                                          false
 
 tankdrive:messages                                                      false
 turret:messages                                                         false
-shooter:messages                                                        true
+shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
@@ -256,16 +256,16 @@ tankdrive:follower:angle_correction                             -0.03
 # shooter
 ###################################################################################################
 
-shooter:velocity:kp                                             0.001
+shooter:velocity:kp                                             0.00001
 #shooter:velocity:kp                                            0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
-shooter:velocity:kf                                             0.00014407573346281248912909418078435
+shooter:velocity:kf                                             0.00014507573346281248912909418078435
 shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
-shooter:velocity:ready_margin_percent                           1.0      # If velocity is within % margin from target, consider it ready to shoot
+shooter:velocity:ready_margin_percent                           0.5      # If velocity is within % margin from target, consider it ready to shoot
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -342,7 +342,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.5
+turret:fire_threshold                                           0.25
 turret:min                                                      -100 # The minimum safe angle.
 turret:max                                                      100  # The maximum safe angle.
 
@@ -528,7 +528,7 @@ droidvision:target_height                                	    88.0
 limelight:camera_latency                                        0.011
 limelight:network_latency                                       0.010
 
-gamepiecemanipulator:fire:max_drivebase_velocity                15
+gamepiecemanipulator:fire:max_drivebase_velocity                1
 gamepiecemanipulator:fire:max_camera_sample_age                 5.0
 
 ###################################################################################################

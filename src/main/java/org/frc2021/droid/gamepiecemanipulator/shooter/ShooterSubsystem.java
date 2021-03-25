@@ -116,7 +116,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     }
 
     protected double limitPower(double p) {
-        if (p < 0.1)
+        if (Math.abs(p) < 0.1)
             p = 0.0 ;
 
         return p ;
