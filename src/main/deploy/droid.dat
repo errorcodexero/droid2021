@@ -205,10 +205,13 @@ intake:follower:up:kp                                         0.001
 endif
 
 intake:follower:up:kd                                         0.0
+if PRACTICE
 intake:follower:up:kv                                         0.000035
-#intake:follower:up:kv                                         0.000147929
+endif
+if COMPETITION
+intake:follower:up:kv                                         0.000147929
+endif
 intake:follower:up:ka                                         0
-
 
 intake:goto:threshold                                       10.0       # Within 10 ticks degrees
 intake:goto:maxd                                            -14000.0     # maximum deceleration
@@ -255,6 +258,13 @@ tankdrive:follower:angle_correction                             -0.03
 ###################################################################################################
 # shooter
 ###################################################################################################
+
+#
+# 0 = fourth order polynomial
+# 1 = accuracy challenge, 2d port
+# 2 = power port challenge, 3d port
+#
+shooter:event                                                   2
 
 shooter:velocity:kp                                             0.0001
 #shooter:velocity:kp                                            0.0
@@ -477,13 +487,6 @@ climber:lifter:hold:imax                                                0
 #
 droidvision:camera_angle                                        20.08
 
-
-#-0.0026
-#1.5411
-#-301.35
-#24823
-
-
 shooter:aim:hood_down:a                                         0
 shooter:aim:hood_down:b                                         -0.0026
 shooter:aim:hood_down:c                                         1.5411
@@ -491,12 +494,6 @@ shooter:aim:hood_down:d                                         -301.35
 shooter:aim:hood_down:e                                         24823
 
 targettracker:camera_offset_angle                               -2.0
-
-#-0.0814
-#23.612
-#-2258.2
-#74645
-
 
 shooter:aim:hood_up:a                                           0
 shooter:aim:hood_up:b                                           -0.0814

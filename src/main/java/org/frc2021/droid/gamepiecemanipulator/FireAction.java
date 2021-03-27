@@ -29,6 +29,8 @@ public class FireAction extends Action {
     private boolean is_firing_ ;
     private double db_velocity_threshold_ ;
 
+    private int event_ ;
+
     private double hood_down_a_ ;
     private double hood_down_b_ ;
     private double hood_down_c_ ;
@@ -83,6 +85,8 @@ public class FireAction extends Action {
 
         SettingsParser settings = gp.getRobot().getSettingsParser() ;
         db_velocity_threshold_ = settings.get("gamepiecemanipulator:fire:max_drivebase_velocity").getDouble() ;
+
+        event_ = settings.get("shooter:event").getInteger() ;
 
         hood_down_a_ = settings.get("shooter:aim:hood_down:a").getDouble() ;
         hood_down_b_ = settings.get("shooter:aim:hood_down:b").getDouble() ;
@@ -252,14 +256,20 @@ public class FireAction extends Action {
         emit_action_.cancel() ;
     }
 
-    private void setTargetVelocity() {
-        double dist = tracker_.getDistance() ;
+    private double getTargetVelocity(double dist, HoodPosition pos) {
+        double ret = 0 ;
 
-        if (dist > max_hood_up_distance_)
-            hood_pos_ = HoodPosition.Down ;
-        else if (dist < min_hood_down_distance_)
-            hood_pos_ = HoodPosition.Up ;
+        if (event_ == 0)
+            ret = getTargetVelocityPoly(dist, pos) ;
+        else if (event_ == 1)
+            ret = getTargetVelocityAccuracy2d(dist, pos);
+        else if (event_ == 2)
+            ret = getTargetVelocityPowerPort3d(dist, pos) ;
 
+        return ret ;
+    }
+
+    private double getTargetVelocityPoly(double dist, HoodPosition hood) {
         double target ;
         if (hood_pos_ == HoodPosition.Down) {
             //
@@ -274,25 +284,42 @@ public class FireAction extends Action {
             target = hood_up_a_ * dist * dist * dist * dist + hood_up_b_ * dist * dist * dist + hood_up_c_ * dist * dist + hood_up_d_ * dist + hood_up_e_ ;
         }
 
-        if (dist > 200 && dist < 210)
-            target = 5310 ;
-        else if (dist >= 210)
-            target = 5350 ;
-        else if (dist > 90 && dist < 110)
-            target = 3450 ;
-        else if (dist > 140 && dist < 155)
-            target = 5355 ;
-        else if (dist >= 155 && dist < 170)
-            target = 5325;
+        return target ;
+    }
 
-        target = 4600 ;
+    private double getTargetVelocityAccuracy2d(double dist, HoodPosition hood) {
+
+        double ret = getTargetVelocityPoly(dist, hood) ;
+
+        if (dist > 200 && dist < 210)
+            ret = 5310 ;
+        else if (dist >= 210)
+            ret = 5350 ;
+        else if (dist > 90 && dist < 110)
+            ret = 3450 ;
+        else if (dist > 140 && dist < 155)
+            ret = 5355 ;
+
+        return ret ;
+    }
+
+    private double getTargetVelocityPowerPort3d(double dist, HoodPosition pos) {
+        return 4600.0 ;
+    }
+
+    private void setTargetVelocity() {
+
+        double dist = tracker_.getDistance() ;
+
+        if (dist > max_hood_up_distance_)
+            hood_pos_ = HoodPosition.Down ;
+        else if (dist < min_hood_down_distance_)
+            hood_pos_ = HoodPosition.Up ;
+
+        double target = getTargetVelocity(dist, hood_pos_) ;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
-
-        sub_.putDashboard("shoot-distance", DisplayType.Verbose, dist);
-        sub_.putDashboard("shoot-target", DisplayType.Verbose, target);
-        sub_.putDashboard("shoot-velocity", DisplayType.Verbose, sub_.getShooter().getVelocity());
 
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info, logger_id_) ;
