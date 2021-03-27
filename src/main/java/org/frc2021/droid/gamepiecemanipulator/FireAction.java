@@ -129,12 +129,12 @@ public class FireAction extends Action {
         boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready ;
         boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready ;
 
-        sub_.putDashboard("tracker-ready", DisplayType.Always, tracker_ready) ;
-        sub_.putDashboard("turret-ready", DisplayType.Always, turret_ready) ;
-        sub_.putDashboard("shooter-ready", DisplayType.Always, shooter_ready);
-        sub_.putDashboard("db-ready", DisplayType.Always, db_ready) ;
-        sub_.putDashboard("rtf", DisplayType.Always, ready_to_fire);
-        sub_.putDashboard("isfiring", DisplayType.Always, is_firing_);
+        sub_.putDashboard("tracker-ready", DisplayType.Verbose, tracker_ready) ;
+        sub_.putDashboard("turret-ready", DisplayType.Verbose, turret_ready) ;
+        sub_.putDashboard("shooter-ready", DisplayType.Verbose, shooter_ready);
+        sub_.putDashboard("db-ready", DisplayType.Verbose, db_ready) ;
+        sub_.putDashboard("rtf", DisplayType.Verbose, ready_to_fire);
+        sub_.putDashboard("isfiring", DisplayType.Verbose, is_firing_);
 
         if (tracker_ready)
         {
@@ -162,7 +162,7 @@ public class FireAction extends Action {
                 shooter_velocity_action_.setShooting(0.0);
             }
             // else if (!ready_to_fire_except_shooter) {
-            else if (!ready_to_fire_except_shooter) {
+            else if (!ready_to_fire) {
                 //
                 // We lost the target or the driver started driving or we got bumped and
                 // are no longer aiming at the target
@@ -285,12 +285,14 @@ public class FireAction extends Action {
         else if (dist >= 155 && dist < 170)
             target = 5325;
 
+        target = 4600 ;
+
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
 
-        sub_.putDashboard("shoot-distance", DisplayType.Always, dist);
-        sub_.putDashboard("shoot-target", DisplayType.Always, target);
-        sub_.putDashboard("shoot-velocity", DisplayType.Always, sub_.getShooter().getVelocity());
+        sub_.putDashboard("shoot-distance", DisplayType.Verbose, dist);
+        sub_.putDashboard("shoot-target", DisplayType.Verbose, target);
+        sub_.putDashboard("shoot-velocity", DisplayType.Verbose, sub_.getShooter().getVelocity());
 
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info, logger_id_) ;

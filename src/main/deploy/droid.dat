@@ -13,7 +13,7 @@
 
 tankdrive:verbose                                                       false
 turret:verbose                                                          false
-shooter:verbose                                                         false
+shooter:verbose                                                         true
 droid:verbose                                                           false
 alarms:verbose                                                          false
 gamepiecemanipulator:verbose                                            false
@@ -47,7 +47,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     true
+fireaction:messages                                                     false
 conveyor_model:messages                                                 false
 
 #
@@ -256,7 +256,7 @@ tankdrive:follower:angle_correction                             -0.03
 # shooter
 ###################################################################################################
 
-shooter:velocity:kp                                             0.00001
+shooter:velocity:kp                                             0.0001
 #shooter:velocity:kp                                            0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
@@ -265,7 +265,7 @@ shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
-shooter:velocity:ready_margin_percent                           0.5      # If velocity is within % margin from target, consider it ready to shoot
+shooter:velocity:ready_margin_percent                           5      # If velocity is within % margin from target, consider it ready to shoot
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -342,7 +342,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.25
+turret:fire_threshold                                           0.20
 turret:min                                                      -100 # The minimum safe angle.
 turret:max                                                      100  # The maximum safe angle.
 

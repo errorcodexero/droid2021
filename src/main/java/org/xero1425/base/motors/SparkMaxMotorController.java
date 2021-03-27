@@ -35,11 +35,16 @@ public class SparkMaxMotorController extends MotorController
         }
         else {
             if (brushless)
+            {
                 controller_ = new CANSparkMax(index, CANSparkMax.MotorType.kBrushless) ;
+            }
             else
+            {
                 controller_ = new CANSparkMax(index, CANSparkMax.MotorType.kBrushed) ;
+            }
 
             controller_.restoreFactoryDefaults() ;
+            controller_.enableVoltageCompensation(12.0) ;
             encoder_ = controller_.getEncoder() ;
         }
     }

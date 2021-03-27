@@ -170,7 +170,7 @@ public class ConveyorSubsystem extends Subsystem {
 
         putDashboard("staged-fire", DisplayType.Verbose, staged_for_fire_) ;
         putDashboard("staged-collect", DisplayType.Verbose, staged_for_collect_);
-        putDashboard("ballcount", DisplayType.Always, ball_count_);
+        putDashboard("ballcount", DisplayType.Verbose, ball_count_);
     }
 
     public boolean isCollecting() {
