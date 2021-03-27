@@ -176,11 +176,6 @@ public class FireAction extends Action {
 
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, lost target") ;
-                logger.add(",tracker_ready", tracker_ready) ;
-                logger.add(",db_ready", db_ready) ;
-                logger.add(",turret_ready", turret_ready) ;
-                logger.add(",shooter_ready", shooter_ready) ;
-                logger.add(",db_velocity", db_.getVelocity()) ;
                 logger.endMessage();       
                 
                 shooter_velocity_action_.setShooting(0.0);
@@ -217,7 +212,6 @@ public class FireAction extends Action {
         logger.add("drivebase", db_ready) ;
         logger.add("hood", hood_pos_.toString()) ;
         logger.add("balls", sub_.getConveyor().getBallCount()) ;
-        logger.add("db_velocity", db_.getVelocity()) ;
         logger.endMessage();
 
         Double[] data = new Double[plot_columns_.length] ;
@@ -323,11 +317,12 @@ public class FireAction extends Action {
 
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info, logger_id_) ;
-        logger.add("FIRE ACTION: ") ;
+        logger.add("FireAction (aiming): ") ;
         logger.add("distance", dist) ;
         logger.add(" target", target) ;
         logger.add(" velocity", sub_.getShooter().getVelocity()) ;
         logger.add(" hood", hood_pos_.toString()) ;
+        logger.add(" turret", turret_.getPosition()) ;
         logger.endMessage();
     }
 }
