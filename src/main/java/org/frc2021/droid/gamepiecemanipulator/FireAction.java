@@ -31,6 +31,8 @@ public class FireAction extends Action {
 
     private int event_ ;
 
+    double power_port_power_ ;
+
     private double hood_down_a_ ;
     private double hood_down_b_ ;
     private double hood_down_c_ ;
@@ -87,6 +89,7 @@ public class FireAction extends Action {
         db_velocity_threshold_ = settings.get("gamepiecemanipulator:fire:max_drivebase_velocity").getDouble() ;
 
         event_ = settings.get("shooter:event").getInteger() ;
+        power_port_power_ = settings.get("shooter:power_port_power").getDouble() ;
 
         hood_down_a_ = settings.get("shooter:aim:hood_down:a").getDouble() ;
         hood_down_b_ = settings.get("shooter:aim:hood_down:b").getDouble() ;
@@ -298,7 +301,7 @@ public class FireAction extends Action {
     }
 
     private double getTargetVelocityPowerPort3d(double dist, HoodPosition pos) {
-        return 4600.0 ;
+        return power_port_power_ ;
     }
 
     private void setTargetVelocity() {
@@ -310,6 +313,7 @@ public class FireAction extends Action {
         else if (dist < min_hood_down_distance_)
             hood_pos_ = HoodPosition.Up ;
 
+        hood_pos_ = HoodPosition.Down ;
         double target = getTargetVelocity(dist, hood_pos_) ;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);

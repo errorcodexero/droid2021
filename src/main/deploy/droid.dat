@@ -13,10 +13,10 @@
 
 tankdrive:verbose                                                       false
 turret:verbose                                                          false
-shooter:verbose                                                         true
+shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            false
+gamepiecemanipulator:verbose                                            true
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -265,17 +265,17 @@ tankdrive:follower:angle_correction                             -0.03
 # 2 = power port challenge, 3d port
 #
 shooter:event                                                   2
+shooter:power_port_power                                        4820
 
 shooter:velocity:kp                                             0.0001
-#shooter:velocity:kp                                            0.0
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
-shooter:velocity:kf                                             0.00014507573346281248912909418078435
+shooter:velocity:kf                                             0.00014407573346281248912909418078435
 shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
-shooter:velocity:ready_margin_percent                           5      # If velocity is within % margin from target, consider it ready to shoot
+shooter:velocity:ready_margin_percent                           8      # If velocity is within % margin from target, consider it ready to shoot
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -294,7 +294,6 @@ if PRACTICE
 shooter:hood:down                                               0.32
 shooter:hood:up                                                 -0.4
 endif
-
 
 
 shooter:aim:max_hood_up                                         130
@@ -352,7 +351,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.20
+turret:fire_threshold                                           0.3
 turret:min                                                      -100 # The minimum safe angle.
 turret:max                                                      100  # The maximum safe angle.
 
@@ -493,7 +492,10 @@ shooter:aim:hood_down:c                                         1.5411
 shooter:aim:hood_down:d                                         -301.35
 shooter:aim:hood_down:e                                         24823
 
-targettracker:camera_offset_angle                               -2.0
+#
+# Negative values move to turrent clockwise
+#
+targettracker:camera_offset_angle                               -2.75
 
 shooter:aim:hood_up:a                                           0
 shooter:aim:hood_up:b                                           -0.0814
