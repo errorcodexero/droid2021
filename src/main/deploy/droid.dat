@@ -38,7 +38,7 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       false
+conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -265,9 +265,9 @@ tankdrive:follower:angle_correction                             -0.03
 # 2 = power port challenge, 3d port
 #
 shooter:event                                                   2
-shooter:power_port_power                                        4820
+shooter:power_port_power                                        5150
 
-shooter:velocity:kp                                             0.0001
+shooter:velocity:kp                                             0.0002
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.00014407573346281248912909418078435
@@ -275,7 +275,7 @@ shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
-shooter:velocity:ready_margin_percent                           8      # If velocity is within % margin from target, consider it ready to shoot
+shooter:velocity:ready_margin_percent                           8.0      # If velocity is within % margin from target, consider it ready to shoot
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -495,7 +495,7 @@ shooter:aim:hood_down:e                                         24823
 #
 # Negative values move to turrent clockwise
 #
-targettracker:camera_offset_angle                               -2.75
+targettracker:camera_offset_angle                               -2.50
 
 shooter:aim:hood_up:a                                           0
 shooter:aim:hood_up:b                                           -0.0814
