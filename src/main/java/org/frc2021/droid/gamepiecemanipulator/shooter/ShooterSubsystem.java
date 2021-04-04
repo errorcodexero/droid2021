@@ -1,8 +1,15 @@
 package org.frc2021.droid.gamepiecemanipulator.shooter;
 
 import edu.wpi.first.wpilibj.Servo;
+
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorGroupController;
+import org.xero1425.base.motors.SparkMaxMotorController;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
@@ -18,6 +25,10 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     private Servo hood_servo_ ;
     private TankDriveSubsystem db_ ;
     private double hood_value_ ;
+
+    private CANEncoder raw_encoder_ ;
+    private CANSparkMax raw_controller_ ;
+    private CANPIDController raw_pid_ ;
 
     public final static String SubsystemName = "shooter" ;
 
@@ -50,6 +61,32 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         desired_ = HoodPosition.Down ;
 
         hood_value_ = 1000.0 ;
+
+        MotorGroupController mc = (MotorGroupController)getMotorController() ;
+        SparkMaxMotorController max = (SparkMaxMotorController)mc.getMotor(0);
+
+        raw_controller_ = max.getRawMotorController() ;
+        raw_encoder_ = raw_controller_.getEncoder() ;
+        raw_pid_ = raw_controller_.getPIDController() ;
+
+        //
+        // Convert the encoder velocity to RPMs
+        //
+        int counts = raw_encoder_.getCountsPerRevolution() ;
+        double convert = 60.0 / (double)counts ;
+        raw_encoder_.setVelocityConversionFactor(convert) ;
+    }
+
+    public CANSparkMax getRawMotorController() {
+        return raw_controller_ ;
+    }
+
+    public CANEncoder getRawEncoder() {
+        return raw_encoder_ ;
+    }
+
+    public CANPIDController getRawPIDController() {
+        return raw_pid_ ;
     }
 
     public void setHood(HoodPosition pos) {

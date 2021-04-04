@@ -1,7 +1,5 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
-import javax.lang.model.util.ElementScanner6;
-
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;
@@ -178,8 +176,6 @@ public class FireAction extends Action {
                 // When we are out of balls, stop the shooter motor
                 //
                 sub_.getShooter().setAction(shooter_stop_action_, true) ;
-
-                shooter_velocity_action_.setShooting(0.0);
             }
             // else if (!ready_to_fire_except_shooter) {
             else if (!ready_to_fire) {
@@ -192,9 +188,7 @@ public class FireAction extends Action {
 
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, lost target") ;
-                logger.endMessage();       
-                
-                shooter_velocity_action_.setShooting(0.0);
+                logger.endMessage();          
             }
         }
         else {
@@ -206,14 +200,11 @@ public class FireAction extends Action {
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: out of balls, completing action") ;
                 logger.endMessage();    
-
-                shooter_velocity_action_.setShooting(0.0);
             }
             else if (ready_to_fire && !sub_.getConveyor().isBusy()) {
                 sub_.getConveyor().setAction(emit_action_, true);
                 is_firing_ = true ;
 
-                shooter_velocity_action_.setShooting(1.0);
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: fire away ... !!!") ;
                 logger.endMessage();                   

@@ -60,6 +60,14 @@ public class SparkMaxMotorController extends MotorController
         }
     }
 
+    public CANSparkMax getRawMotorController() {
+        return controller_ ;
+    }
+
+    public CANEncoder getRawEncoder() {
+        return encoder_ ;
+    }
+
     public String typeName() {
         String ret = "SparkMaxBrushed" ;
 

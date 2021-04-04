@@ -4,17 +4,23 @@ import java.util.List ;
 import java.util.ArrayList ;
 
 public class MotorGroupController extends MotorController
-{
+{   
+    List<MotorController> motors_ ;
+
     public MotorGroupController(String name) {
         super(name) ;
         motors_ = new ArrayList<MotorController>() ;
+    }
+
+    public MotorController getMotor(int index) {
+        return motors_.get(index) ;
     }
 
     public String typeName() {
         if (motors_.size() == 0)
             return "NoMotors" ;
         
-            return motors_.get(0).typeName() ;
+        return motors_.get(0).typeName() ;
     }
 
     public void addMotor(MotorController ctrl, boolean inverted) throws BadMotorRequestException {
@@ -111,5 +117,4 @@ public class MotorGroupController extends MotorController
             ctrl.setOpenLoopRampRate(limit);
     }   
 
-    List<MotorController> motors_ ;
 } ;
