@@ -52,10 +52,10 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
                 pact.addAction(collseq) ;
         
                 if (which_.equals("red-a")) {
-                    pathseq.addAction(new DelayAction(db.getRobot(), 0.25));
+                    pathseq.addAction(new DelayAction(db.getRobot(), 0.125));
                     pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
                 } else if (which_.equals("red-b")) {
-                    pathseq.addAction(new DelayAction(db.getRobot(), 0.5));
+                    pathseq.addAction(new DelayAction(db.getRobot(), 0.125));
                     pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
                 } else if (which_.equals("blue-a")) {
                     pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);

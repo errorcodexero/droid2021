@@ -103,5 +103,13 @@ public class MotorGroupController extends MotorController
             ctrl.setCurrentLimit(limit);
     }      
 
+    public void setOpenLoopRampRate(double limit) throws BadMotorRequestException {
+        if (motors_.size() == 0)
+            throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+                    
+        for(MotorController ctrl : motors_)
+            ctrl.setOpenLoopRampRate(limit);
+    }   
+
     List<MotorController> motors_ ;
 } ;

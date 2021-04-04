@@ -47,5 +47,9 @@ public abstract class MotorController
         throw new BadMotorRequestException(this, "motor does not support setCurrentLimit()") ;        
     }
 
+    public void setOpenLoopRampRate(double ramptime) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "motor does not support setOpenLoopRampRate()") ;    
+    }
+
     private String name_ ;
 }

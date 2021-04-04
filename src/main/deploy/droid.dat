@@ -264,8 +264,13 @@ tankdrive:follower:angle_correction                             -0.03
 # 1 = accuracy challenge, 2d port
 # 2 = power port challenge, 3d port
 #
-shooter:event                                                   2
-shooter:power_port_power                                        5150
+shooter:event                                                   1
+shooter:power_port_power                                        5300
+
+shooter:green                                                   3600
+shooter:yellow                                                  6100
+shooter:blue                                                    5200
+shooter:red                                                     4920
 
 shooter:velocity:kp                                             0.0002
 shooter:velocity:ki                                             0.0
@@ -275,7 +280,11 @@ shooter:velocity:min                                            -1.0
 shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
-shooter:velocity:ready_margin_percent                           8.0      # If velocity is within % margin from target, consider it ready to shoot
+# Power port challenge
+# shooter:velocity:ready_margin_percent                           8.0      
+
+# Accuracy challenge
+shooter:velocity:ready_margin_percent                           5.0  
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -296,10 +305,10 @@ shooter:hood:up                                                 -0.4
 endif
 
 
-shooter:aim:max_hood_up                                         130
-shooter:aim:min_hood_down                                       120
+shooter:aim:max_hood_up                                         120
+shooter:aim:min_hood_down                                       110
 
-shooter:hood:change_time					0.8
+shooter:hood:change_time					                    1.0
 
 #
 # If the drivebase is going faster than this, the hood is
@@ -351,7 +360,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.3
+turret:fire_threshold                                           0.2
 turret:min                                                      -100 # The minimum safe angle.
 turret:max                                                      100  # The maximum safe angle.
 
