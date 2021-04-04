@@ -23,6 +23,11 @@ public class ShooterVelocityAction extends Action {
     private double kf_ ;
     private double kmin_ ;
     private double kmax_ ;
+    private int plot_id_ ;
+    private double start_ ;
+    static private int which_ = 0 ;
+
+    private static String [] columns_ = { "time", "target", "actual"}  ;
 
     public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos, boolean setready)
             throws BadParameterTypeException, MissingParameterException {
@@ -41,6 +46,8 @@ public class ShooterVelocityAction extends Action {
         pos_ = pos ;
         sub_ = shooter ;
         setready_ = setready ;
+
+        plot_id_ = sub_.initPlot(toString() + "-" + String.valueOf(which_++)) ;   
     }
 
     public void setTarget(double target) {
@@ -58,6 +65,8 @@ public class ShooterVelocityAction extends Action {
     public void start() throws Exception {
         super.start() ;
 
+        start_ = sub_.getRobot().getTime() ;
+
         CANPIDController pid = sub_.getRawPIDController() ;
         pid.setP(kp_) ;
         pid.setI(ki_) ;
@@ -68,6 +77,9 @@ public class ShooterVelocityAction extends Action {
         pid.setReference(target_, ControlType.kVelocity) ;
 
         updateReadyToFire() ;
+
+        if (plot_id_ != -1)
+            sub_.startPlot(plot_id_, columns_) ;
     }
 
     @Override
@@ -86,6 +98,20 @@ public class ShooterVelocityAction extends Action {
         logger.add("actual", getRawVelocity()) ;
         logger.add("ready", sub_.isReadyToFire()) ;
         logger.endMessage();
+
+        if (plot_id_ != -1) {
+            Double[] data = new Double[columns_.length] ;
+            data[0] = sub_.getRobot().getTime() - start_ ;
+            data[1] = target_ ;
+            data[2] = getRawVelocity() ;
+            sub_.addPlotData(plot_id_, data);
+
+            if (sub_.getRobot().getTime() - start_ > 15.0)
+            {
+                sub_.endPlot(plot_id_) ;
+                plot_id_ = -1 ;
+            }
+        }
     }
 
     private double getRawVelocity() {
