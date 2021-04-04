@@ -24,7 +24,6 @@ public class CTREMotorController extends MotorController
 {
     public final static String SimDeviceName = "CTREMotorController" ;
 
-
     public enum MotorType
     {
         TalonSRX,
@@ -68,6 +67,8 @@ public class CTREMotorController extends MotorController
                     controller_ = new VictorSPX(index) ;
                     break ;
             }
+
+            controller_.configVoltageCompSaturation(12.0, 20) ;
         }
     }
 
@@ -223,15 +224,19 @@ public class CTREMotorController extends MotorController
     }
 
     public void setCurrentLimit(double limit) throws BadMotorRequestException {
-        if (type_ != MotorType.TalonFX)
-            throw new BadMotorRequestException(this, "motor does not support getPosition()") ;
-
         if (sim_ == null) {
             TalonFX fx = (TalonFX)controller_ ;
             SupplyCurrentLimitConfiguration cfg = new SupplyCurrentLimitConfiguration(true, limit, limit, 1) ;
             fx.configSupplyCurrentLimit(cfg) ;
         }
-    }      
+    }     
+    
+    public void setOpenLoopRampRate(double limit) throws BadMotorRequestException {
+        if (sim_ == null) {
+            TalonFX fx = (TalonFX)controller_ ;
+            fx.configOpenloopRamp(limit, 20) ;
+        }
+    }  
 
     private IMotorController controller_ ;
     private boolean inverted_ ;

@@ -110,6 +110,8 @@ public class TargetTrackerSubsystem extends Subsystem {
             }
             else
             {
+                lost_count_++ ;
+                
                 if (lost_count_ > max_lost_count_)
                     has_target_ = false ;
 

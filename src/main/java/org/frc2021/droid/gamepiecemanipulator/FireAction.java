@@ -1,5 +1,7 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
+import javax.lang.model.util.ElementScanner6;
+
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;
@@ -29,13 +31,26 @@ public class FireAction extends Action {
     private boolean is_firing_ ;
     private double db_velocity_threshold_ ;
 
+    private int event_ ;
+
+    double power_port_power_ ;
+
     private double hood_down_a_ ;
     private double hood_down_b_ ;
     private double hood_down_c_ ;
+    private double hood_down_d_ ;
+    private double hood_down_e_ ;
     
     private double hood_up_a_ ;
     private double hood_up_b_ ;
     private double hood_up_c_ ;
+    private double hood_up_d_ ;
+    private double hood_up_e_ ;
+
+    private double green_velo_ ;
+    private double blue_velo_ ;
+    private double red_velo_ ;
+    private double yellow_velo_ ;
 
     private double max_hood_up_distance_ ;
     private double min_hood_down_distance_ ;
@@ -80,13 +95,25 @@ public class FireAction extends Action {
         SettingsParser settings = gp.getRobot().getSettingsParser() ;
         db_velocity_threshold_ = settings.get("gamepiecemanipulator:fire:max_drivebase_velocity").getDouble() ;
 
+        event_ = settings.get("shooter:event").getInteger() ;
+        power_port_power_ = settings.get("shooter:power_port_power").getDouble() ;
+
+        green_velo_ = settings.get("shooter:green").getDouble();
+        blue_velo_ = settings.get("shooter:blue").getDouble();
+        red_velo_ = settings.get("shooter:red").getDouble();
+        yellow_velo_ = settings.get("shooter:yellow").getDouble();
+
         hood_down_a_ = settings.get("shooter:aim:hood_down:a").getDouble() ;
         hood_down_b_ = settings.get("shooter:aim:hood_down:b").getDouble() ;
         hood_down_c_ = settings.get("shooter:aim:hood_down:c").getDouble() ;
-        
+        hood_down_d_ = settings.get("shooter:aim:hood_down:d").getDouble() ;
+        hood_down_e_ = settings.get("shooter:aim:hood_down:e").getDouble() ;
+
         hood_up_a_ = settings.get("shooter:aim:hood_up:a").getDouble() ;
         hood_up_b_ = settings.get("shooter:aim:hood_up:b").getDouble() ;
         hood_up_c_ = settings.get("shooter:aim:hood_up:c").getDouble() ;
+        hood_up_d_ = settings.get("shooter:aim:hood_up:d").getDouble() ;
+        hood_up_e_ = settings.get("shooter:aim:hood_up:e").getDouble() ;
 
         max_hood_up_distance_ = settings.get("shooter:aim:max_hood_up").getDouble() ;
         min_hood_down_distance_ = settings.get("shooter:aim:min_hood_down").getDouble() ;
@@ -116,17 +143,18 @@ public class FireAction extends Action {
         boolean tracker_ready = tracker_.hasTarget() ;
         boolean turret_ready = turret_.isReadyToFire() ;
         boolean shooter_ready = shooter.isReadyToFire() ;
-        boolean db_ready = (db_.getVelocity() < db_velocity_threshold_) ;
+        boolean hood_ready_ = shooter.isHoodReady() ;
+        boolean db_ready = (Math.abs(db_.getVelocity()) < db_velocity_threshold_) ;
 
-        boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready ;
-        boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready ;
+        boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready && hood_ready_ ;
+        boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready && hood_ready_ ;
 
-        sub_.putDashboard("tracker-ready", DisplayType.Always, tracker_ready) ;
-        sub_.putDashboard("turret-ready", DisplayType.Always, turret_ready) ;
-        sub_.putDashboard("shooter-ready", DisplayType.Always, shooter_ready);
-        sub_.putDashboard("db-ready", DisplayType.Always, db_ready) ;
-        sub_.putDashboard("rtf", DisplayType.Always, ready_to_fire);
-        sub_.putDashboard("isfiring", DisplayType.Always, is_firing_);
+        sub_.putDashboard("tracker-ready", DisplayType.Verbose, tracker_ready) ;
+        sub_.putDashboard("turret-ready", DisplayType.Verbose, turret_ready) ;
+        sub_.putDashboard("shooter-ready", DisplayType.Verbose, shooter_ready);
+        sub_.putDashboard("db-ready", DisplayType.Verbose, db_ready) ;
+        sub_.putDashboard("rtf", DisplayType.Verbose, ready_to_fire);
+        sub_.putDashboard("isfiring", DisplayType.Verbose, is_firing_);
 
         if (tracker_ready)
         {
@@ -150,6 +178,8 @@ public class FireAction extends Action {
                 // When we are out of balls, stop the shooter motor
                 //
                 sub_.getShooter().setAction(shooter_stop_action_, true) ;
+
+                shooter_velocity_action_.setShooting(0.0);
             }
             // else if (!ready_to_fire_except_shooter) {
             else if (!ready_to_fire) {
@@ -162,11 +192,9 @@ public class FireAction extends Action {
 
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, lost target") ;
-                logger.add(",tracker_ready", tracker_ready) ;
-                logger.add(",db_ready", db_ready) ;
-                logger.add(",turret_ready", turret_ready) ;
-                logger.add(",shooter_ready", shooter_ready) ;
-                logger.endMessage();                
+                logger.endMessage();       
+                
+                shooter_velocity_action_.setShooting(0.0);
             }
         }
         else {
@@ -178,11 +206,14 @@ public class FireAction extends Action {
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: out of balls, completing action") ;
                 logger.endMessage();    
+
+                shooter_velocity_action_.setShooting(0.0);
             }
             else if (ready_to_fire && !sub_.getConveyor().isBusy()) {
                 sub_.getConveyor().setAction(emit_action_, true);
                 is_firing_ = true ;
 
+                shooter_velocity_action_.setShooting(1.0);
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: fire away ... !!!") ;
                 logger.endMessage();                   
@@ -235,7 +266,78 @@ public class FireAction extends Action {
         emit_action_.cancel() ;
     }
 
+    private double getTargetVelocity(double dist, HoodPosition pos) {
+        double ret = 0 ;
+
+        if (event_ == 0)
+            ret = getTargetVelocityPoly(dist, pos) ;
+        else if (event_ == 1)
+            ret = getTargetVelocityAccuracy2d(dist, pos);
+        else if (event_ == 2)
+            ret = getTargetVelocityPowerPort3d(dist, pos) ;
+
+        return ret ;
+    }
+
+    private double getTargetVelocityPoly(double dist, HoodPosition hood) {
+        double target ;
+        if (hood_pos_ == HoodPosition.Down) {
+            //
+            // Fit to a fifth order polynomial
+            //
+            target = hood_down_a_ * dist * dist * dist * dist + hood_down_b_ * dist * dist * dist + hood_down_c_ * dist * dist + hood_down_d_ * dist + hood_down_e_ ;
+        }
+        else {
+            //
+            // Fit to a fifth order polynomial
+            //
+            target = hood_up_a_ * dist * dist * dist * dist + hood_up_b_ * dist * dist * dist + hood_up_c_ * dist * dist + hood_up_d_ * dist + hood_up_e_ ;
+        }
+
+        return target ;
+    }
+
+    private double getTargetVelocityAccuracy2d(double dist, HoodPosition hood) {
+
+        double ret = getTargetVelocityPoly(dist, hood) ;
+
+        if (dist < 75)
+        {
+            //
+            // Green Zone
+            //
+            ret = green_velo_ ;
+        }
+        else if (dist > 90 && dist < 130)
+        {
+            //
+            // Yellow Zone
+            //
+            ret = yellow_velo_ ;
+        }
+        else if (dist > 140 && dist < 160)
+        {
+            //
+            // Blue Zone
+            //
+            ret = blue_velo_ ;
+        }
+        if (dist > 190 && dist < 220)
+        {
+            //
+            // Red Zone
+            //
+            ret = red_velo_ ;
+        }
+        return ret ;
+    }
+
+    private double getTargetVelocityPowerPort3d(double dist, HoodPosition pos) {
+        return power_port_power_ ;
+    }
+
     private void setTargetVelocity() {
+
         double dist = tracker_.getDistance() ;
 
         if (dist > max_hood_up_distance_)
@@ -243,33 +345,19 @@ public class FireAction extends Action {
         else if (dist < min_hood_down_distance_)
             hood_pos_ = HoodPosition.Up ;
 
-        double a, b, c ;
-        if (hood_pos_ == HoodPosition.Down) {
-            a = hood_down_a_ ;
-            b = hood_down_b_ ;
-            c = hood_down_c_ ;
-        }
-        else {
-            a = hood_up_a_ ;
-            b = hood_up_b_ ;
-            c = hood_up_c_ ;
-        }
-        double target = a * dist * dist + b * dist + c ;
+        double target = getTargetVelocity(dist, hood_pos_) ;
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
 
-        sub_.putDashboard("shoot-distance", DisplayType.Always, dist);
-        sub_.putDashboard("shoot-target", DisplayType.Always, target);
-        sub_.putDashboard("shoot-velocity", DisplayType.Always, sub_.getShooter().getVelocity());
-
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info, logger_id_) ;
-        logger.add("FIRE ACTION: ") ;
+        logger.add("FireAction (aiming): ") ;
         logger.add("distance", dist) ;
         logger.add(" target", target) ;
         logger.add(" velocity", sub_.getShooter().getVelocity()) ;
         logger.add(" hood", hood_pos_.toString()) ;
+        logger.add(" turret", turret_.getPosition()) ;
         logger.endMessage();
     }
 }

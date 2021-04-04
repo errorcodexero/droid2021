@@ -69,7 +69,7 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
             // This was in the C++ version, but it is not clear that it helps and seems it could
             // hurt.  I want to try this without the delay with the java code.
             //
-            new DelayState(0.01),
+            new DelayState(0.04),
 
             new GoToState(WaitForBallLabel),
 
@@ -87,7 +87,7 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
             // This was in the C++ version, but it is not clear that it helps and seems it could
             // hurt.  I want to try this without the delay with the java code.
             //
-            // new DelayState(0.05),
+            new DelayState(0.05),
 
             new DoWorkState("increment ball count", (ConveyorStateAction act) -> {
                 act.getSubsystem().incrementBallCount();

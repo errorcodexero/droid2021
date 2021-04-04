@@ -261,5 +261,17 @@ public class TankDriveSubsystem extends Subsystem {
     private void attachHardware() {
         left_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:left", "hw:tankdrive:motors:left") ;
         right_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:right", "hw:tankdrive:motors:right") ; 
+        
+        // try {
+        //     left_motors_.setOpenLoopRampRate(0.1);
+        // } catch (BadMotorRequestException e) {
+        //     e.printStackTrace();
+        // }
+
+        // try {
+        //     right_motors_.setOpenLoopRampRate(0.1);
+        // } catch (BadMotorRequestException e) {
+        //     e.printStackTrace();
+        // }
     }
 }

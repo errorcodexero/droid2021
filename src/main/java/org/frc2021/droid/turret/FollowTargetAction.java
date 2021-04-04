@@ -28,6 +28,9 @@ public class FollowTargetAction extends MotorAction {
     // The target tacker subsystem, used to find the desired turret angle
     private TargetTrackerSubsystem tracker_ ;
 
+    private double desired_ ;
+    private double error_ ;
+
     public FollowTargetAction(TurretSubsystem sub, TargetTrackerSubsystem tracker)
             throws BadParameterTypeException, MissingParameterException {
         super(sub);
@@ -35,6 +38,14 @@ public class FollowTargetAction extends MotorAction {
         sub_ = sub ;
         tracker_ = tracker ;
         threshold_ = sub.getRobot().getSettingsParser().get("turret:fire_threshold").getDouble() ;
+    }
+
+    public double getDesired() {
+        return desired_ ;
+    }
+
+    public double getError() {
+        return error_ ;
     }
 
     @Override
@@ -58,21 +69,21 @@ public class FollowTargetAction extends MotorAction {
         // Ask the target tracker what angle the turret should be at to 
         // point at the target.
         //
-        double desired = tracker_.getDesiredTurretAngle() ;
+        desired_ = tracker_.getDesiredTurretAngle() ;
 
         //
         // Update the turret motor power based on the current position of the turret and
         // the desired positon of the turret.
         //
-        double out = pid_.getOutput(desired, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
+        double out = pid_.getOutput(desired_, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
         sub_.setPower(out) ;
 
         //
         // Determine if the turret is close enough to the desired position to enable 
         // firing of the balls
         //
-        double error = Math.abs(desired - sub_.getPosition()) ;
-        boolean ready = error < threshold_ ;
+        double error_ = Math.abs(desired_ - sub_.getPosition()) ;
+        boolean ready = error_ < threshold_ ;
         sub_.setReadyToFire(ready) ;
 
         //
@@ -81,9 +92,9 @@ public class FollowTargetAction extends MotorAction {
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
         logger.add("FollowTargetAction:") ;
-        logger.add(" desired", desired) ;
+        logger.add(" desired", desired_) ;
         logger.add(" position", sub_.getPosition()) ;
-        logger.add(" error", error) ;
+        logger.add(" error", error_) ;
         logger.add(" output", out) ;
         logger.add(" ready", ready) ;
         logger.endMessage();

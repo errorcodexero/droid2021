@@ -42,7 +42,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         hood_change_time_= getRobot().getSettingsParser().get("shooter:hood:change_time").getDouble() ;
         hood_down_speed_= getRobot().getSettingsParser().get("shooter:hood:down_speed").getDouble() ;
 
-        getMotorController().setCurrentLimit(40);
+        // getMotorController().setCurrentLimit(40);
         getMotorController().setNeutralMode(MotorController.NeutralMode.Coast);
 
         change_time_ = getRobot().getTime() ;
@@ -103,8 +103,9 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
             hood_servo_.set(hood_up_pos_) ;  
             actual_ = pos  ;              
             hood_value_ = hood_up_pos_ ;     
-               
         }
+
+        change_time_ = getRobot().getTime() ;
     }
 
     private void updateHood() {
@@ -113,5 +114,12 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         else if (actual_ != desired_) {
             setPhysicalHood(desired_);
         }
+    }
+
+    protected double limitPower(double p) {
+        if (Math.abs(p) < 0.1)
+            p = 0.0 ;
+
+        return p ;
     }
 } ;

@@ -11,6 +11,17 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 public class SparkMaxMotorController extends MotorController
 {
+    private CANSparkMax controller_ ;
+    private CANEncoder encoder_ ;
+    private boolean inverted_ ;
+    private boolean brushless_ ;
+
+    private SimDevice sim_ ;
+    private SimDouble sim_power_ ;
+    private SimDouble sim_encoder_ ;
+    private SimBoolean sim_motor_inverted_ ;
+    private SimBoolean sim_neutral_mode_ ;
+
     public final static String SimDeviceNameBrushed = "SparkMaxBrushed" ;
     public final static String SimDeviceNameBrushless = "SparkMaxBrushless" ;
     public final static int TicksPerRevolution = 42 ;
@@ -35,11 +46,16 @@ public class SparkMaxMotorController extends MotorController
         }
         else {
             if (brushless)
+            {
                 controller_ = new CANSparkMax(index, CANSparkMax.MotorType.kBrushless) ;
+            }
             else
+            {
                 controller_ = new CANSparkMax(index, CANSparkMax.MotorType.kBrushed) ;
+            }
 
             controller_.restoreFactoryDefaults() ;
+            controller_.enableVoltageCompensation(12.0) ;
             encoder_ = controller_.getEncoder() ;
         }
     }
@@ -175,14 +191,10 @@ public class SparkMaxMotorController extends MotorController
         }
     }      
 
-    private CANSparkMax controller_ ;
-    private CANEncoder encoder_ ;
-    private boolean inverted_ ;
-    private boolean brushless_ ;
+    public void setOpenLoopRampRate(double limit) throws BadMotorRequestException {
+        if (sim_ == null) {
+            controller_.setOpenLoopRampRate(limit) ;
+        }
+    } 
 
-    private SimDevice sim_ ;
-    private SimDouble sim_power_ ;
-    private SimDouble sim_encoder_ ;
-    private SimBoolean sim_motor_inverted_ ;
-    private SimBoolean sim_neutral_mode_ ;
 } ;

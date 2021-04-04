@@ -39,9 +39,6 @@ public class ConveyorSubsystem extends Subsystem {
         int num;
         int basech = (int) 'a';
         // ball_count_ = 3 ;
-
-
-        // TODO - put to zero if the robot starts empty
         ball_count_ = 0 ;
 
         staged_for_collect_ = false;
