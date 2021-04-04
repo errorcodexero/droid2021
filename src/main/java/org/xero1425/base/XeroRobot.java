@@ -624,7 +624,6 @@ public abstract class XeroRobot extends TimedRobot {
         XeroPathManager mgr = getPathManager() ;
 
         try (Stream<Path> walk = Files.walk(Paths.get(mgr.getBaseDir()))) {
-
             List<String> result = walk.map(x -> x.toString()).filter(f -> f.endsWith("_main.csv")).collect(Collectors.toList());
             for(String name : result) {
                 int index = name.lastIndexOf(File.separator) ;

@@ -170,9 +170,9 @@ public class TankDriveFollowPathAction extends TankDriveAction {
     }
 
     private int index_ ;
-    double left_start_ ;
-    double right_start_ ;
-    double start_time_ ;
+    private double left_start_ ;
+    private double right_start_ ;
+    private double start_time_ ;
     double turn_correction_ ;
     double angle_correction_ ;
     XeroPath path_ ;
