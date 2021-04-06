@@ -7,11 +7,9 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.MissingPathException;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-
 public class SlalomAutoMode extends DroidAutoMode {
     public SlalomAutoMode(DroidAutoController ctrl) throws InvalidActionRequest, MissingPathException, BadParameterTypeException, MissingParameterException {
-        super(ctrl, "SlalomAutoMode", new Pose2d()) ;
+        super(ctrl, "SlalomAutoMode") ;
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 

@@ -9,7 +9,29 @@ import org.xero1425.misc.XeroMath;
 import org.xero1425.misc.XeroPath;
 import org.xero1425.misc.XeroPathSegment;
 
-public class TankDriveFollowPathAction extends TankDriveAction {
+public class TankDriveFollowPathAction extends TankDriveAction {    
+    private int index_ ;
+    private double left_start_ ;
+    private double right_start_ ;
+    private double start_time_ ;
+    double turn_correction_ ;
+    double angle_correction_ ;
+    XeroPath path_ ;
+    String path_name_ ;
+    PIDACtrl left_follower_ ;
+    PIDACtrl right_follower_ ;
+    boolean reverse_ ;
+    double start_angle_ ;
+    double target_start_angle_ ;
+    private int plot_id_ ;
+    Double [] plot_data_ ;
+    static final String[] plot_columns_ = {             
+        "time", 
+        "ltpos", "lapos", "ltvel", "lavel", "ltaccel", "laaccel", "lout","lticks","lvout","laout","lpout","ldout","lerr",
+        "rtpos", "rapos", "rtvel", "ravel", "rtaccel", "raaccel", "rout","rticks","rvout","raout","rpout","rdout","rerr",
+        "thead", "ahead", "angcorr"
+    } ;
+
     private final int LeftSide = 0 ;
     private final int RightSide = 1 ;
 
@@ -169,25 +191,4 @@ public class TankDriveFollowPathAction extends TankDriveAction {
         return ret ;
     }
 
-    private int index_ ;
-    private double left_start_ ;
-    private double right_start_ ;
-    private double start_time_ ;
-    double turn_correction_ ;
-    double angle_correction_ ;
-    XeroPath path_ ;
-    String path_name_ ;
-    PIDACtrl left_follower_ ;
-    PIDACtrl right_follower_ ;
-    boolean reverse_ ;
-    double start_angle_ ;
-    double target_start_angle_ ;
-    private int plot_id_ ;
-    Double [] plot_data_ ;
-    static final String[] plot_columns_ = {             
-        "time", 
-        "ltpos", "lapos", "ltvel", "lavel", "ltaccel", "laaccel", "lout","lticks","lvout","laout","lpout","ldout","lerr",
-        "rtpos", "rapos", "rtvel", "ravel", "rtaccel", "raaccel", "rout","rticks","rvout","raout","rpout","rdout","rerr",
-        "thead", "ahead", "angcorr"
-    } ;
 }

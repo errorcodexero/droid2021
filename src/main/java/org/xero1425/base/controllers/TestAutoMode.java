@@ -4,8 +4,6 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsParser;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-
 public class TestAutoMode extends AutoMode {
     static private final String Which = "auto:testmode:which";
     static private final String Power = "auto:testmode:power";
@@ -14,7 +12,7 @@ public class TestAutoMode extends AutoMode {
     static private final String Name = "auto:testmode:name";
 
     public TestAutoMode(AutoController ctrl, String name) throws BadParameterTypeException, MissingParameterException {
-        super(ctrl, name, new Pose2d()) ;
+        super(ctrl, name) ;
 
         SettingsParser parser = ctrl.getRobot().getSettingsParser() ;
         which_ = parser.get(Which).getInteger() ;

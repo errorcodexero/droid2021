@@ -1,7 +1,5 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
-import javax.lang.model.util.ElementScanner6;
-
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;

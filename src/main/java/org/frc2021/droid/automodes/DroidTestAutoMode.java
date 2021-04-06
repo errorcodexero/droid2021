@@ -32,6 +32,7 @@ import org.xero1425.base.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
 import org.xero1425.base.tankdrive.TankDrivePowerAction;
+import org.xero1425.base.tankdrive.TankDrivePurePursuitPathAction;
 import org.xero1425.base.tankdrive.TankDriveScrubCharAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
@@ -60,7 +61,8 @@ public class DroidTestAutoMode extends TestAutoMode {
         ShooterSubsystem shooter = droid.getGamePieceManipulator().getShooter() ;
         TurretSubsystem turret = droid.getTurret() ;
         ClimberSubsystem climber = droid.getClimber() ;
-        TargetTrackerSubsystem tracker = droid.getTracker() ;        
+        TargetTrackerSubsystem tracker = droid.getTracker() ;     
+    
 
         switch(getTestNumber()) {
             //
@@ -84,6 +86,10 @@ public class DroidTestAutoMode extends TestAutoMode {
 
             case 4:         // Run the path follower to follow a named path
                 addSubActionPair(db, new TankDriveFollowPathAction(db, getNameParam(), false), true) ;
+                break ;
+
+            case 5:         // Run the path follower to follow a named path
+                addSubActionPair(db, new TankDrivePurePursuitPathAction(db, getNameParam(), false), true) ;
                 break ;
 
             //

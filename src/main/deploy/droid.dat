@@ -16,7 +16,7 @@ turret:verbose                                                          false
 shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            true
+gamepiecemanipulator:verbose                                            false
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -32,13 +32,13 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      false
+tankdrive:messages                                                      true
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       true
+conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -241,6 +241,22 @@ hw:driverstation:hid:oi                                         2               
 tankdrive:inches_per_tick                                       0.00083
 tankdrive:width                                                 26.75
 tankdrive:scrub                                                 0.9
+
+tankdrive:purepursuit:left:kp                                   0.0003
+tankdrive:purepursuit:left:ki                                   0.0
+tankdrive:purepursuit:left:kd                                   0.0
+tankdrive:purepursuit:left:kf                                   0.006
+tankdrive:purepursuit:left:min                                  -1.0
+tankdrive:purepursuit:left:max                                  1.0
+tankdrive:purepursuit:left:imax                                 0.0
+
+tankdrive:purepursuit:right:kp                                   0.0003
+tankdrive:purepursuit:right:ki                                   0.0
+tankdrive:purepursuit:right:kd                                   0.0
+tankdrive:purepursuit:right:kf                                   0.006
+tankdrive:purepursuit:right:min                                  -1.0
+tankdrive:purepursuit:right:max                                  1.0
+tankdrive:purepursuit:right:imax                                 0.0
 
 tankdrive:follower:left:ka                                      0.0003
 tankdrive:follower:left:kv                                      0.006               # 0.005
@@ -604,12 +620,12 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
-auto:testmode:which                                           35
+auto:testmode:active                                          true
+auto:testmode:which                                           5
 auto:testmode:distance                                        1800
 auto:testmode:power                                           4000
 auto:testmode:duration                                        1.0
-auto:testmode:name                                           "Slalom_Path"
+auto:testmode:name                                           "PurePursuitTests_MostlyStraight"
 
 #
 # Short shot, 6" elevation of the front of the bumper @ 3900 ready_margin_percent

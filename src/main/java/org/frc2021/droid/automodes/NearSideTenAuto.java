@@ -1,8 +1,5 @@
 package org.frc2021.droid.automodes;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-
-//
 // Start along the side of our trench at the start line against the edge of the field.
 // Drive to collect the two balls on the edge of the rendezvous point.  Drive back to the
 // edge of the trench and score the five.  Then drive the trench collecting the five balls
@@ -16,7 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 //
 public class NearSideTenAuto extends DroidAutoMode {
     public NearSideTenAuto(DroidAutoController ctrl) throws Exception {
-        super(ctrl, "NearSideTen", new Pose2d()) ;
+        super(ctrl, "NearSideTen") ;
 
         //
         // Initial ball count, 3 balls loaded into the robot at start

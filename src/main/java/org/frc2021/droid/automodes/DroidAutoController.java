@@ -96,7 +96,8 @@ public class DroidAutoController extends AutoController {
             }
 
             AutoMode am = getAutoMode() ;
-            am.update(gamedata) ;
+            if (am != null)
+                am.update(gamedata) ;
         }
     }
 }

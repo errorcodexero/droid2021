@@ -7,11 +7,9 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.MissingPathException;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-
 public class BounceAutoMode extends DroidAutoMode {
     public BounceAutoMode(DroidAutoController ctrl) throws InvalidActionRequest, MissingPathException, BadParameterTypeException, MissingParameterException {
-        super(ctrl, "BounceAutoMode", new Pose2d()) ;
+        super(ctrl, "BounceAutoMode") ;
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 

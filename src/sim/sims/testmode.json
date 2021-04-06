@@ -33,7 +33,7 @@
                     "values" : 
                     {
                         "comment" : "position the robot at the initiation line",
-                        "xpos" : 505.0,
+                        "xpos" : 32.0,
                         "ypos" : 100.0,
                         "angle" : 180.0
                     }

@@ -1,7 +1,5 @@
 package org.frc2021.droid.automodes;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-
 //
 // Start along the side of our trench at the start line against the edge of the field.
 // Drive to the front edge of the trench and shoot the three loaded in the robot.  Drive
@@ -14,7 +12,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 //
 public class NearSideEightAuto extends DroidAutoMode {
     public NearSideEightAuto(DroidAutoController ctrl) throws Exception {
-        super(ctrl, "NearSideEight", new Pose2d()) ;
+        super(ctrl, "NearSideEight") ;
 
         //
         // Initial ball count, 3 balls loaded into the robot at start

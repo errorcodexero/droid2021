@@ -6,9 +6,11 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 public class PositionTracker {
     private Pose2d pose_ ;
     private double width_ ;
+    private double scrub_ ;
 
-    public PositionTracker(double width) {
+    public PositionTracker(double width, double scrub) {
         width_ = width ;
+        scrub_ = scrub ;
         pose_ = new Pose2d(0.0, 0.0, new Rotation2d(0.0)) ;
     }
 
@@ -18,6 +20,14 @@ public class PositionTracker {
 
     public void setPose(Pose2d pose) {
         pose_ = pose ;
+    }
+
+    public double getWidth() {
+        return width_ ;
+    }
+
+    public double getScrub() {
+        return scrub_ ;
     }
         
     public void updatePosition(double dleft, double dright, double angle) {

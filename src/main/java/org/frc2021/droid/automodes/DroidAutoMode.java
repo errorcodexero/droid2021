@@ -25,15 +25,13 @@ import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-
 //
 // This is the base class for the Droid automodes.  It basically provides some utility
 // methods that make it easy to create the complex automode sequences needed.
 //
 public class DroidAutoMode extends AutoMode {
-    public DroidAutoMode(DroidAutoController ctrl, String name, Pose2d start) {
-        super(ctrl, name, start);
+    public DroidAutoMode(DroidAutoController ctrl, String name) {
+        super(ctrl, name);
     }
 
     protected DroidRobotSubsystem getDroidSubsystem() {

@@ -49,7 +49,8 @@ public class TankDriveSubsystem extends Subsystem {
 
         MessageLogger logger = getRobot().getMessageLogger();
         double width = getRobot().getSettingsParser().get("tankdrive:width").getDouble() ;
-        tracker_ = new PositionTracker(width) ;
+        double scrub = getRobot().getSettingsParser().get("tankdrive:scrub").getDouble() ;
+        tracker_ = new PositionTracker(width, scrub) ;
 
         dist_l_ = 0.0;
         dist_r_ = 0.0;
@@ -82,6 +83,14 @@ public class TankDriveSubsystem extends Subsystem {
         trips_ = new HashMap<String, Double>();
 
         attachHardware();
+    }
+
+    public double getWidth() {
+        return tracker_.getWidth() ;
+    }
+
+    public double getScrub() {
+        return tracker_.getScrub() ;
     }
 
     public void startTrip(String name) {
@@ -190,8 +199,12 @@ public class TankDriveSubsystem extends Subsystem {
         super.run();
     }
 
-    public void setPosition(Pose2d pose) {
+    public void setPose(Pose2d pose) {
         tracker_.setPose(pose);
+    }
+
+    public Pose2d getPose() {
+        return tracker_.getPose() ;
     }
 
     public void computeMyState() {
