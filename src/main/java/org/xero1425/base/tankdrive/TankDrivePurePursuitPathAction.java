@@ -94,44 +94,59 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
         //
         LookAheadPoint look = findLookAheadPoint(closest) ;
 
-        //
-        // Find the curved arc we need to drive from the current
-        // position to the look ahead position
-        //
-        Twist2d twist = findDrivingPath(current, look.getPose()) ;
+        if (!look.atEnd())
+        {
 
-        //
-        // Compute the left and right drive velocities
-        //
-        TankDriveVelocities vel = inverseKinematics(twist) ;
+            //
+            // Find the curved arc we need to drive from the current
+            // position to the look ahead position
+            //
+            double curvature = findDrivingCurvature(current, look.getPose()) ;
+            double velocity ;
+            
+            if (closest.which() != path_.getSize() - 1)
+                velocity = path_.getSegment(MainRobot, closest.which() + 1).getVelocity() ;
+            else
+                velocity = path_.getSegment(MainRobot, closest.which()).getVelocity() ;
+                
+            double width = getSubsystem().getWidth() / getSubsystem().getScrub() ;
 
-        double left_out = left_pid_.getOutput(vel.getLeft(), sub.getLeftVelocity(), sub.getRobot().getDeltaTime()) ;
-        double right_out = right_pid_.getOutput(vel.getRight(), sub.getRightVelocity(), sub.getRobot().getDeltaTime());
+            //
+            // Compute the left and right drive velocities
+            //
+            TankDriveVelocities vel = inverseKinematics(curvature, velocity, width) ;
 
-        MessageLogger logger = sub.getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Debug, sub.getLoggerID()) ;
-        logger.add("rx", current.getX()) ;
-        logger.add("ry", current.getY()) ;
-        logger.add("ra", current.getRotation().getDegrees()) ;
-        logger.add("lx", look.getPose().getX()) ;
-        logger.add("ly", look.getPose().getY()) ;
-        logger.add("la", look.getPose().getRotation().getDegrees()) ;
-        logger.add("twx", twist.dx) ;
-        logger.add("twy", twist.dy) ;
-        logger.add("twtheta", twist.dtheta) ;
-        logger.add("left", vel.getLeft()) ;
-        logger.add("right", vel.getRight()) ;
-        logger.endMessage();
+            double left_out = left_pid_.getOutput(vel.getLeft(), sub.getLeftVelocity(), sub.getRobot().getDeltaTime()) ;
+            double right_out = right_pid_.getOutput(vel.getRight(), sub.getRightVelocity(), sub.getRobot().getDeltaTime());
 
-        sub.setPower(left_out, right_out) ;
+            MessageLogger logger = sub.getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, sub.getLoggerID()) ;
+            logger.add("rx", current.getX()) ;
+            logger.add("ry", current.getY()) ;
+            logger.add("ra", current.getRotation().getDegrees()) ;
+            logger.add("lx", look.getPose().getX()) ;
+            logger.add("ly", look.getPose().getY()) ;
+            logger.add("la", look.getPose().getRotation().getDegrees()) ;
+            logger.add("curv", curvature) ;
+            logger.add("velocity", velocity) ;
+            logger.add("left", vel.getLeft()) ;
+            logger.add("right", vel.getRight()) ;
+            logger.endMessage();
 
-        plot_data_[0] = robot.getTime() - start_time_ ;
-        plot_data_[1] = sub.getLeftVelocity() ;
-        plot_data_[2] = vel.getLeft() ;
-        plot_data_[3] = left_out ;
-        plot_data_[4] = sub.getRightVelocity() ;
-        plot_data_[5] = vel.getRight() ;
-        plot_data_[6] = right_out ;
+            sub.setPower(left_out, right_out) ;
+
+            plot_data_[0] = robot.getTime() - start_time_ ;
+            plot_data_[1] = sub.getLeftVelocity() ;
+            plot_data_[2] = vel.getLeft() ;
+            plot_data_[3] = left_out ;
+            plot_data_[4] = sub.getRightVelocity() ;
+            plot_data_[5] = vel.getRight() ;
+            plot_data_[6] = right_out ;
+        }
+        else
+        {
+            setDone() ;
+        }
     }
 
     @Override
@@ -147,30 +162,36 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
         return ret ;
     }
 
-    TankDriveVelocities inverseKinematics(Twist2d twist) {
-        TankDriveVelocities ret ;
+    TankDriveVelocities inverseKinematics(double curvature, double velocity, double width) {
 
-        if (Math.abs(twist.dtheta) < 1e-9)
-        {
-            ret = new TankDriveVelocities(twist.dx, twist.dx) ;
-        }
-        else
-        {
-            double dv = getSubsystem().getWidth() * twist.dtheta / (2 * getSubsystem().getScrub()) ;
-            ret = new TankDriveVelocities(twist.dx - dv, twist.dx + dv) ;
-        }
+        double l = velocity * (2 + curvature * width) / 2.0 ;
+        double r = velocity * (2 - curvature * width) / 2.0 ;
 
-        return ret;
+        return new TankDriveVelocities(l, r) ;
     }
 
-    private Twist2d findDrivingPath(Pose2d current, Pose2d target) {
-        return current.log(target) ;
+    private double findDrivingCurvature(Pose2d current, Pose2d target) {
+        double a, b, c ;
+
+        a = -Math.tan(current.getRotation().getRadians()) ;
+        b = 1.0 ;
+        c = Math.tan(current.getRotation().getRadians()) * current.getX() - current.getY() ;
+
+        double x = Math.abs(a * target.getX() + b * target.getY() + c) / Math.sqrt(a * a + b * b) ;
+
+        double ang = current.getRotation().getRadians() ;
+        double z = Math.sin(ang) * (target.getX() - current.getX()) - Math.cos(ang) * (target.getY() - current.getY()) ;
+        double curv = 2 * x / (look_ahead_distance_ * look_ahead_distance_)  * Math.signum(z) ;
+
+        return curv ;
     }
 
     private PathPoint findClosestPoint(Pose2d pos) {
         double dist = Double.MAX_VALUE ;
         int which = -1 ;
         double pcnt = 0.0 ;
+
+        Translation2d p1 = null, p2 = null ;
 
         for(int i = 0 ; i < path_.getSize() - 1; i++) {
             XeroPathSegment seg0 = path_.getSegment(MainRobot, i) ;
@@ -186,10 +207,14 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
                 which = i ;
                 dist = ptdist ;
                 pcnt = clpcnt ;
+                p1 = new Translation2d(seg0.getX(), seg0.getY()) ;
+                p2 = new Translation2d(seg1.getX(), seg1.getY()) ;
             }
         }
 
-        return new PathPoint(which, pcnt) ;
+        double x = p1.getX() + (p2.getX() - p2.getX()) * pcnt ;
+        double y = p1.getY() + (p2.getY() - p2.getY()) * pcnt ;
+        return new PathPoint(which, pcnt, new Translation2d(x, y)) ;
     }
 
     private Pose2d interpolate(Pose2d p1, Pose2d p2, double param) {
@@ -242,7 +267,13 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
             //
             XeroPathSegment seg = path_.getSegment(MainRobot, path_.getSize() - 1) ;
             Pose2d endpt = segmentToPose(seg) ;
-            ret = new LookAheadPoint(endpt, true) ;
+
+            boolean atend = false ;
+
+            double dist = endpt.getTranslation().getDistance(pt.loc()) ;
+            if (dist < 0.1)
+                atend = true ;
+            ret = new LookAheadPoint(endpt, atend) ;
         }
 
         return ret ;

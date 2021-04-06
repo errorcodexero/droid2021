@@ -247,7 +247,6 @@ public class TankDriveSubsystem extends Subsystem {
 
         MessageLogger logger = getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Debug, getLoggerID()) ;
-        logger.add("tankdrive:") ;
         logger.add(" powerl", left_power_).add(" powerr", right_power_) ;
         logger.add(" ticksl", ticks_left_).add(" ticksr ", ticks_right_) ;
         logger.add(" distl", dist_l_).add(" distr", dist_r_) ;
@@ -274,17 +273,5 @@ public class TankDriveSubsystem extends Subsystem {
     private void attachHardware() {
         left_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:left", "hw:tankdrive:motors:left") ;
         right_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:right", "hw:tankdrive:motors:right") ; 
-        
-        // try {
-        //     left_motors_.setOpenLoopRampRate(0.1);
-        // } catch (BadMotorRequestException e) {
-        //     e.printStackTrace();
-        // }
-
-        // try {
-        //     right_motors_.setOpenLoopRampRate(0.1);
-        // } catch (BadMotorRequestException e) {
-        //     e.printStackTrace();
-        // }
     }
 }
