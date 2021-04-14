@@ -1,7 +1,5 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
-import javax.lang.model.util.ElementScanner6;
-
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;
@@ -56,7 +54,7 @@ public class FireAction extends Action {
     private double min_hood_down_distance_ ;
 
     private ShooterVelocityAction shooter_velocity_action_ ;
-    private ShooterVelocityAction shooter_stop_action_ ;
+    // private ShooterVelocityAction shooter_stop_action_ ;
     private ConveyorEmitAction emit_action_ ;
 
     private double start_time_ ;
@@ -89,7 +87,7 @@ public class FireAction extends Action {
         db_ = db ;
 
         shooter_velocity_action_ = new ShooterVelocityAction(gp.getShooter(), 4500.0, ShooterSubsystem.HoodPosition.Down, true) ;
-        shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down, false) ;
+        // shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down, false) ;
         emit_action_ = new ConveyorEmitAction(gp.getConveyor()) ;
 
         SettingsParser settings = gp.getRobot().getSettingsParser() ;
@@ -146,7 +144,8 @@ public class FireAction extends Action {
         boolean hood_ready_ = shooter.isHoodReady() ;
         boolean db_ready = (Math.abs(db_.getVelocity()) < db_velocity_threshold_) ;
 
-        boolean ready_to_fire_except_shooter = tracker_ready && db_ready && turret_ready && hood_ready_ ;
+        //boolean ready_to_fire_after_first = tracker_ready && db_ready && turret_ready && hood_ready_ ;
+        boolean ready_to_fire_after_first = true ;
         boolean ready_to_fire = tracker_ready && db_ready && turret_ready && shooter_ready && hood_ready_ ;
 
         sub_.putDashboard("tracker-ready", DisplayType.Verbose, tracker_ready) ;
@@ -177,7 +176,7 @@ public class FireAction extends Action {
                 //
                 // When we are out of balls, stop the shooter motor
                 //
-                sub_.getShooter().setAction(shooter_stop_action_, true) ;
+                // sub_.getShooter().setAction(shooter_stop_action_, true) ;
 
                 shooter_velocity_action_.setShooting(0.0);
             }
@@ -209,7 +208,7 @@ public class FireAction extends Action {
 
                 shooter_velocity_action_.setShooting(0.0);
             }
-            else if (ready_to_fire && !sub_.getConveyor().isBusy()) {
+            else if (ready_to_fire_after_first && !sub_.getConveyor().isBusy()) {
                 sub_.getConveyor().setAction(emit_action_, true);
                 is_firing_ = true ;
 
@@ -234,7 +233,7 @@ public class FireAction extends Action {
         data[0] = sub_.getRobot().getTime() - start_time_ ;
         data[1] = is_firing_ ? 1.0 : 0.0 ;
         data[2] = ready_to_fire ? 1.1 : 0.0 ;
-        data[3] = ready_to_fire_except_shooter ? 1.2 : 0.0 ;
+        data[3] = ready_to_fire_after_first ? 1.2 : 0.0 ;
         data[4] = tracker_ready ? 1.3 : 0.0 ;
         data[5] = turret_ready ? 1.4 : 0.0 ;
         data[6] = shooter_ready ? 1.5 : 0.0 ;
@@ -262,7 +261,7 @@ public class FireAction extends Action {
     }
 
     private void stopChildActions() {
-        shooter_velocity_action_.cancel() ;
+        // shooter_velocity_action_.cancel() ;
         emit_action_.cancel() ;
     }
 

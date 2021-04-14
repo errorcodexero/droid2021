@@ -50,6 +50,9 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         desired_ = HoodPosition.Down ;
 
         hood_value_ = 1000.0 ;
+
+        ShooterVelocityAction act = new ShooterVelocityAction(this, 5130, HoodPosition.Down, false) ;
+        setDefaultAction(act);
     }
 
     public void setHood(HoodPosition pos) {

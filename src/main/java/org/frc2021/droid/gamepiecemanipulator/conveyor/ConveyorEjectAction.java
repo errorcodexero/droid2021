@@ -19,7 +19,7 @@ public class ConveyorEjectAction extends ConveyorStateAction {
                 act.getSubsystem().setBallCount(0) ;
                 return ConveyorStateStatus.NextState ;} ),
 
-            new DelayState(3.0),
+            new DelayState(0.0),
 
             new DoWorkState("motors to zero power", (ConveyorStateAction act) -> {
                 act.getSubsystem().setMotorsPower(0.0, 0.0);

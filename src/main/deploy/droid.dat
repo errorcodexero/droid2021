@@ -37,7 +37,7 @@ turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
-gamepiecemanipulator:messages                                           false
+gamepiecemanipulator:messages                                           true
 conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
@@ -189,34 +189,32 @@ intake:hold:imax                                                0
 
 if PRACTICE
 intake:follower:down:kp                                       0.0005
+intake:follower:down:kv                                       0.00010
+intake:follower:down:kd                                       0.0
+intake:follower:down:ka                                       0.0
+
+intake:follower:up:kp                                         0.001
+intake:follower:up:kv                                         0.000035
+intake:follower:up:kd                                         0.0
+intake:follower:up:ka                                         0.0
 endif
+
 if COMPETITION
 intake:follower:down:kp                                       0.002
-endif
 intake:follower:down:kd                                       0.0
 intake:follower:down:kv                                       0.00012407
 intake:follower:down:ka                                       0.0
 
-if PRACTICE
 intake:follower:up:kp                                         0.001
-endif
-if COMPETITION
-intake:follower:up:kp                                         0.001
-endif
-
-intake:follower:up:kd                                         0.0
-if PRACTICE
-intake:follower:up:kv                                         0.000035
-endif
-if COMPETITION
 intake:follower:up:kv                                         0.000147929
+intake:follower:up:kd                                         0.0
+intake:follower:up:ka                                         0.0
 endif
-intake:follower:up:ka                                         0
 
 intake:goto:threshold                                       10.0       # Within 10 ticks degrees
-intake:goto:maxd                                            -14000.0     # maximum deceleration
-intake:goto:maxa                                            14000.0     # maximum acceleration
-intake:goto:maxv                                            14000.0     # maximum velocity
+intake:goto:maxd                                            -22000.0     # maximum deceleration
+intake:goto:maxa                                            22000.0     # maximum acceleration
+intake:goto:maxv                                            22000.0     # maximum velocity
 
 #
 # Driver station
@@ -264,15 +262,15 @@ tankdrive:follower:angle_correction                             -0.03
 # 1 = accuracy challenge, 2d port
 # 2 = power port challenge, 3d port
 #
-shooter:event                                                   1
-shooter:power_port_power                                        5300
+shooter:event                                                   2
+shooter:power_port_power                                        4950
 
 shooter:green                                                   3600
 shooter:yellow                                                  6100
 shooter:blue                                                    5200
 shooter:red                                                     4920
 
-shooter:velocity:kp                                             0.0002
+shooter:velocity:kp                                             0.0001
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.00014407573346281248912909418078435
@@ -281,10 +279,10 @@ shooter:velocity:max                                            1.0
 shooter:velocity:imax                                           0.0
 
 # Power port challenge
-# shooter:velocity:ready_margin_percent                           8.0      
+shooter:velocity:ready_margin_percent                           8.0
 
 # Accuracy challenge
-shooter:velocity:ready_margin_percent                           5.0  
+# shooter:velocity:ready_margin_percent                           5  
 
 shooter:hold:p                                                  0.0
 shooter:hold:i                                                  0.0
@@ -360,7 +358,8 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.2
+turret:fire_threshold                                           0.8
+#turret:fire_threshold                                           5.0
 turret:min                                                      -100 # The minimum safe angle.
 turret:max                                                      100  # The maximum safe angle.
 

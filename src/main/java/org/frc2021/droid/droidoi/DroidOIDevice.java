@@ -7,7 +7,7 @@ import org.frc2021.droid.gamepiecemanipulator.FireAction;
 import org.frc2021.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.StartCollectAction;
 import org.frc2021.droid.gamepiecemanipulator.StopCollectAction;
-import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEjectAction;
+// import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEjectAction;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToReceiveAction;
@@ -82,7 +82,7 @@ public class DroidOIDevice extends OIPanel {
     private Action turret_goto_manual_ ;
     private Action turret_follow_target_ ;
 
-    private Action eject_action_ ;
+    // private Action eject_action_ ;
     private Action conveyor_stop_ ;
     private Action queue_prep_collect_ ;
     private Action queue_prep_shoot_ ;
@@ -151,7 +151,7 @@ public class DroidOIDevice extends OIPanel {
         turret_goto_manual_ = new MotorEncoderGotoAction(turret, -70.0, true) ;
         turret_follow_target_ = new FollowTargetAction(turret, tracker) ;
 
-        eject_action_ = new ConveyorEjectAction(conveyor) ;
+        // eject_action_ = new ConveyorEjectAction(conveyor) ;
         conveyor_stop_ = new ConveyorStopAction(conveyor) ;
         queue_prep_collect_ = new ConveyorPrepareToReceiveAction(conveyor) ;
         queue_prep_shoot_ = new ConveyorPrepareToEmitAction(conveyor) ;
@@ -160,7 +160,7 @@ public class DroidOIDevice extends OIPanel {
         shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down, false) ;
         shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down, false) ;
         shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 4000.0, ShooterSubsystem.HoodPosition.Up, true) ;
-        shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down, false) ;
+        shooter_spinup_ = new ShooterVelocityAction(shooter, 5130.0, ShooterSubsystem.HoodPosition.Down, false) ;
 
         if (climber_attached_)
         {
@@ -365,6 +365,7 @@ public class DroidOIDevice extends OIPanel {
         if (!conveyor.isBusy()) {
             collect_shoot_state_ = CollectShootState.ShootReady ;
             if (getValue(manual_shoot_mode_) == 0) {
+                conveyor.setBallCount(4);
                 seq.addSubActionPair(gp, fire_, false) ;
             }
         }
@@ -427,7 +428,7 @@ public class DroidOIDevice extends OIPanel {
     private void collectMode(SequenceAction seq) throws InvalidActionRequest {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ;
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
-        ShooterSubsystem shooter = getDroidSubsystem().getGamePieceManipulator().getShooter() ;
+        // ShooterSubsystem shooter = getDroidSubsystem().getGamePieceManipulator().getShooter() ;
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
         
 
@@ -444,7 +445,9 @@ public class DroidOIDevice extends OIPanel {
             seq.addSubActionPair(turret, turret_goto_90_, false) ;
         }
 
-        seq.addSubActionPair(shooter, shooter_stop_, false);
+        gp.cancelAction();
+        conveyor.setBallCount(0);
+        // seq.addSubActionPair(shooter, shooter_stop_, false);
     }
 
     private void shootMode(SequenceAction seq) throws InvalidActionRequest {
@@ -479,8 +482,11 @@ public class DroidOIDevice extends OIPanel {
         gp.cancelAction();
         seq.addSubActionPair(intake, intake_off_, false) ;
         seq.addSubActionPair(turret, turret_goto_zero_, false) ;
-        seq.addSubActionPair(conveyor, eject_action_, false);
+        // seq.addSubActionPair(conveyor, eject_action_, false);
         seq.addSubActionPair(shooter, shooter_eject_action_, false);
+
+        conveyor.cancelAction();
+        conveyor.setBallCount(0) ;
     }
 
     private void stopEject(SequenceAction seq) throws InvalidActionRequest {
