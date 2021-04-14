@@ -3,7 +3,6 @@ package org.xero1425.base.tankdrive;
 import org.xero1425.base.XeroRobot;
 import org.xero1425.base.utils.LineSegment;
 import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MessageDestination;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
@@ -12,13 +11,9 @@ import org.xero1425.misc.PIDCtrl;
 import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.XeroPath;
 import org.xero1425.misc.XeroPathSegment;
-
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.geometry.Twist2d;
-
-
 
 public class TankDrivePurePursuitPathAction extends TankDriveAction {
     private double start_time_ ;
@@ -29,6 +24,7 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
     private PIDCtrl right_pid_;
     private int plot_id_ ;
     private Double[] plot_data_ ;
+    private int cycle_ ;
 
     static final String[] plot_columns_ = {             
         "time", 
@@ -64,10 +60,18 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
         getSubsystem().setPose(start);
 
         getSubsystem().startPlot(plot_id_, plot_columns_);
+
+        cycle_ = 0 ;
     }
 
     @Override
     public void run() {
+
+        if (cycle_ == 36)
+        {
+            System.out.println() ;
+        }
+
         //
         // Get the tank drive subsystem
         //
@@ -119,14 +123,19 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
             double left_out = left_pid_.getOutput(vel.getLeft(), sub.getLeftVelocity(), sub.getRobot().getDeltaTime()) ;
             double right_out = right_pid_.getOutput(vel.getRight(), sub.getRightVelocity(), sub.getRobot().getDeltaTime());
 
+            double delta = look.getPose().getX() - current.getX() ;
+
             MessageLogger logger = sub.getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, sub.getLoggerID()) ;
+            logger.add("purepursuit:") ;
+            logger.add("cycle", cycle_) ;
             logger.add("rx", current.getX()) ;
             logger.add("ry", current.getY()) ;
             logger.add("ra", current.getRotation().getDegrees()) ;
             logger.add("lx", look.getPose().getX()) ;
             logger.add("ly", look.getPose().getY()) ;
             logger.add("la", look.getPose().getRotation().getDegrees()) ;
+            logger.add("delta", delta) ;
             logger.add("curv", curvature) ;
             logger.add("velocity", velocity) ;
             logger.add("left", vel.getLeft()) ;
@@ -142,11 +151,14 @@ public class TankDrivePurePursuitPathAction extends TankDriveAction {
             plot_data_[4] = sub.getRightVelocity() ;
             plot_data_[5] = vel.getRight() ;
             plot_data_[6] = right_out ;
+
+            cycle_++ ;
         }
         else
         {
             setDone() ;
         }
+
     }
 
     @Override

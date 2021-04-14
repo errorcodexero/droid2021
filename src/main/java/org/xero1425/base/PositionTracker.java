@@ -31,6 +31,7 @@ public class PositionTracker {
     }
         
     public void updatePosition(double dleft, double dright, double angle) {
+
         double xpos, ypos ;
 
         if (Math.abs(dleft - dright) < 1e-6) {
@@ -44,6 +45,6 @@ public class PositionTracker {
             ypos = pose_.getY() - r * Math.cos(wd + angle) + r * Math.cos(angle) ;
         }
 
-        pose_ = new Pose2d(xpos, ypos, new Rotation2d(angle)) ;
+        pose_ = new Pose2d(xpos, ypos, Rotation2d.fromDegrees(angle)) ;
     }
 }
