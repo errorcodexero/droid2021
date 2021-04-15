@@ -466,7 +466,7 @@ public class DroidOIDevice extends OIPanel {
 
         seq.addSubActionPair(conveyor, queue_prep_shoot_, false) ;
         seq.addSubActionPair(intake, intake_off_, false);
-    }    
+    }
 
     private void startEject(SequenceAction seq) throws InvalidActionRequest {
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
