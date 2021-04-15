@@ -1,6 +1,7 @@
 package org.frc2021.droid.gamepiecemanipulator.shooter;
 
 import org.xero1425.base.Subsystem.DisplayType;
+import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.misc.BadParameterTypeException;
@@ -16,7 +17,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     private boolean setready_ ;
 
     public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos, boolean setready)
-            throws BadParameterTypeException, MissingParameterException {
+            throws BadParameterTypeException, MissingParameterException, BadMotorRequestException {
         super(shooter, target) ;
 
         ready_percent_ = shooter.getRobot().getSettingsParser().get("shooter:velocity:ready_margin_percent").getDouble() ;
@@ -26,7 +27,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     }
 
     @Override
-    public void setTarget(double target) {
+    public void setTarget(double target) throws BadMotorRequestException {
         super.setTarget(target) ;
         updateReadyToFire() ;
     }

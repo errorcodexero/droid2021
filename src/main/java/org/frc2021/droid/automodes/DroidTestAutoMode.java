@@ -167,7 +167,7 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 31:            // Run the base motor encoder velocity action
-                addSubActionPair(shooter, new MotorEncoderVelocityAction(shooter, getPower(), getDuration()), true) ;
+                addSubActionPair(shooter, new MotorEncoderVelocityAction(shooter, getPower()), true) ;
                 break ;
 
             case 32:            // Set shooter to fixed velocity (hood down)

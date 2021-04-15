@@ -1,7 +1,5 @@
 package org.xero1425.base.motors ;
 
-import javax.management.BadAttributeValueExpException;
-
 public abstract class MotorController
 {
     public final static String SimPowerParamName = "Power" ;
@@ -23,6 +21,11 @@ public abstract class MotorController
         return name_  ;
     }
 
+    public enum PidType {
+        Position,
+        Velocity,
+    }
+
     public abstract String typeName() ;
     public abstract void set(double percent)  throws BadMotorRequestException;
     public abstract void setInverted(boolean inverted)  throws BadMotorRequestException;
@@ -32,6 +35,12 @@ public abstract class MotorController
     public abstract void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException;
     public abstract String getType()  throws BadMotorRequestException;
     public abstract double getVoltage() throws BadMotorRequestException ;
+    public abstract boolean hasPID() throws BadMotorRequestException ;
+    public abstract void setTarget(double target) throws BadMotorRequestException ;
+    public abstract void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException ;
+    public abstract void stopPID() throws BadMotorRequestException ;
+    public abstract void setPositionConversion(double factor) throws BadMotorRequestException ;
+    public abstract void setVelocityConversion(double factor) throws BadMotorRequestException ;
     
     public boolean hasPosition() throws BadMotorRequestException {
         return false ;

@@ -1,7 +1,5 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
-import javax.lang.model.util.ElementScanner6;
-
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;
@@ -10,6 +8,7 @@ import org.frc2021.droid.targettracker.TargetTrackerSubsystem;
 import org.frc2021.droid.turret.TurretSubsystem;
 import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.actions.Action;
+import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -136,7 +135,7 @@ public class FireAction extends Action {
     }
 
     @Override
-    public void run() {
+    public void run() throws BadMotorRequestException {
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         ShooterSubsystem shooter = sub_.getShooter() ;
 
@@ -178,8 +177,6 @@ public class FireAction extends Action {
                 // When we are out of balls, stop the shooter motor
                 //
                 sub_.getShooter().setAction(shooter_stop_action_, true) ;
-
-                shooter_velocity_action_.setShooting(0.0);
             }
             // else if (!ready_to_fire_except_shooter) {
             else if (!ready_to_fire) {
@@ -192,9 +189,7 @@ public class FireAction extends Action {
 
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: stopped firing, lost target") ;
-                logger.endMessage();       
-                
-                shooter_velocity_action_.setShooting(0.0);
+                logger.endMessage();   
             }
         }
         else {
@@ -206,14 +201,11 @@ public class FireAction extends Action {
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: out of balls, completing action") ;
                 logger.endMessage();    
-
-                shooter_velocity_action_.setShooting(0.0);
             }
             else if (ready_to_fire && !sub_.getConveyor().isBusy()) {
                 sub_.getConveyor().setAction(emit_action_, true);
                 is_firing_ = true ;
 
-                shooter_velocity_action_.setShooting(1.0);
                 logger.startMessage(MessageType.Debug, logger_id_) ;
                 logger.add("fire-action: fire away ... !!!") ;
                 logger.endMessage();                   
@@ -336,7 +328,7 @@ public class FireAction extends Action {
         return power_port_power_ ;
     }
 
-    private void setTargetVelocity() {
+    private void setTargetVelocity() throws BadMotorRequestException {
 
         double dist = tracker_.getDistance() ;
 

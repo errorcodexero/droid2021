@@ -17,7 +17,6 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     private double hood_down_pos_ ;
     private Servo hood_servo_ ;
     private TankDriveSubsystem db_ ;
-    private double hood_value_ ;
 
     public final static String SubsystemName = "shooter" ;
 
@@ -49,7 +48,14 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         actual_ = HoodPosition.Unknown ;
         desired_ = HoodPosition.Down ;
 
-        hood_value_ = 1000.0 ;
+        //
+        // Set the correct velocity units for the shooter
+        //
+        double ticks_per_rev = 42 ;
+        double seconds_per_minute = 60 ;
+        double motor_to_shooter_gear_ratio  = 24.0 / 18.0 ;
+        double factor =  seconds_per_minute / ticks_per_rev * motor_to_shooter_gear_ratio ;
+        setVelocityConversion(factor);        
     }
 
     public void setHood(HoodPosition pos) {
@@ -78,9 +84,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     @Override
     public void computeMyState() throws Exception {
         super.computeMyState();
-
-        double rpm = getVelocity() * 60.0 ;
-        putDashboard("s-voltage", DisplayType.Always, getMotorController().getVoltage()) ;
+        putDashboard("s-voltage", DisplayType.Verbose, getMotorController().getVoltage()) ;
     }
 
     @Override
@@ -95,13 +99,11 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         {
             hood_servo_.set(hood_down_pos_) ;
             actual_ = pos  ;
-            hood_value_ = hood_down_pos_ ;
         }
         else if (pos == HoodPosition.Up)
         {
             hood_servo_.set(hood_up_pos_) ;  
             actual_ = pos  ;              
-            hood_value_ = hood_up_pos_ ;     
         }
 
         change_time_ = getRobot().getTime() ;

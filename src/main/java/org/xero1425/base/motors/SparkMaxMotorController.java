@@ -1,7 +1,9 @@
 package org.xero1425.base.motors;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.hal.SimBoolean;
@@ -15,6 +17,8 @@ public class SparkMaxMotorController extends MotorController
     private CANEncoder encoder_ ;
     private boolean inverted_ ;
     private boolean brushless_ ;
+    private CANPIDController pid_ ;
+    private PidType ptype_ ;
 
     private SimDevice sim_ ;
     private SimDouble sim_power_ ;
@@ -31,6 +35,7 @@ public class SparkMaxMotorController extends MotorController
 
         inverted_ = false ;
         brushless_ = brushless ;
+        pid_ = null ;
 
         if (RobotBase.isSimulation()) {
             if (brushless)
@@ -71,6 +76,43 @@ public class SparkMaxMotorController extends MotorController
 
     public double getVoltage() throws BadMotorRequestException {
         return controller_.getBusVoltage() ;
+    }
+
+    public boolean hasPID() throws BadMotorRequestException {
+        return false ;
+    }
+
+    public void setTarget(double target) throws BadMotorRequestException {
+        if (pid_ == null)
+            throw new BadMotorRequestException(this, "called setTarget() before calling setPID()") ;
+
+        if (ptype_ == PidType.Position)
+            pid_.setReference(target, ControlType.kPosition) ;
+        else if (ptype_ == PidType.Velocity)
+            pid_.setReference(target, ControlType.kVelocity) ;
+    }
+
+    public void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException {
+        if (pid_ == null)
+            pid_ = controller_.getPIDController() ;
+
+        pid_.setP(p) ;
+        pid_.setI(i) ;
+        pid_.setD(d) ;
+        pid_.setFF(f) ;
+        pid_.setOutputRange(outmin, outmax) ;
+        ptype_ = type ;
+    }
+
+    public void stopPID() throws BadMotorRequestException {
+    }
+
+    public void setPositionConversion(double factor) throws BadMotorRequestException {
+        encoder_.setPositionConversionFactor(factor) ;
+    }
+
+    public void setVelocityConversion(double factor) throws BadMotorRequestException {
+        encoder_.setVelocityConversionFactor(factor) ;
     }
 
     public void set(double percent) {

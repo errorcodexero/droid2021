@@ -107,6 +107,30 @@ public class CTREMotorController extends MotorController
         return controller_.getBusVoltage() ;
     }
 
+    public boolean hasPID() throws BadMotorRequestException {
+        return true ;
+    }
+
+    public void setTarget(double target) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "NotYetImplemented");
+    }
+
+    public void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "NotYetImplemented");
+    }
+
+    public void stopPID() throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "NotYetImplemented");
+    }
+
+    public void setPositionConversion(double factor) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "NotYetImplemented");
+    }
+
+    public void setVelocityConversion(double factor) throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "NotYetImplemented");
+    }
+
     public void set(double percent) {
         if (sim_ != null) {
             sim_power_.set(percent) ;
