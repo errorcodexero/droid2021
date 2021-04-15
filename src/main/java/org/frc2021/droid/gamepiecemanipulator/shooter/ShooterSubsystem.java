@@ -80,8 +80,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         super.computeMyState();
 
         double rpm = getVelocity() * 60.0 ;
-        putDashboard("s-rpm", DisplayType.Verbose, rpm);
-        putDashboard("s-hood", DisplayType.Verbose, hood_value_);
+        putDashboard("s-voltage", DisplayType.Always, getMotorController().getVoltage()) ;
     }
 
     @Override
