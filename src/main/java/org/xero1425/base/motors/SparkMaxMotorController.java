@@ -69,6 +69,10 @@ public class SparkMaxMotorController extends MotorController
         return ret ;
     }
 
+    public double getVoltage() throws BadMotorRequestException {
+        return controller_.getBusVoltage() ;
+    }
+
     public void set(double percent) {
         if (sim_ != null) {
             sim_power_.set(percent) ;

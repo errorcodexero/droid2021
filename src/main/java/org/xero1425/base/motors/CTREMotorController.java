@@ -21,7 +21,17 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 /// \brief This class is MotorController class that supports the TalonFX, TalonSRX, and the VictorSPX motors.
 public class CTREMotorController extends MotorController
-{
+{  
+    private IMotorController controller_ ;
+    private boolean inverted_ ;
+    private MotorType type_ ;
+
+    private SimDevice sim_ ;
+    private SimDouble sim_power_ ;
+    private SimDouble sim_encoder_ ;
+    private SimBoolean sim_motor_inverted_ ;
+    private SimBoolean sim_neutral_mode_ ;
+
     public final static String SimDeviceName = "CTREMotorController" ;
 
     public enum MotorType
@@ -91,6 +101,10 @@ public class CTREMotorController extends MotorController
         }
 
         return ret ;
+    }
+
+    public double getVoltage() throws BadMotorRequestException {
+        return controller_.getBusVoltage() ;
     }
 
     public void set(double percent) {
@@ -238,13 +252,4 @@ public class CTREMotorController extends MotorController
         }
     }  
 
-    private IMotorController controller_ ;
-    private boolean inverted_ ;
-    private MotorType type_ ;
-
-    private SimDevice sim_ ;
-    private SimDouble sim_power_ ;
-    private SimDouble sim_encoder_ ;
-    private SimBoolean sim_motor_inverted_ ;
-    private SimBoolean sim_neutral_mode_ ;
 } ;

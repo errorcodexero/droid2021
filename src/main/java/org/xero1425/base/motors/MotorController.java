@@ -1,5 +1,6 @@
 package org.xero1425.base.motors ;
 
+import javax.management.BadAttributeValueExpException;
 
 public abstract class MotorController
 {
@@ -30,6 +31,7 @@ public abstract class MotorController
     public abstract void setNeutralMode(NeutralMode mode) throws BadMotorRequestException;
     public abstract void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException;
     public abstract String getType()  throws BadMotorRequestException;
+    public abstract double getVoltage() throws BadMotorRequestException ;
     
     public boolean hasPosition() throws BadMotorRequestException {
         return false ;

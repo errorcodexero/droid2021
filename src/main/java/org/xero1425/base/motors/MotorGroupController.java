@@ -27,6 +27,13 @@ public class MotorGroupController extends MotorController
             ctrl.follow(motors_.get(0), inverted) ;
     }
 
+    public double getVoltage() throws BadMotorRequestException {
+        if (motors_.size() == 0)
+        throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        return motors_.get(0).getVoltage() ;
+    }
+
     public void set(double percent) throws BadMotorRequestException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
