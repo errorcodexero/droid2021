@@ -138,7 +138,7 @@ public class MotorFactory
         logger_.endMessage();
     }
 
-    private MotorController createSingleMotor(String name, String id) throws BadParameterTypeException, BadMotorRequestException {
+    private MotorController createSingleMotor(String name, String id) throws BadParameterTypeException, BadMotorRequestException, MotorRequestFailedException {
         String idparam = id + ":type" ;
         String canparam = id + ":canid" ;
 

@@ -9,6 +9,7 @@ import org.frc2021.droid.turret.TurretSubsystem;
 import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -135,7 +136,7 @@ public class FireAction extends Action {
     }
 
     @Override
-    public void run() throws BadMotorRequestException {
+    public void run() throws BadMotorRequestException, MotorRequestFailedException {
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         ShooterSubsystem shooter = sub_.getShooter() ;
 
@@ -328,7 +329,7 @@ public class FireAction extends Action {
         return power_port_power_ ;
     }
 
-    private void setTargetVelocity() throws BadMotorRequestException {
+    private void setTargetVelocity() throws BadMotorRequestException, MotorRequestFailedException {
 
         double dist = tracker_.getDistance() ;
 

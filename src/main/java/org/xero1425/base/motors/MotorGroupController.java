@@ -17,7 +17,7 @@ public class MotorGroupController extends MotorController
             return motors_.get(0).typeName() ;
     }
 
-    public void addMotor(MotorController ctrl, boolean inverted) throws BadMotorRequestException {
+    public void addMotor(MotorController ctrl, boolean inverted) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() > 0 && !motors_.get(0).typeName().equals(ctrl.typeName()))
             throw new BadMotorRequestException(this, "cannot add motor to group with existing motors unless the are the same type") ;
 
@@ -27,84 +27,84 @@ public class MotorGroupController extends MotorController
             ctrl.follow(motors_.get(0), inverted) ;
     }
 
-    public double getVoltage() throws BadMotorRequestException {
+    public double getVoltage() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
         throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         return motors_.get(0).getVoltage() ;
     }
 
-    public boolean hasPID() throws BadMotorRequestException {
+    public boolean hasPID() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         return motors_.get(0).hasPID() ;
     }
 
-    public void setTarget(double target) throws BadMotorRequestException {
+    public void setTarget(double target) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         motors_.get(0).setTarget(target);
     }
 
-    public void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException {
+    public void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         motors_.get(0).setPID(type, p, i, d, f, outmin, outmax) ;
     }
 
-    public void stopPID() throws BadMotorRequestException {
+    public void stopPID() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         motors_.get(0).stopPID() ;
     }
 
-    public void setPositionConversion(double factor) throws BadMotorRequestException {
+    public void setPositionConversion(double factor) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         motors_.get(0).setPositionConversion(factor);
     }
 
-    public void setVelocityConversion(double factor) throws BadMotorRequestException {
+    public void setVelocityConversion(double factor) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         motors_.get(0).setVelocityConversion(factor);
     }
 
-    public void set(double percent) throws BadMotorRequestException {
+    public void set(double percent) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
         motors_.get(0).set(percent) ;
     }
 
-    public void setInverted(boolean inverted)  throws BadMotorRequestException {
+    public void setInverted(boolean inverted)  throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
             
         motors_.get(0).setInverted(inverted);
     }
 
-    public boolean isInverted() throws BadMotorRequestException {
+    public boolean isInverted() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
             
         return motors_.get(0).isInverted() ;
     }
 
-    public void reapplyInverted()  throws BadMotorRequestException {
+    public void reapplyInverted()  throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
             
         motors_.get(0).reapplyInverted();        
     }
 
-    public void setNeutralMode(NeutralMode mode) throws BadMotorRequestException {
+    public void setNeutralMode(NeutralMode mode) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
@@ -112,11 +112,11 @@ public class MotorGroupController extends MotorController
             ctrl.setNeutralMode(mode);
     }
 
-    public void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException {
+    public void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException, MotorRequestFailedException {
         throw new BadMotorRequestException(this, "a motor group cannot follow other motors") ;
     }
 
-    public String getType() throws BadMotorRequestException {
+    public String getType() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 

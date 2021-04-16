@@ -1,6 +1,7 @@
 package org.xero1425.base.motorsubsystem;
 
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.motors.MotorController.PidType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
@@ -43,7 +44,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
         }
     }
 
-    public void setTarget(double target) throws BadMotorRequestException {
+    public void setTarget(double target) throws BadMotorRequestException, MotorRequestFailedException {
         target_ = target ;
 
         if (getSubsystem().getMotorController().hasPID()) {

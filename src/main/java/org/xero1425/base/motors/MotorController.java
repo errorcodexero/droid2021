@@ -27,20 +27,20 @@ public abstract class MotorController
     }
 
     public abstract String typeName() ;
-    public abstract void set(double percent)  throws BadMotorRequestException;
-    public abstract void setInverted(boolean inverted)  throws BadMotorRequestException;
-    public abstract boolean isInverted() throws BadMotorRequestException ;    
-    public abstract void reapplyInverted() throws BadMotorRequestException;
-    public abstract void setNeutralMode(NeutralMode mode) throws BadMotorRequestException;
-    public abstract void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException;
-    public abstract String getType()  throws BadMotorRequestException;
-    public abstract double getVoltage() throws BadMotorRequestException ;
-    public abstract boolean hasPID() throws BadMotorRequestException ;
-    public abstract void setTarget(double target) throws BadMotorRequestException ;
-    public abstract void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException ;
-    public abstract void stopPID() throws BadMotorRequestException ;
-    public abstract void setPositionConversion(double factor) throws BadMotorRequestException ;
-    public abstract void setVelocityConversion(double factor) throws BadMotorRequestException ;
+    public abstract void set(double percent)  throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract void setInverted(boolean inverted)  throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract boolean isInverted() throws BadMotorRequestException , MotorRequestFailedException ;    
+    public abstract void reapplyInverted() throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract void setNeutralMode(NeutralMode mode) throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract String getType()  throws BadMotorRequestException, MotorRequestFailedException ;
+    public abstract double getVoltage() throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract boolean hasPID() throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract void setTarget(double target) throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract void stopPID() throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract void setPositionConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract void setVelocityConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;
     
     public boolean hasPosition() throws BadMotorRequestException {
         return false ;

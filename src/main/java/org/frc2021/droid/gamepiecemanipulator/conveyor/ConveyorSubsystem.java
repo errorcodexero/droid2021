@@ -2,7 +2,6 @@ package org.frc2021.droid.gamepiecemanipulator.conveyor;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import org.xero1425.base.Subsystem;
-import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
@@ -220,7 +219,7 @@ public class ConveyorSubsystem extends Subsystem {
             intake_motor_.set(intake) ;
             shooter_motor_.set(shooter) ;
         }
-        catch(BadMotorRequestException ex) {
+        catch(Exception ex) {
         }
     }
 

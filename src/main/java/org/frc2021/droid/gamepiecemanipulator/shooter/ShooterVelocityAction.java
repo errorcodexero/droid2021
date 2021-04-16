@@ -2,6 +2,7 @@ package org.frc2021.droid.gamepiecemanipulator.shooter;
 
 import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.motorsubsystem.MotorEncoderVelocityAction;
 import org.xero1425.misc.BadParameterTypeException;
@@ -27,7 +28,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     }
 
     @Override
-    public void setTarget(double target) throws BadMotorRequestException {
+    public void setTarget(double target) throws BadMotorRequestException, MotorRequestFailedException {
         super.setTarget(target) ;
         updateReadyToFire() ;
     }

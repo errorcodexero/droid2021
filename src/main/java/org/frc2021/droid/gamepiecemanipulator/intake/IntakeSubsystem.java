@@ -3,6 +3,7 @@ package org.frc2021.droid.gamepiecemanipulator.intake;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem ;
 
@@ -18,7 +19,7 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
         collector_ = getRobot().getMotorFactory().createMotor("intake-collector", "hw:intake:collector:motor");
     }
 
-    public void setCollectorPower(double p) throws BadMotorRequestException {
+    public void setCollectorPower(double p) throws BadMotorRequestException, MotorRequestFailedException {
         collector_.set(p);
     }
 

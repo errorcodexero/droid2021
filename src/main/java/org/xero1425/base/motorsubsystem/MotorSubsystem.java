@@ -3,6 +3,7 @@ package org.xero1425.base.motorsubsystem;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -37,7 +38,7 @@ public class MotorSubsystem extends Subsystem
         try {
             controller_.reapplyInverted();
         }
-        catch(BadMotorRequestException ex) {
+        catch(BadMotorRequestException | MotorRequestFailedException ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
             logger.add("subsystem ").addQuoted(getName()).add(": cannot reapply inverted state -").add(ex.getMessage()).endMessage();
@@ -63,7 +64,7 @@ public class MotorSubsystem extends Subsystem
             power_ = limitPower(p) ;
             controller_.set(power_) ;
         }
-        catch(BadMotorRequestException ex) {
+        catch(BadMotorRequestException|MotorRequestFailedException ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
             logger.add("subsystem ").addQuoted(getName()).add(": cannot set power -").add(ex.getMessage()).endMessage();

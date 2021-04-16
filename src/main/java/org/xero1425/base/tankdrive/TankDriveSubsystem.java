@@ -9,6 +9,7 @@ import org.xero1425.base.PositionTracker;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -245,7 +246,7 @@ public class TankDriveSubsystem extends Subsystem {
             left_motors_.set(left_power_) ;
             right_motors_.set(right_power_) ;
         }
-        catch(BadMotorRequestException ex) {
+        catch(BadMotorRequestException|MotorRequestFailedException ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
             logger.add("subsystem ").addQuoted(getName()).add(": cannot set power -").add(ex.getMessage()).endMessage();

@@ -10,7 +10,9 @@ import java.lang.Exception ;
 
 /// \brief An exception that is thrown when a bad request is made to a motor
 public class BadMotorRequestException extends Exception
-{
+{  
+    private MotorController motor_ ;
+
     /// \brief The UID for the class for serialization
     static final long serialVersionUID = 42 ;
 
@@ -28,6 +30,4 @@ public class BadMotorRequestException extends Exception
     public MotorController getMotor() {
         return motor_ ;
     }
-
-    private MotorController motor_ ;
 }
