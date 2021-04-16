@@ -37,7 +37,7 @@ public abstract class MotorController
     public abstract double getVoltage() throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract boolean hasPID() throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setTarget(double target) throws BadMotorRequestException , MotorRequestFailedException ;
-    public abstract void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract void setPID(PidType type, double p, double i, double d, double f, double outmax) throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void stopPID() throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setPositionConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setVelocityConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;

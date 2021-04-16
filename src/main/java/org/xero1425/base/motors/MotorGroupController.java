@@ -48,11 +48,11 @@ public class MotorGroupController extends MotorController
         motors_.get(0).setTarget(target);
     }
 
-    public void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException, MotorRequestFailedException {
+    public void setPID(PidType type, double p, double i, double d, double f, double outmax) throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
-        motors_.get(0).setPID(type, p, i, d, f, outmin, outmax) ;
+        motors_.get(0).setPID(type, p, i, d, f, outmax) ;
     }
 
     public void stopPID() throws BadMotorRequestException, MotorRequestFailedException {

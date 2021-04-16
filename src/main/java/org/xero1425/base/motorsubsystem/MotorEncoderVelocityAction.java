@@ -66,10 +66,9 @@ public class MotorEncoderVelocityAction extends MotorAction {
             double i = settings.get("shooter:velocity:ki").getDouble() ;
             double d = settings.get("shooter:velocity:kd").getDouble() ;
             double f = settings.get("shooter:velocity:kf").getDouble() ;
-            double outmin = settings.get("shooter:velocity:min").getDouble() ;
-            double outmax = settings.get("shooter:velocity:max").getDouble() ;
+            double outmax = settings.get("shooter:velocity:maxmagnitude").getDouble() ;
 
-            getSubsystem().getMotorController().setPID(PidType.Velocity, p, i, d, f, outmin, outmax);
+            getSubsystem().getMotorController().setPID(PidType.Velocity, p, i, d, f, outmax);
         }
         else {
             pid_.reset() ;

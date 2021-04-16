@@ -276,8 +276,7 @@ shooter:velocity:kp                                             0.0002
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.00014407573346281248912909418078435
-shooter:velocity:min                                            -1.0
-shooter:velocity:max                                            1.0
+shooter:velocity:maxmagnitude                                   1.0
 shooter:velocity:imax                                           0.0
 
 # Power port challenge

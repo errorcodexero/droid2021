@@ -177,7 +177,7 @@ public class MotorFactory
         }
         else if (type.equals("talon_fx"))
         {
-            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonFX) ;
+            ctrl = new TalonFXMotorController(name, canid) ;
         }
         else if (type.equals("victor_spx"))
         {
