@@ -16,7 +16,7 @@ turret:verbose                                                          false
 shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            true
+gamepiecemanipulator:verbose                                            false
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -38,7 +38,7 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       true
+conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -255,6 +255,8 @@ tankdrive:follower:right:kd                                     0.0
 tankdrive:follower:turn_correction                              0
 tankdrive:follower:angle_correction                             -0.03
 
+hw:tankdrive:gyro                                               "navx"
+
 ###################################################################################################
 # shooter
 ###################################################################################################
@@ -272,15 +274,16 @@ shooter:yellow                                                  6100
 shooter:blue                                                    5200
 shooter:red                                                     4920
 
-shooter:velocity:kp                                             0.0002
+shooter:velocity:kp                                             0.00001
+#shooter:velocity:kp                                            0.0002
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
-shooter:velocity:kf                                             0.00014407573346281248912909418078435
+shooter:velocity:kf                                             0.000130642
 shooter:velocity:maxmagnitude                                   1.0
 shooter:velocity:imax                                           0.0
 
 # Power port challenge
-# shooter:velocity:ready_margin_percent                           8.0      
+# shooter:velocity:ready_margin_percent                         8.0      
 
 # Accuracy challenge
 shooter:velocity:ready_margin_percent                           5.0  
@@ -590,7 +593,7 @@ targettracker:fire:max_drivebase_velocity			1.0
 # Enable plotting.  Plot data is stored in the network tables and display
 # programs read the data from the network tables
 #
-plotting:enabled                                               true
+plotting:enabled                                               false
 
 #
 # Shoot test parameters
@@ -603,11 +606,11 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
+auto:testmode:active                                          true
 auto:testmode:which                                           35
 auto:testmode:distance                                        1800
-auto:testmode:power                                           4000
-auto:testmode:duration                                        1.0
+auto:testmode:power                                           5500
+auto:testmode:duration                                        100
 auto:testmode:name                                           "Slalom_Path"
 
 #

@@ -84,7 +84,7 @@ public class TankDriveSubsystem extends Subsystem {
 
         automode_neutral_ = MotorController.NeutralMode.Brake;
         teleop_neutral_ = MotorController.NeutralMode.Brake;
-        disabled_neutral_ = MotorController.NeutralMode.Brake;
+        disabled_neutral_ = MotorController.NeutralMode.Coast;
 
         String gyrotype = getRobot().getSettingsParser().get("hw:tankdrive:gyro").getString() ;
         if (gyrotype.equals("navx")) {

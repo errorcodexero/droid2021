@@ -1,7 +1,13 @@
 package org.xero1425.base.motorsubsystem;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
+
 import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorGroupController;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.motors.SparkMaxMotorController;
 import org.xero1425.base.motors.MotorController.PidType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
@@ -69,6 +75,7 @@ public class MotorEncoderVelocityAction extends MotorAction {
             double outmax = settings.get("shooter:velocity:maxmagnitude").getDouble() ;
 
             getSubsystem().getMotorController().setPID(PidType.Velocity, p, i, d, f, outmax);
+            getSubsystem().getMotorController().setTarget(target_) ;
         }
         else {
             pid_.reset() ;
@@ -83,8 +90,8 @@ public class MotorEncoderVelocityAction extends MotorAction {
     public void run() throws Exception {
         super.run() ;
 
+        MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
         if (!getSubsystem().getMotorController().hasPID()) {
-            MotorEncoderSubsystem me = (MotorEncoderSubsystem)getSubsystem() ;
             double out = pid_.getOutput(target_, me.getVelocity(), getSubsystem().getRobot().getDeltaTime()) ;
             getSubsystem().setPower(out) ;
 
@@ -110,6 +117,22 @@ public class MotorEncoderVelocityAction extends MotorAction {
                     plot_id_ = -1 ;
                 }
             }
+        }
+        else
+        {
+            MotorController mc = me.getMotorController() ;
+            MotorGroupController group = (MotorGroupController)mc ;
+            MotorController first = (MotorController)group.get(0) ;
+            SparkMaxMotorController max = (SparkMaxMotorController)first ;
+            CANSparkMax real = (CANSparkMax)max.getController() ;
+
+            MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+            logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+            logger.add("MotorEncoderVelocityAction:") ;
+            logger.add("target", target_) ;
+            logger.add("actual", me.getVelocity()) ;
+            logger.add("output", real.getAppliedOutput()) ;
+            logger.endMessage();            
         }
     }
 

@@ -4,10 +4,16 @@ import java.util.List ;
 import java.util.ArrayList ;
 
 public class MotorGroupController extends MotorController
-{
+{ 
+    List<MotorController> motors_ ;
+
     public MotorGroupController(String name) {
         super(name) ;
         motors_ = new ArrayList<MotorController>() ;
+    }
+
+    public MotorController get(int index) {
+        return motors_.get(index) ;
     }
 
     public String typeName() {
@@ -160,5 +166,4 @@ public class MotorGroupController extends MotorController
             ctrl.setOpenLoopRampRate(limit);
     }   
 
-    List<MotorController> motors_ ;
 } ;

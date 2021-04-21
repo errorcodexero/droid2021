@@ -20,6 +20,7 @@ public class SparkMaxMotorController extends MotorController
     private boolean brushless_ ;
     private CANPIDController pid_ ;
     private PidType ptype_ ;
+    private double target_ ;
 
     private SimDevice sim_ ;
     private SimDouble sim_power_ ;
@@ -37,6 +38,7 @@ public class SparkMaxMotorController extends MotorController
         inverted_ = false ;
         brushless_ = brushless ;
         pid_ = null ;
+        target_ = 0 ;
 
         if (RobotBase.isSimulation()) {
             if (brushless)
@@ -74,6 +76,10 @@ public class SparkMaxMotorController extends MotorController
         }
     }
 
+    public CANSparkMax getController() {
+        return controller_ ;
+    }
+
     public String typeName() {
         String ret = "SparkMaxBrushed" ;
 
@@ -94,16 +100,18 @@ public class SparkMaxMotorController extends MotorController
     public void setTarget(double target) throws BadMotorRequestException, MotorRequestFailedException {
         CANError code = CANError.kOk ;
 
-        if (pid_ == null)
-            throw new BadMotorRequestException(this, "called setTarget() before calling setPID()") ;
+        target_ = target ;
 
-        if (ptype_ == PidType.Position)
-            code = pid_.setReference(target, ControlType.kPosition) ;
-        else if (ptype_ == PidType.Velocity)
-            code = pid_.setReference(target, ControlType.kVelocity) ;
-        
-        if (code != CANError.kOk)
-            throw new MotorRequestFailedException(this, "setReference() failed during setTarget() call", code) ;
+        if (pid_ != null) {
+
+            if (ptype_ == PidType.Position)
+                code = pid_.setReference(target, ControlType.kPosition) ;
+            else if (ptype_ == PidType.Velocity)
+                code = pid_.setReference(target, ControlType.kVelocity) ;
+            
+            if (code != CANError.kOk)
+                throw new MotorRequestFailedException(this, "setReference() failed during setTarget() call", code) ;
+        }
     }
 
     public void setPID(PidType type, double p, double i, double d, double f, double outmax) throws BadMotorRequestException,
@@ -129,11 +137,16 @@ public class SparkMaxMotorController extends MotorController
         if (code != CANError.kOk)
             throw new MotorRequestFailedException(this, "setFF() failed during setPID() call", code) ;
 
+        code = pid_.setIZone(0.0) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setIZone() failed during setPID() call", code) ;
+
         code = pid_.setOutputRange(-outmax, outmax) ;
         if (code != CANError.kOk)
             throw new MotorRequestFailedException(this, "setOutputRange() failed during setPID() call", code) ;
 
         ptype_ = type ;
+        setTarget(target_) ;
     }
 
     public void stopPID() throws BadMotorRequestException {
