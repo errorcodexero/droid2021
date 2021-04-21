@@ -1,13 +1,7 @@
 package org.xero1425.base.motorsubsystem;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
-
 import org.xero1425.base.motors.BadMotorRequestException;
-import org.xero1425.base.motors.MotorController;
-import org.xero1425.base.motors.MotorGroupController;
 import org.xero1425.base.motors.MotorRequestFailedException;
-import org.xero1425.base.motors.SparkMaxMotorController;
 import org.xero1425.base.motors.MotorController.PidType;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
@@ -120,18 +114,13 @@ public class MotorEncoderVelocityAction extends MotorAction {
         }
         else
         {
-            MotorController mc = me.getMotorController() ;
-            MotorGroupController group = (MotorGroupController)mc ;
-            MotorController first = (MotorController)group.get(0) ;
-            SparkMaxMotorController max = (SparkMaxMotorController)first ;
-            CANSparkMax real = (CANSparkMax)max.getController() ;
-
             MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
             logger.add("MotorEncoderVelocityAction:") ;
             logger.add("target", target_) ;
             logger.add("actual", me.getVelocity()) ;
-            logger.add("output", real.getAppliedOutput()) ;
+            logger.add("inputV", me.getMotorController().getInputVoltage()) ;
+            logger.add("appliedV", me.getMotorController().getAppliedVoltage()) ;
             logger.endMessage();            
         }
     }

@@ -34,13 +34,15 @@ public abstract class MotorController
     public abstract void setNeutralMode(NeutralMode mode) throws BadMotorRequestException, MotorRequestFailedException ;
     public abstract void follow(MotorController ctrl, boolean invert) throws BadMotorRequestException, MotorRequestFailedException ;
     public abstract String getType()  throws BadMotorRequestException, MotorRequestFailedException ;
-    public abstract double getVoltage() throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract double getInputVoltage() throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract boolean hasPID() throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setTarget(double target) throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setPID(PidType type, double p, double i, double d, double f, double outmax) throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void stopPID() throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setPositionConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract void setVelocityConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;
+    public abstract String getFirmwareVersion() throws BadMotorRequestException ;
+    public abstract double getAppliedVoltage() throws BadMotorRequestException ;
     
     public boolean hasPosition() throws BadMotorRequestException {
         return false ;

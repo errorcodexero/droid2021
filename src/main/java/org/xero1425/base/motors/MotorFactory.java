@@ -171,7 +171,11 @@ public class MotorFactory
         String type = settings_.getOrNull(idparam).getString() ;
         MotorController ctrl = null ;
 
-        if (type.equals("talon_srx"))
+        if (type.equals("romi"))
+        {
+            ctrl = new RomiMotorController(name, canid) ;
+        }
+        else if (type.equals("talon_srx"))
         {
             ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonSRX) ;
         }

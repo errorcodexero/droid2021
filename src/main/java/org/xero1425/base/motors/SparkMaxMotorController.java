@@ -76,9 +76,7 @@ public class SparkMaxMotorController extends MotorController
         }
     }
 
-    public CANSparkMax getController() {
-        return controller_ ;
-    }
+
 
     public String typeName() {
         String ret = "SparkMaxBrushed" ;
@@ -89,8 +87,12 @@ public class SparkMaxMotorController extends MotorController
         return ret ;
     }
 
-    public double getVoltage() throws BadMotorRequestException {
+    public double getInputVoltage() throws BadMotorRequestException {
         return controller_.getBusVoltage() ;
+    }
+
+    public double getAppliedVoltage() throws BadMotorRequestException {
+        return controller_.getAppliedOutput() ;
     }
 
     public boolean hasPID() throws BadMotorRequestException {
@@ -288,4 +290,9 @@ public class SparkMaxMotorController extends MotorController
         }
     } 
 
+    public String getFirmwareVersion() throws BadMotorRequestException {
+        int v = controller_.getFirmwareVersion() ;
+
+        return String.valueOf((v >> 24) & 0xff) + "." + String.valueOf((v >> 16) & 0xff) ;
+    }
 } ;

@@ -12,9 +12,7 @@ public class MotorGroupController extends MotorController
         motors_ = new ArrayList<MotorController>() ;
     }
 
-    public MotorController get(int index) {
-        return motors_.get(index) ;
-    }
+
 
     public String typeName() {
         if (motors_.size() == 0)
@@ -33,12 +31,20 @@ public class MotorGroupController extends MotorController
             ctrl.follow(motors_.get(0), inverted) ;
     }
 
-    public double getVoltage() throws BadMotorRequestException, MotorRequestFailedException {
+    public double getInputVoltage() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
         throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
 
-        return motors_.get(0).getVoltage() ;
+        return motors_.get(0).getInputVoltage() ;
+    }    
+    public double getAppliedVoltage() throws BadMotorRequestException {
+        if (motors_.size() == 0)
+        throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        return motors_.get(0).getAppliedVoltage() ;
     }
+
+
 
     public boolean hasPID() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
@@ -166,4 +172,19 @@ public class MotorGroupController extends MotorController
             ctrl.setOpenLoopRampRate(limit);
     }   
 
+    public String getFirmwareVersion() throws BadMotorRequestException {
+        if (motors_.size() == 0)
+            throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        StringBuilder result = new StringBuilder() ;
+
+        for(int i = 0 ; i < motors_.size() ; i++) {
+            if (result.length() > 0)
+                result.append(",") ;
+            
+            result.append(motors_.get(i).getFirmwareVersion()) ;
+        }
+
+        return result.toString() ;
+    }
 } ;

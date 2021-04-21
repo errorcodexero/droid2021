@@ -84,7 +84,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     @Override
     public void computeMyState() throws Exception {
         super.computeMyState();
-        putDashboard("s-voltage", DisplayType.Verbose, getMotorController().getVoltage()) ;
+        putDashboard("s-input", DisplayType.Verbose, getMotorController().getInputVoltage()) ;
     }
 
     @Override

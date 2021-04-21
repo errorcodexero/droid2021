@@ -57,7 +57,8 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
         logger.add("target", getTarget()) ;
         logger.add("actual", me.getVelocity()) ;
         logger.add("ready", sub_.isReadyToFire()) ;
-        logger.add("voltage", sub_.getMotorController().getVoltage()) ;
+        logger.add("inputV", sub_.getMotorController().getInputVoltage()) ;
+        logger.add("appliedV", sub_.getMotorController().getAppliedVoltage()) ;
         logger.endMessage();
 
         sub_.putDashboard("sh-target", DisplayType.Verbose, getTarget());

@@ -105,8 +105,12 @@ public class TalonFXMotorController extends MotorController
         return "TalonFX" ;
     }
 
-    public double getVoltage() throws BadMotorRequestException {
+    public double getInputVoltage() throws BadMotorRequestException {
         return controller_.getBusVoltage() ;
+    }
+
+    public double getAppliedVoltage() throws BadMotorRequestException {
+        return controller_.getMotorOutputVoltage() ;
     }
 
     public boolean hasPID() throws BadMotorRequestException {
@@ -284,4 +288,10 @@ public class TalonFXMotorController extends MotorController
             fx.configOpenloopRamp(limit, 20) ;
         }
     }  
+
+    public String getFirmwareVersion() throws BadMotorRequestException {
+        int v = controller_.getFirmwareVersion() ;
+
+        return String.valueOf((v >> 8) & 0xff) + "." + String.valueOf(v & 0xff) ;
+    }
 } ;

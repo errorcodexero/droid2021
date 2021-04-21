@@ -1,6 +1,6 @@
 package org.xero1425.base.motors;
 
-import com.ctre.phoenix.ErrorCode;
+
 
 /// \file
 /// This file conatins the implementation of the CTREMotorController class.  This class
@@ -9,6 +9,8 @@ import com.ctre.phoenix.ErrorCode;
 ///
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.ErrorCode;
+
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -30,7 +32,6 @@ public class CTREMotorController extends MotorController
 
     private SimDevice sim_ ;
     private SimDouble sim_power_ ;
-    private SimDouble sim_encoder_ ;
     private SimBoolean sim_motor_inverted_ ;
     private SimBoolean sim_neutral_mode_ ;
 
@@ -53,7 +54,6 @@ public class CTREMotorController extends MotorController
             sim_ = SimDevice.create(SimDeviceName, index) ;
 
             sim_power_ = sim_.createDouble(MotorController.SimPowerParamName, SimDevice.Direction.kBidir, 0.0) ;
-            sim_encoder_ = sim_.createDouble(MotorController.SimEncoderParamName, SimDevice.Direction.kBidir, 0.0) ;
             sim_motor_inverted_ = sim_.createBoolean(MotorController.SimInvertedParamName, SimDevice.Direction.kBidir, false) ;
             sim_neutral_mode_ = sim_.createBoolean(MotorController.SimNeutralParamName, SimDevice.Direction.kBidir, false) ;
             sim_.createBoolean(MotorController.SimEncoderStoresTicksParamName, SimDevice.Direction.kBidir, true) ;
@@ -64,7 +64,6 @@ public class CTREMotorController extends MotorController
 
             sim_ = null ;
             sim_power_ = null ;
-            sim_encoder_ = null ;
 
             switch(type_)
             {
@@ -135,12 +134,16 @@ public class CTREMotorController extends MotorController
         return ret ;
     }
 
-    public double getVoltage() throws BadMotorRequestException {
+    public double getInputVoltage() throws BadMotorRequestException {
         return controller_.getBusVoltage() ;
     }
 
+    public double getAppliedVoltage() throws BadMotorRequestException {
+        return controller_.getMotorOutputVoltage() ;
+    }
+
     public boolean hasPID() throws BadMotorRequestException {
-        return false ;
+        return true ;
     }
 
     public void setTarget(double target) throws BadMotorRequestException {
@@ -285,4 +288,11 @@ public class CTREMotorController extends MotorController
             fx.configOpenloopRamp(limit, 20) ;
         }
     }  
+    
+    public String getFirmwareVersion() throws BadMotorRequestException {
+        int v = controller_.getFirmwareVersion() ;
+
+        return String.valueOf((v >> 8) & 0xff) + "." + String.valueOf(v & 0xff) ;
+    }
 } ;
+
