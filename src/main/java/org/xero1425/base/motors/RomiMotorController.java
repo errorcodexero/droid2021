@@ -30,9 +30,7 @@ public class RomiMotorController extends MotorController {
         return inverted_ ;
     }
 
-    public void setPID(MotorController.PidType type, double p, double i, double d, double f, double maxmag) throws BadMotorRequestException {
-        throw new BadMotorRequestException(this, "the 'Romi' motor does not support the setPID() capability") ;
-    }
+
 
     public void reapplyInverted() throws BadMotorRequestException {
         motor_.setInverted(inverted_);
@@ -66,7 +64,7 @@ public class RomiMotorController extends MotorController {
         throw new BadMotorRequestException(this, "the 'Romi' motor does not support the PID capability") ;
     }
 
-    public void setPID(PidType type, double p, double i, double d, double f, double outmin, double outmax) throws BadMotorRequestException {
+    public void setPID(PidType type, double p, double i, double d, double f, double outmax) throws BadMotorRequestException {
         throw new BadMotorRequestException(this, "the 'Romi' motor does not support the PID capability") ;        
     }
 

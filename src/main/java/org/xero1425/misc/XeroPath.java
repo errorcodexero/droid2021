@@ -26,26 +26,30 @@ public class XeroPath
 
     /// \brief create a new path with the name given
     /// \param name the name of the path
-    public XeroPath(String name, XeroPathType dtype) {
+    public XeroPath(String name, XeroPathType dtype) throws Exception {
         name_ = name ;
         dtype_ = dtype ;
         data_ = new ArrayList<ArrayList<XeroPathSegment>>() ;
 
-        if (dtype == XeroPathType.Tank)
+        if (dtype == XeroPathType.TankPathFollowing)
         {
             data_.add(new ArrayList<XeroPathSegment>()) ;
             data_.add(new ArrayList<XeroPathSegment>()) ;
         }
-        else if (dtype == XeroPathType.Swerve)
+        else if (dtype == XeroPathType.SwervePathFollowing)
         {
             data_.add(new ArrayList<XeroPathSegment>()) ;
             data_.add(new ArrayList<XeroPathSegment>()) ;
             data_.add(new ArrayList<XeroPathSegment>()) ;
             data_.add(new ArrayList<XeroPathSegment>()) ;
         }
-        else if (dtype == XeroPathType.Robot)
+        else if (dtype == XeroPathType.TankPurePursuit)
         {
             data_.add(new ArrayList<XeroPathSegment>()) ;
+        }
+        else if (dtype == XeroPathType.SwervePurePursuit)
+        {
+            throw new Exception("not supported yet") ;
         }
     }
 

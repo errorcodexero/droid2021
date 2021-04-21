@@ -96,6 +96,6 @@ public class Droid extends XeroRobot {
     }
 
     protected XeroPathType getPathType() {
-        return XeroPathType.Robot ;
+        return XeroPathType.TankPurePursuit ;
     }
 }

@@ -149,7 +149,7 @@ public class RomiGyro implements Gyro, XeroGyro {
  
   @Override
   public double getYaw() {
-    return getAngleZ();
+    return -getAngleZ();
   }
 
   @Override

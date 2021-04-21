@@ -251,7 +251,7 @@ public class TalonFXMotorController extends MotorController
     }
 
     public double getPosition() throws BadMotorRequestException {
-        int ret = 0 ;
+        double ret = 0 ;
 
         if (sim_ != null) {
             ret = (int)sim_encoder_.getValue().getDouble() ;

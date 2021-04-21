@@ -66,13 +66,13 @@ public class XeroPathManager
         logger_id_ = logger.registerSubsystem(LoggerName) ;
         logger_ = logger ;
 
-        if (path_type_ == XeroPathType.Tank)
+        if (path_type_ == XeroPathType.TankPathFollowing)
         {
             exts_ = new String[2] ;
             exts_[0] = "_left.csv" ;
             exts_[1] = "_right.csv" ;
         }
-        else if (path_type_ == XeroPathType.Swerve)
+        else if (path_type_ == XeroPathType.SwervePathFollowing)
         {
             exts_ = new String[4] ;
             exts_[0] = "_fl.csv" ;
@@ -80,11 +80,17 @@ public class XeroPathManager
             exts_[2] = "_fr.csv" ;
             exts_[3] = "_fr.csv" ;
         }
-        else if (path_type_ == XeroPathType.Robot)
+        else if (path_type_ == XeroPathType.TankPurePursuit)
         {
             exts_ = new String[1] ;
             exts_[0] = "_main.csv" ;
         }
+    }
+
+    /// \brief return the types of paths the path manager is managing
+    /// \returns the path type the path manager is managing
+    public XeroPathType getPathType() {
+        return path_type_ ;
     }
 
     /// \brief return the extensions for the various data files needed to load
@@ -125,7 +131,7 @@ public class XeroPathManager
     /// name given in thie call, and left_ext and right_ext are the extensions set in the setExtensions()
     /// call.
     /// \param name the name of the path to load
-    public boolean loadPath(String name) {
+    public boolean loadPath(String name) throws Exception {
         String filename = null ;
         Reader [] rdrs = null ;
         CSVParser [] parsers = null ;
