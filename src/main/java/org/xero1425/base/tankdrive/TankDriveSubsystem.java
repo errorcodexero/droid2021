@@ -20,6 +20,7 @@ import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.Speedometer;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 
 public class TankDriveSubsystem extends Subsystem {
 
@@ -57,7 +58,8 @@ public class TankDriveSubsystem extends Subsystem {
         SettingsParser settings = getRobot().getSettingsParser() ;
 
         double width = settings.get("tankdrive:width").getDouble() ;
-        tracker_ = new PositionTracker(width) ;
+        double scrub = settings.get("tankdrive:scrub").getDouble() ;
+        tracker_ = new PositionTracker(width, scrub) ;
 
         dist_l_ = 0.0;
         dist_r_ = 0.0;
@@ -110,6 +112,22 @@ public class TankDriveSubsystem extends Subsystem {
         trips_ = new HashMap<String, Double>();
 
         attachHardware();
+    }
+
+    public void setPose(Pose2d pose) {
+        tracker_.setPose(pose);
+    }
+
+    public Pose2d getPose() {
+        return tracker_.getPose() ;
+    }
+
+    public double getWidth() {
+        return tracker_.getWidth() ;
+    }
+
+    public double getScrub() {
+        return tracker_.getScrub() ;
     }
 
     public void startTrip(String name) {

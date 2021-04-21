@@ -4,6 +4,16 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
 public class TankDrivePowerAction extends TankDriveAction {
+   
+    private double left_ ;
+    private double right_ ;
+    private double start_ ;
+    private double duration_ ;
+    private boolean timed_ ;
+    private int plot_id_ ;
+    private static String [] plot_columns_ = { "time", "dist", "velocity", "acceleration", "lticks", "rticks", "left", "right" } ;
+
+
     public TankDrivePowerAction(TankDriveSubsystem drive, double left, double right) {
         super(drive);
 
@@ -111,11 +121,5 @@ public class TankDrivePowerAction extends TankDriveAction {
         return ret ;
     }
 
-    private double left_ ;
-    private double right_ ;
-    private double start_ ;
-    private double duration_ ;
-    private boolean timed_ ;
-    private int plot_id_ ;
-    private static String [] plot_columns_ = { "time", "dist", "velocity", "acceleration", "lticks", "rticks", "left", "right" } ;
+
 } ;
