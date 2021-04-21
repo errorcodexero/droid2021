@@ -75,7 +75,7 @@ public class DroidAutoController extends AutoController {
         }
     }
 
-    public void updateAutoMode(int mode, String gamedata) {
+    public void updateAutoMode(int mode, String gamedata) throws Exception {
         if (isTestMode()) {
             setAutoMode(test_mode_) ;
         }
@@ -92,14 +92,12 @@ public class DroidAutoController extends AutoController {
                     break ;
                 case 3:
                     setAutoMode(galactic_search_) ;
-                    try {
-                        galactic_search_.updateWhich() ;
-                    } 
-                    catch(Exception ex)
-                    {
-                    }
                     break ;
             }
+
+            AutoMode am = getAutoMode() ;
+            if (am != null)
+                am.update(gamedata) ;
         }
     }
 }

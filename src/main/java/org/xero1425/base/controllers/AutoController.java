@@ -84,7 +84,7 @@ public abstract class AutoController extends BaseController {
         return test_mode_ ;
     }
 
-    public void updateAutoMode(int mode, String gamedata) {
+    public void updateAutoMode(int mode, String gamedata) throws Exception {
         setAutoMode(null) ;
     }
 

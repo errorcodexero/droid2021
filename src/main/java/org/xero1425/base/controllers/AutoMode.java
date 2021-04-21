@@ -16,6 +16,9 @@ public class AutoMode extends SequenceAction {
         return name_ ;
     }
 
+    public void update(String gdata) throws Exception {
+    }
+
     protected AutoController getAutoController() {
         return ctrl_ ;
     }

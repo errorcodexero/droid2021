@@ -2,7 +2,10 @@ package org.xero1425.base.tankdrive;
 
 import java.util.Map;
 import java.util.HashMap;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 
+import com.kauailabs.navx.frc.AHRS;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.PositionTracker;
 import org.xero1425.base.Subsystem;
@@ -112,14 +115,6 @@ public class TankDriveSubsystem extends Subsystem {
         trips_ = new HashMap<String, Double>();
 
         attachHardware();
-    }
-
-    public void setPose(Pose2d pose) {
-        tracker_.setPose(pose);
-    }
-
-    public Pose2d getPose() {
-        return tracker_.getPose() ;
     }
 
     public double getWidth() {
@@ -236,6 +231,14 @@ public class TankDriveSubsystem extends Subsystem {
         super.run();
     }
 
+    public void setPose(Pose2d pose) {
+        tracker_.setPose(pose);
+    }
+
+    public Pose2d getPose() {
+        return tracker_.getPose() ;
+    }
+
     public void computeMyState() {
         double angle = 0.0;
 
@@ -272,15 +275,14 @@ public class TankDriveSubsystem extends Subsystem {
         putDashboard("dbright", DisplayType.Verbose, right_linear_.getDistance());
         putDashboard("dbangle", DisplayType.Verbose, angular_.getDistance());        
 
-        MessageLogger logger = getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Debug, getLoggerID()) ;
-        logger.add("tankdrive:") ;
-        logger.add(" powerl", left_power_).add(" powerr", right_power_) ;
-        logger.add(" ticksl", ticks_left_).add(" ticksr ", ticks_right_) ;
-        logger.add(" distl", dist_l_).add(" distr", dist_r_) ;
-        logger.add(" velocityl", getLeftVelocity()).add(" velocityr", getRightVelocity()) ;
-        logger.add(" speed", getVelocity()).add(" angle", getAngle()).add("total", getTotalAngle()) ;
-        logger.endMessage();
+        // MessageLogger logger = getRobot().getMessageLogger() ;
+        // logger.startMessage(MessageType.Debug, getLoggerID()) ;
+        // logger.add(" powerl", left_power_).add(" powerr", right_power_) ;
+        // logger.add(" ticksl", ticks_left_).add(" ticksr ", ticks_right_) ;
+        // logger.add(" distl", dist_l_).add(" distr", dist_r_) ;
+        // logger.add(" velocityl", getLeftVelocity()).add(" velocityr", getRightVelocity()) ;
+        // logger.add(" speed", getVelocity()).add(" angle", getAngle()).add("total", getTotalAngle()) ;
+        // logger.endMessage();
     }
 
     protected void setPower(double left, double right) {

@@ -1,6 +1,5 @@
 package org.frc2021.droid.automodes;
 
-//
 // Start along the side of our trench at the start line against the edge of the field.
 // Drive to collect the two balls on the edge of the rendezvous point.  Drive back to the
 // edge of the trench and score the five.  Then drive the trench collecting the five balls
