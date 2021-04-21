@@ -130,6 +130,14 @@ public class Speedometer
         return accel_ ;
     }
 
+    public double getAverage() {
+        double total = 0 ;
+        for(int i = 0 ; i < distances_.size() ; i++)
+            total += distances_.get(i) ;
+
+        return total / distances_.size() ;
+    }
+
     /// \returns the oldest distance
     private double getOldestDistance()  {
         return distances_.get(0) ;
