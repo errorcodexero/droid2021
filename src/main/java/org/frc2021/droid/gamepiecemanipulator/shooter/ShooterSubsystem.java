@@ -18,7 +18,6 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     private double hood_down_pos_ ;
     private Servo hood_servo_ ;
     private TankDriveSubsystem db_ ;
-    private double hood_value_ ;
     private Speedometer voltage_ ;
 
     public final static String SubsystemName = "shooter" ;
@@ -51,7 +50,6 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         actual_ = HoodPosition.Unknown ;
         desired_ = HoodPosition.Down ;
 
-        hood_value_ = 1000.0 ;
         voltage_ = new Speedometer("voltage", 20, false) ;
     }
 
@@ -97,13 +95,11 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         {
             hood_servo_.set(hood_down_pos_) ;
             actual_ = pos  ;
-            hood_value_ = hood_down_pos_ ;
         }
         else if (pos == HoodPosition.Up)
         {
             hood_servo_.set(hood_up_pos_) ;  
             actual_ = pos  ;              
-            hood_value_ = hood_up_pos_ ;     
         }
 
         change_time_ = getRobot().getTime() ;
