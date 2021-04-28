@@ -43,6 +43,7 @@ public abstract class MotorController
     public abstract void setVelocityConversion(double factor) throws BadMotorRequestException , MotorRequestFailedException ;
     public abstract String getFirmwareVersion() throws BadMotorRequestException ;
     public abstract double getAppliedVoltage() throws BadMotorRequestException ;
+    public abstract double getVelocity() throws BadMotorRequestException ;
     
     public boolean hasPosition() throws BadMotorRequestException {
         return false ;

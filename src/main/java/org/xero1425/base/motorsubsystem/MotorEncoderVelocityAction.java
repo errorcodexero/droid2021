@@ -28,8 +28,9 @@ public class MotorEncoderVelocityAction extends MotorAction {
 
         if (!sub.hasHWPID()) {
             pid_ = new PIDCtrl(sub.getRobot().getSettingsParser(), sub.getName() + ":velocity", false);
-            plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;     
+
         }
+        plot_id_ = sub.initPlot(toString() + "-" + String.valueOf(which_++)) ;        
     }
 
     public MotorEncoderVelocityAction(MotorEncoderSubsystem sub, String target)
@@ -74,9 +75,12 @@ public class MotorEncoderVelocityAction extends MotorAction {
         else {
             pid_.reset() ;
             start_ = getSubsystem().getRobot().getTime() ;
+        }
 
-            if (plot_id_ != -1)
-                getSubsystem().startPlot(plot_id_, columns_) ;
+        if (plot_id_ != -1)
+        {
+            getSubsystem().startPlot(plot_id_, columns_) ;
+            start_ = getSubsystem().getRobot().getTime() ;
         }
     }
 
@@ -93,24 +97,11 @@ public class MotorEncoderVelocityAction extends MotorAction {
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
             logger.add("MotorEncoderVelocityAction:") ;
             logger.add("target", target_) ;
-            logger.add("actual", me.getVelocity()) ;
+            logger.add("actual", me.getMotorController().getVelocity()) ;
             logger.add("output", out) ;
             logger.add("encoder", me.getEncoderRawCount()) ;
             logger.endMessage();
 
-            if (plot_id_ != -1) {
-                Double[] data = new Double[columns_.length] ;
-                data[0] = getSubsystem().getRobot().getTime() - start_ ;
-                data[1] = target_ ;
-                data[2] = me.getVelocity() ;
-                getSubsystem().addPlotData(plot_id_, data);
-
-                if (getSubsystem().getRobot().getTime() - start_ > 10.0)
-                {
-                    getSubsystem().endPlot(plot_id_) ;
-                    plot_id_ = -1 ;
-                }
-            }
         }
         else
         {
@@ -122,6 +113,20 @@ public class MotorEncoderVelocityAction extends MotorAction {
             logger.add("inputV", me.getMotorController().getInputVoltage()) ;
             logger.add("appliedV", me.getMotorController().getAppliedVoltage()) ;
             logger.endMessage();            
+        }
+       
+        if (plot_id_ != -1) {
+            Double[] data = new Double[columns_.length] ;
+            data[0] = getSubsystem().getRobot().getTime() - start_ ;
+            data[1] = target_ ;
+            data[2] = me.getVelocity() ;
+            getSubsystem().addPlotData(plot_id_, data);
+
+            if (getSubsystem().getRobot().getTime() - start_ > 10.0)
+            {
+                getSubsystem().endPlot(plot_id_) ;
+                plot_id_ = -1 ;
+            }
         }
     }
 

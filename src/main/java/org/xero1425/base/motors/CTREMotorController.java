@@ -294,5 +294,9 @@ public class CTREMotorController extends MotorController
 
         return String.valueOf((v >> 8) & 0xff) + "." + String.valueOf(v & 0xff) ;
     }
+
+    public double getVelocity() throws BadMotorRequestException {
+        throw new BadMotorRequestException(this, "not supported") ;
+    }
 } ;
 

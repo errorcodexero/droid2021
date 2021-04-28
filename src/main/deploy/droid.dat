@@ -32,7 +32,7 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      true
+tankdrive:messages                                                      false
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
@@ -47,7 +47,7 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     false
+fireaction:messages                                                     true
 conveyor_model:messages                                                 false
 
 #
@@ -282,7 +282,7 @@ hw:tankdrive:gyro                                               "navx"
 # 1 = accuracy challenge, 2d port
 # 2 = power port challenge, 3d port
 #
-shooter:event                                                   1
+shooter:event                                                   0
 shooter:power_port_power                                        5300
 
 shooter:green                                                   3600
@@ -513,11 +513,11 @@ climber:lifter:hold:imax                                                0
 #
 droidvision:camera_angle                                        20.08
 
-shooter:aim:hood_down:a                                         0
-shooter:aim:hood_down:b                                         -0.0026
-shooter:aim:hood_down:c                                         1.5411
-shooter:aim:hood_down:d                                         -301.35
-shooter:aim:hood_down:e                                         24823
+shooter:aim:hood_down:a                                         5e-6
+shooter:aim:hood_down:b                                         -0.0046
+shooter:aim:hood_down:c                                         1.6135
+shooter:aim:hood_down:d                                         -245.07
+shooter:aim:hood_down:e                                         18867
 
 #
 # Negative values move to turrent clockwise

@@ -83,4 +83,8 @@ public class RomiMotorController extends MotorController {
     public String getFirmwareVersion() throws BadMotorRequestException {
         return "?.?" ;
     }
+
+    public double getVelocity() throws BadMotorRequestException  {
+        throw new BadMotorRequestException(this, "the 'Romi' motor does not support the getVelocity() capability") ;
+    }
 }

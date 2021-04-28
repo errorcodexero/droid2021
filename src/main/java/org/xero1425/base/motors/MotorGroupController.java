@@ -45,7 +45,6 @@ public class MotorGroupController extends MotorController
     }
 
 
-
     public boolean hasPID() throws BadMotorRequestException, MotorRequestFailedException {
         if (motors_.size() == 0)
             throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
@@ -186,5 +185,12 @@ public class MotorGroupController extends MotorController
         }
 
         return result.toString() ;
+    }
+        
+    public double getVelocity() throws BadMotorRequestException  {
+        if (motors_.size() == 0)
+        throw new BadMotorRequestException(this, "request made to empty MotorGroupController") ;
+
+        return motors_.get(0).getVelocity() ;
     }
 } ;

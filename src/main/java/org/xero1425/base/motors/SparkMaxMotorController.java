@@ -295,4 +295,8 @@ public class SparkMaxMotorController extends MotorController
 
         return String.valueOf((v >> 24) & 0xff) + "." + String.valueOf((v >> 16) & 0xff) ;
     }
+
+    public double getVelocity() throws BadMotorRequestException {
+        return encoder_.getVelocity() ;
+    }
 } ;
