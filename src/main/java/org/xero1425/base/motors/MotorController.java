@@ -1,7 +1,5 @@
 package org.xero1425.base.motors ;
 
-import javax.management.BadAttributeValueExpException;
-
 public abstract class MotorController
 {
     public final static String SimPowerParamName = "Power" ;
