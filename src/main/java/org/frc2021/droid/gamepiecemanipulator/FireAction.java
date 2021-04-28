@@ -11,6 +11,7 @@ import org.xero1425.base.actions.Action;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
+import org.xero1425.base.utils.PieceWiseLinear;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsParser;
@@ -58,6 +59,8 @@ public class FireAction extends Action {
     private ShooterVelocityAction shooter_velocity_action_ ;
     private ShooterVelocityAction shooter_stop_action_ ;
     private ConveyorEmitAction emit_action_ ;
+
+    private PieceWiseLinear pwl_ ;
 
     private double start_time_ ;
     private int plot_id_ ;
@@ -268,6 +271,8 @@ public class FireAction extends Action {
             ret = getTargetVelocityAccuracy2d(dist, pos);
         else if (event_ == 2)
             ret = getTargetVelocityPowerPort3d(dist, pos) ;
+        else if (event_ == 3)
+            ret = getTargetVelocityPWL(dist, pos) ;
 
         return ret ;
     }
@@ -327,6 +332,21 @@ public class FireAction extends Action {
 
     private double getTargetVelocityPowerPort3d(double dist, HoodPosition pos) {
         return power_port_power_ ;
+    }
+
+    private double getTargetVelocityPWL(double dist, HoodPosition pos) {
+        if (pwl_ == null)
+        {
+            try {
+                pwl_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "shooter:pwl") ;
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+        return pwl_.getValue(dist) ;
     }
 
     private void setTargetVelocity() throws BadMotorRequestException, MotorRequestFailedException {
