@@ -281,8 +281,9 @@ hw:tankdrive:gyro                                               "navx"
 # 0 = fourth order polynomial
 # 1 = accuracy challenge, 2d port
 # 2 = power port challenge, 3d port
+# 3 = PWL
 #
-shooter:event                                                   0
+shooter:event                                                   3
 shooter:power_port_power                                        5300
 
 shooter:green                                                   3600
@@ -322,11 +323,27 @@ shooter:hood:down                                               0.32
 shooter:hood:up                                                 -0.4
 endif
 
-
 shooter:aim:max_hood_up                                         120
 shooter:aim:min_hood_down                                       110
 
 shooter:hood:change_time					                    1.0
+
+shooter:pwl:1:x                                                 116.0
+shooter:pwl:1:y                                                 5950
+shooter:pwl:2:x                                                 145.0
+shooter:pwl:2:y                                                 5400
+shooter:pwl:3:x                                                 166
+shooter:pwl:3:y                                                 5300
+shooter:pwl:4:x                                                 195
+shooter:pwl:4:y                                                 5320
+shooter:pwl:5:x                                                 210
+shooter:pwl:5:y                                                 5425
+shooter:pwl:6:x                                                 236
+shooter:pwl:6:y                                                 5530
+shooter:pwl:7:x                                                 268
+shooter:pwl:7:y                                                 5555
+shooter:pwl:8:x                                                 292
+shooter:pwl:8:y                                                 5650
 
 #
 # If the drivebase is going faster than this, the hood is
