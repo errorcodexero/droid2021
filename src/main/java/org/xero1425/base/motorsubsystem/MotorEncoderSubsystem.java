@@ -1,6 +1,8 @@
 package org.xero1425.base.motorsubsystem;
 
 import org.xero1425.base.Subsystem;
+import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.Speedometer;
@@ -32,6 +34,27 @@ public class MotorEncoderSubsystem extends MotorSubsystem
 
         String encname = "hw:" + name + ":encoder" ;
         encoder_ = new XeroEncoder(parent.getRobot(), encname, angle, getMotorController()) ;
+    }
+
+    public boolean hasHWPID() {
+        boolean ret = false ;
+
+        try {
+            ret = getMotorController().hasPID() ;
+        }
+        catch(Exception ex) {
+            ret = false ;
+        }
+
+        return ret;
+    }
+
+    public void setPositionConversion(double factor) throws BadMotorRequestException, MotorRequestFailedException {
+        getMotorController().setPositionConversion(factor);
+    }
+
+    public void setVelocityConversion(double factor) throws BadMotorRequestException, MotorRequestFailedException {
+        getMotorController().setVelocityConversion(factor);
     }
 
     public boolean isAngular() {

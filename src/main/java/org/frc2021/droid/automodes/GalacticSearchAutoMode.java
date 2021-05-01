@@ -25,10 +25,10 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
 
         which_ = "" ;
         last_which_ = "" ;
-        updateWhich();
+        update("");
     }
 
-    public void updateWhich() throws Exception {
+    public void update(String gamedata) throws Exception {
 
         which_ = getWhich() ;
         if (!which_.equals(last_which_))

@@ -2,18 +2,24 @@ package org.xero1425.base.tankdrive;
 
 import java.util.Map;
 import java.util.HashMap;
-import edu.wpi.first.wpilibj.SPI;
-import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.PositionTracker;
 import org.xero1425.base.Subsystem;
+import org.xero1425.base.gyro.RomiGyro;
+import org.xero1425.base.gyro.NavxGyro;
+import org.xero1425.base.gyro.XeroGyro;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
+import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.Speedometer;
+
 
 public class TankDriveSubsystem extends Subsystem {
 
@@ -27,7 +33,7 @@ public class TankDriveSubsystem extends Subsystem {
     private double left_inches_per_tick_ ;
     private double right_inches_per_tick_ ;
     private double total_angle_ ;
-    private AHRS navx_ ;
+    private XeroGyro gyro_ ;
     private MotorController.NeutralMode automode_neutral_ ;
     private MotorController.NeutralMode teleop_neutral_ ;
     private MotorController.NeutralMode disabled_neutral_ ;
@@ -38,16 +44,21 @@ public class TankDriveSubsystem extends Subsystem {
 
     private MotorController left_motors_ ;
     private MotorController right_motors_ ;
+    private Encoder left_encoder_ ;
+    private Encoder right_encoder_ ;
 
     private Map<String, Double> trips_ ;
 
     public TankDriveSubsystem(Subsystem parent, String name, String config)
-            throws BadParameterTypeException, MissingParameterException {
+            throws BadParameterTypeException, MissingParameterException, BadMotorRequestException {
         super(parent, name);
 
         MessageLogger logger = getRobot().getMessageLogger();
-        double width = getRobot().getSettingsParser().get("tankdrive:width").getDouble() ;
-        tracker_ = new PositionTracker(width) ;
+        SettingsParser settings = getRobot().getSettingsParser() ;
+
+        double width = settings.get("tankdrive:width").getDouble() ;
+        double scrub = settings.get("tankdrive:scrub").getDouble() ;
+        tracker_ = new PositionTracker(width, scrub) ;
 
         dist_l_ = 0.0;
         dist_r_ = 0.0;
@@ -55,31 +66,63 @@ public class TankDriveSubsystem extends Subsystem {
         left_inches_per_tick_ = getRobot().getSettingsParser().get("tankdrive:inches_per_tick").getDouble();
         right_inches_per_tick_ = left_inches_per_tick_;
 
-        angular_ = new Speedometer("angles", 2, true);
-        left_linear_ = new Speedometer("left", 2, false);
-        right_linear_ = new Speedometer("right", 2, false);
+        int linearsamples = 2 ;
+        int angularsamples = 2 ;
+        String linear = "tankdrive:speedometer:linearsamples" ;
+        String angular = "tankdrive:speedometer:angularsamples" ;
+
+        if (settings.isDefined(linear) && settings.get(linear).isInteger()) {
+            linearsamples = settings.get(linear).getInteger() ;
+        }
+
+        if (settings.isDefined(angular) && settings.get(angular).isInteger()) {
+            angularsamples = settings.get(angular).getInteger() ;
+        }
+
+        angular_ = new Speedometer("angles", angularsamples, true);
+        left_linear_ = new Speedometer("left", linearsamples, false);
+        right_linear_ = new Speedometer("right", linearsamples, false);
 
         automode_neutral_ = MotorController.NeutralMode.Brake;
         teleop_neutral_ = MotorController.NeutralMode.Brake;
-        disabled_neutral_ = MotorController.NeutralMode.Brake;
+        disabled_neutral_ = MotorController.NeutralMode.Coast;
 
-        navx_ = new AHRS(SPI.Port.kMXP) ;
+        String gyrotype = getRobot().getSettingsParser().get("hw:tankdrive:gyro").getString() ;
+        if (gyrotype.equals("navx")) {
+            gyro_ = new NavxGyro() ;
+        }
+        else if (gyrotype.equals("LSM6DS33")) {
+            gyro_ = new RomiGyro() ;
+        }
+
         double start = getRobot().getTime() ;
         while (getRobot().getTime() - start < 3.0) {
-            if (navx_.isConnected())
+            if (gyro_.isConnected())
                 break ;
         }
 
-        if (!navx_.isConnected()) {
+        if (!gyro_.isConnected()) {
             logger.startMessage(MessageType.Error);
             logger.add("NavX is not connected - cannot perform tankdrive path following functions");
             logger.endMessage();
-            navx_ = null;
+            gyro_ = null;
         }
 
         trips_ = new HashMap<String, Double>();
 
         attachHardware();
+    }
+
+    public boolean isDB() {
+        return true ;
+    }
+
+    public double getWidth() {
+        return tracker_.getWidth() ;
+    }
+
+    public double getScrub() {
+        return tracker_.getScrub() ;
     }
 
     public void startTrip(String name) {
@@ -188,6 +231,14 @@ public class TankDriveSubsystem extends Subsystem {
         super.run();
     }
 
+    public void setPose(Pose2d pose) {
+        tracker_.setPose(pose);
+    }
+
+    public Pose2d getPose() {
+        return tracker_.getPose() ;
+    }
+
     public void computeMyState() {
         double angle = 0.0;
 
@@ -197,15 +248,14 @@ public class TankDriveSubsystem extends Subsystem {
                 ticks_right_ = (int)right_motors_.getPosition();
             }
             else {
-                //
-                // Need to support external encoders
-                //
+                ticks_left_ = left_encoder_.get() ;
+                ticks_right_ = right_encoder_.get()  ;
             }
 
             dist_l_ = ticks_left_ * left_inches_per_tick_;
             dist_r_ = ticks_right_ * right_inches_per_tick_;
-            if (navx_ != null) {
-                angle = -navx_.getYaw();
+            if (gyro_ != null) {
+                angle = gyro_.getYaw();
                 angular_.update(getRobot().getDeltaTime(), angle);
             }
 
@@ -213,8 +263,7 @@ public class TankDriveSubsystem extends Subsystem {
             left_linear_.update(getRobot().getDeltaTime(), getLeftDistance());
             right_linear_.update(getRobot().getDeltaTime(), getRightDistance());
 
-
-            total_angle_ = navx_.getAngle() ;
+            total_angle_ = gyro_.getAngle() ;
 
         } catch (Exception ex) {
             //
@@ -225,16 +274,6 @@ public class TankDriveSubsystem extends Subsystem {
         putDashboard("dbleft", DisplayType.Verbose, left_linear_.getDistance());
         putDashboard("dbright", DisplayType.Verbose, right_linear_.getDistance());
         putDashboard("dbangle", DisplayType.Verbose, angular_.getDistance());        
-
-        MessageLogger logger = getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Debug, getLoggerID()) ;
-        logger.add("tankdrive:") ;
-        logger.add(" powerl", left_power_).add(" powerr", right_power_) ;
-        logger.add(" ticksl", ticks_left_).add(" ticksr ", ticks_right_) ;
-        logger.add(" distl", dist_l_).add(" distr", dist_r_) ;
-        logger.add(" velocityl", getLeftVelocity()).add(" velocityr", getRightVelocity()) ;
-        logger.add(" speed", getVelocity()).add(" angle", getAngle()).add("total", getTotalAngle()) ;
-        logger.endMessage();
     }
 
     protected void setPower(double left, double right) {
@@ -245,27 +284,27 @@ public class TankDriveSubsystem extends Subsystem {
             left_motors_.set(left_power_) ;
             right_motors_.set(right_power_) ;
         }
-        catch(BadMotorRequestException ex) {
+        catch(BadMotorRequestException|MotorRequestFailedException ex) {
             MessageLogger logger = getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Error) ;
             logger.add("subsystem ").addQuoted(getName()).add(": cannot set power -").add(ex.getMessage()).endMessage();
         }
     }
 
-    private void attachHardware() {
+    private void attachHardware() throws BadMotorRequestException, MissingParameterException, BadParameterTypeException {
         left_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:left", "hw:tankdrive:motors:left") ;
         right_motors_ = getRobot().getMotorFactory().createMotor("tankdrive:motors:right", "hw:tankdrive:motors:right") ; 
         
-        // try {
-        //     left_motors_.setOpenLoopRampRate(0.1);
-        // } catch (BadMotorRequestException e) {
-        //     e.printStackTrace();
-        // }
+        if (!left_motors_.hasPosition() || !right_motors_.hasPosition()) {
+            int p1, p2 ;
 
-        // try {
-        //     right_motors_.setOpenLoopRampRate(0.1);
-        // } catch (BadMotorRequestException e) {
-        //     e.printStackTrace();
-        // }
+            p1 = getRobot().getSettingsParser().get("hw:tankdrive:encoder:left:1").getInteger() ;
+            p2 = getRobot().getSettingsParser().get("hw:tankdrive:encoder:left:2").getInteger() ;
+            left_encoder_ = new Encoder(p1, p2) ;
+
+            p1 = getRobot().getSettingsParser().get("hw:tankdrive:encoder:right:1").getInteger() ;
+            p2 = getRobot().getSettingsParser().get("hw:tankdrive:encoder:right:2").getInteger() ;
+            right_encoder_ = new Encoder(p1, p2) ;
+        }
     }
 }

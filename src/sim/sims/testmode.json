@@ -32,10 +32,10 @@
                     "instance" : "1",
                     "values" : 
                     {
-                        "comment" : "position the robot at the initiation line",
-                        "xpos" : 505.0,
-                        "ypos" : 100.0,
-                        "angle" : 180.0
+                        "comment" : "position the robot on the left of the field",
+                        "xpos" : 32.0,
+                        "ypos" : 150.0,
+                        "angle" : 0.0
                     }
                 }           
             ]

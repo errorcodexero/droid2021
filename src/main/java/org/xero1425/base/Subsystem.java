@@ -162,6 +162,18 @@ public class Subsystem {
         this(parent.getRobot(), parent, name) ;
     }
 
+    /// \brief returns true if this is the OI subsystem
+    /// \returns true if this is the OI subsystem
+    public boolean isOI() {
+        return false ;
+    }
+    
+    /// \brief returns true if this is the drivebase subsystem
+    /// \returns true if this is the drivebase subsystem
+    public boolean isDB() {
+        return false ;
+    }
+
     /// \brief returns a property for the simulation system.
     /// This base class always returns null.  This method is expected to be overridden
     /// in a derived class to return subsystem specific properties.

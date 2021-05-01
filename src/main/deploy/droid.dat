@@ -16,7 +16,7 @@ turret:verbose                                                          false
 shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
-gamepiecemanipulator:verbose                                            true
+gamepiecemanipulator:verbose                                            false
 conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
@@ -32,13 +32,13 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      false
+tankdrive:messages                                                      true
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       true
+conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -242,6 +242,22 @@ tankdrive:inches_per_tick                                       0.00083
 tankdrive:width                                                 26.75
 tankdrive:scrub                                                 0.9
 
+tankdrive:purepursuit:left:kp                                   0.0003
+tankdrive:purepursuit:left:ki                                   0.0
+tankdrive:purepursuit:left:kd                                   0.0
+tankdrive:purepursuit:left:kf                                   0.006
+tankdrive:purepursuit:left:min                                  -1.0
+tankdrive:purepursuit:left:max                                  1.0
+tankdrive:purepursuit:left:imax                                 0.0
+
+tankdrive:purepursuit:right:kp                                   0.0003
+tankdrive:purepursuit:right:ki                                   0.0
+tankdrive:purepursuit:right:kd                                   0.0
+tankdrive:purepursuit:right:kf                                   0.006
+tankdrive:purepursuit:right:min                                  -1.0
+tankdrive:purepursuit:right:max                                  1.0
+tankdrive:purepursuit:right:imax                                 0.0
+
 tankdrive:follower:left:ka                                      0.0003
 tankdrive:follower:left:kv                                      0.006               # 0.005
 tankdrive:follower:left:kp                                      0.035                # Recommended 0.02032 - 0.03048
@@ -255,6 +271,8 @@ tankdrive:follower:right:kd                                     0.0
 tankdrive:follower:turn_correction                              0
 tankdrive:follower:angle_correction                             -0.03
 
+hw:tankdrive:gyro                                               "navx"
+
 ###################################################################################################
 # shooter
 ###################################################################################################
@@ -263,8 +281,9 @@ tankdrive:follower:angle_correction                             -0.03
 # 0 = fourth order polynomial
 # 1 = accuracy challenge, 2d port
 # 2 = power port challenge, 3d port
+# 3 = PWL
 #
-shooter:event                                                   1
+shooter:event                                                   3
 shooter:power_port_power                                        5300
 
 shooter:green                                                   3600
@@ -272,16 +291,16 @@ shooter:yellow                                                  6100
 shooter:blue                                                    5200
 shooter:red                                                     4920
 
-shooter:velocity:kp                                             0.0002
+shooter:velocity:kp                                             0.00001
+#shooter:velocity:kp                                            0.0002
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
-shooter:velocity:kf                                             0.00014407573346281248912909418078435
-shooter:velocity:min                                            -1.0
-shooter:velocity:max                                            1.0
+shooter:velocity:kf                                             0.000130642
+shooter:velocity:maxmagnitude                                   1.0
 shooter:velocity:imax                                           0.0
 
 # Power port challenge
-# shooter:velocity:ready_margin_percent                           8.0      
+# shooter:velocity:ready_margin_percent                         8.0      
 
 # Accuracy challenge
 shooter:velocity:ready_margin_percent                           5.0  
@@ -304,11 +323,17 @@ shooter:hood:down                                               0.32
 shooter:hood:up                                                 -0.4
 endif
 
-
 shooter:aim:max_hood_up                                         120
 shooter:aim:min_hood_down                                       110
 
 shooter:hood:change_time					                    1.0
+
+shooter:pwl:1:x                                                 0.0
+shooter:pwl:1:y                                                 0.0
+shooter:pwl:2:x                                                10.0
+shooter:pwl:2:y                                                10.0
+shooter:pwl:3:x                                                20.0
+shooter:pwl:3:y                                                 0.0
 
 #
 # If the drivebase is going faster than this, the hood is
@@ -591,7 +616,7 @@ targettracker:fire:max_drivebase_velocity			1.0
 # Enable plotting.  Plot data is stored in the network tables and display
 # programs read the data from the network tables
 #
-plotting:enabled                                               true
+plotting:enabled                                               false
 
 #
 # Shoot test parameters
@@ -607,8 +632,8 @@ shoottest:hold                                                true
 auto:testmode:active                                          true
 auto:testmode:which                                           35
 auto:testmode:distance                                        1800
-auto:testmode:power                                           4000
-auto:testmode:duration                                        1.0
+auto:testmode:power                                           5500
+auto:testmode:duration                                        100
 auto:testmode:name                                           "Slalom_Path"
 
 #

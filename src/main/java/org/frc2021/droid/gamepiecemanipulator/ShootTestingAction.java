@@ -9,6 +9,8 @@ import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorReceiveAction;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterVelocityAction;
 import org.xero1425.base.actions.Action;
+import org.xero1425.base.motors.BadMotorRequestException;
+import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
@@ -39,7 +41,7 @@ public class ShootTestingAction extends Action {
     }
 
     @Override
-    public void run() {
+    public void run() throws BadMotorRequestException, MotorRequestFailedException {
         double current = sub_.getShooter().getVelocity() ;
         double target = widget_.getEntry().getDouble(current) ;
 

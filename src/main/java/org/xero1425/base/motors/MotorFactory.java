@@ -138,7 +138,7 @@ public class MotorFactory
         logger_.endMessage();
     }
 
-    private MotorController createSingleMotor(String name, String id) throws BadParameterTypeException, BadMotorRequestException {
+    private MotorController createSingleMotor(String name, String id) throws BadParameterTypeException, BadMotorRequestException, MotorRequestFailedException {
         String idparam = id + ":type" ;
         String canparam = id + ":canid" ;
 
@@ -171,13 +171,17 @@ public class MotorFactory
         String type = settings_.getOrNull(idparam).getString() ;
         MotorController ctrl = null ;
 
-        if (type.equals("talon_srx"))
+        if (type.equals("romi"))
+        {
+            ctrl = new RomiMotorController(name, canid) ;
+        }
+        else if (type.equals("talon_srx"))
         {
             ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonSRX) ;
         }
         else if (type.equals("talon_fx"))
         {
-            ctrl = new CTREMotorController(name, canid, CTREMotorController.MotorType.TalonFX) ;
+            ctrl = new TalonFXMotorController(name, canid) ;
         }
         else if (type.equals("victor_spx"))
         {

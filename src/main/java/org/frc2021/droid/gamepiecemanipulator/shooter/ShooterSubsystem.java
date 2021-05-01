@@ -5,7 +5,6 @@ import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
-import org.xero1425.misc.Speedometer;
 
 public class ShooterSubsystem extends MotorEncoderSubsystem {    
     private HoodPosition desired_ ;
@@ -18,7 +17,6 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     private double hood_down_pos_ ;
     private Servo hood_servo_ ;
     private TankDriveSubsystem db_ ;
-    private Speedometer voltage_ ;
 
     public final static String SubsystemName = "shooter" ;
 
@@ -50,7 +48,14 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         actual_ = HoodPosition.Unknown ;
         desired_ = HoodPosition.Down ;
 
-        voltage_ = new Speedometer("voltage", 20, false) ;
+        //
+        // Set the correct velocity units for the shooter
+        //
+        double ticks_per_rev = 42 ;
+        double seconds_per_minute = 60 ;
+        double motor_to_shooter_gear_ratio  = 24.0 / 18.0 ;
+        double factor =  seconds_per_minute / ticks_per_rev * motor_to_shooter_gear_ratio ;
+        setVelocityConversion(factor);        
     }
 
     public void setHood(HoodPosition pos) {
@@ -79,8 +84,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     @Override
     public void computeMyState() throws Exception {
         super.computeMyState();
-        voltage_.update(getRobot().getTime(), getMotorController().getVoltage());
-        putDashboard("s-voltage", DisplayType.Always, voltage_.getAverage());
+        putDashboard("s-input", DisplayType.Verbose, getMotorController().getInputVoltage()) ;
     }
 
     @Override

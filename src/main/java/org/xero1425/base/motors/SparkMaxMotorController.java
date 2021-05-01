@@ -1,7 +1,10 @@
 package org.xero1425.base.motors;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANError;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.hal.SimBoolean;
@@ -15,6 +18,9 @@ public class SparkMaxMotorController extends MotorController
     private CANEncoder encoder_ ;
     private boolean inverted_ ;
     private boolean brushless_ ;
+    private CANPIDController pid_ ;
+    private PidType ptype_ ;
+    private double target_ ;
 
     private SimDevice sim_ ;
     private SimDouble sim_power_ ;
@@ -26,11 +32,13 @@ public class SparkMaxMotorController extends MotorController
     public final static String SimDeviceNameBrushless = "SparkMaxBrushless" ;
     public final static int TicksPerRevolution = 42 ;
 
-    public SparkMaxMotorController(String name, int index, boolean brushless) {
+    public SparkMaxMotorController(String name, int index, boolean brushless) throws MotorRequestFailedException {
         super(name) ;
 
         inverted_ = false ;
         brushless_ = brushless ;
+        pid_ = null ;
+        target_ = 0 ;
 
         if (RobotBase.isSimulation()) {
             if (brushless)
@@ -45,6 +53,8 @@ public class SparkMaxMotorController extends MotorController
             sim_.createBoolean(MotorController.SimEncoderStoresTicksParamName, SimDevice.Direction.kBidir, false) ;            
         }
         else {
+            CANError code ;
+
             if (brushless)
             {
                 controller_ = new CANSparkMax(index, CANSparkMax.MotorType.kBrushless) ;
@@ -54,11 +64,19 @@ public class SparkMaxMotorController extends MotorController
                 controller_ = new CANSparkMax(index, CANSparkMax.MotorType.kBrushed) ;
             }
 
-            controller_.restoreFactoryDefaults() ;
-            controller_.enableVoltageCompensation(12.0) ;
+            code = controller_.restoreFactoryDefaults() ;
+            if (code != CANError.kOk)
+                throw new MotorRequestFailedException(this, "restoreFactoryDefaults() failed during initialization", code) ;
+
+            code = controller_.enableVoltageCompensation(12.0) ;
+            if (code != CANError.kOk)
+                throw new MotorRequestFailedException(this, "enableVoltageCompensation() failed during initialization", code) ;
+
             encoder_ = controller_.getEncoder() ;
         }
     }
+
+
 
     public String typeName() {
         String ret = "SparkMaxBrushed" ;
@@ -69,8 +87,79 @@ public class SparkMaxMotorController extends MotorController
         return ret ;
     }
 
-    public double getVoltage() throws BadMotorRequestException {
+    public double getInputVoltage() throws BadMotorRequestException {
         return controller_.getBusVoltage() ;
+    }
+
+    public double getAppliedVoltage() throws BadMotorRequestException {
+        return controller_.getAppliedOutput() ;
+    }
+
+    public boolean hasPID() throws BadMotorRequestException {
+        return true ;
+    }
+
+    public void setTarget(double target) throws BadMotorRequestException, MotorRequestFailedException {
+        CANError code = CANError.kOk ;
+
+        target_ = target ;
+
+        if (pid_ != null) {
+
+            if (ptype_ == PidType.Position)
+                code = pid_.setReference(target, ControlType.kPosition) ;
+            else if (ptype_ == PidType.Velocity)
+                code = pid_.setReference(target, ControlType.kVelocity) ;
+            
+            if (code != CANError.kOk)
+                throw new MotorRequestFailedException(this, "setReference() failed during setTarget() call", code) ;
+        }
+    }
+
+    public void setPID(PidType type, double p, double i, double d, double f, double outmax) throws BadMotorRequestException,
+            MotorRequestFailedException {
+        CANError code = CANError.kOk ;
+
+        if (pid_ == null)
+            pid_ = controller_.getPIDController() ;
+
+        code = pid_.setP(p) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setP() failed during setPID() call", code) ;
+
+        code = pid_.setI(i) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setI() failed during setPID() call", code) ;        
+
+        code = pid_.setD(d) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setD() failed during setPID() call", code) ;
+
+        code = pid_.setFF(f) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setFF() failed during setPID() call", code) ;
+
+        code = pid_.setIZone(0.0) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setIZone() failed during setPID() call", code) ;
+
+        code = pid_.setOutputRange(-outmax, outmax) ;
+        if (code != CANError.kOk)
+            throw new MotorRequestFailedException(this, "setOutputRange() failed during setPID() call", code) ;
+
+        ptype_ = type ;
+        setTarget(target_) ;
+    }
+
+    public void stopPID() throws BadMotorRequestException {
+    }
+
+    public void setPositionConversion(double factor) throws BadMotorRequestException {
+        encoder_.setPositionConversionFactor(factor) ;
+    }
+
+    public void setVelocityConversion(double factor) throws BadMotorRequestException {
+        encoder_.setVelocityConversionFactor(factor) ;
     }
 
     public void set(double percent) {
@@ -201,4 +290,9 @@ public class SparkMaxMotorController extends MotorController
         }
     } 
 
+    public String getFirmwareVersion() throws BadMotorRequestException {
+        int v = controller_.getFirmwareVersion() ;
+
+        return String.valueOf((v >> 24) & 0xff) + "." + String.valueOf((v >> 16) & 0xff) ;
+    }
 } ;
