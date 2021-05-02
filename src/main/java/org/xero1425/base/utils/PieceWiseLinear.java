@@ -14,13 +14,61 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 public class PieceWiseLinear {
     private List<Translation2d> points_;
 
-    public PieceWiseLinear(SettingsParser settings, String basename) throws Exception {
-        List<Translation2d> points = readFromSettings(settings, basename);
-        init(points) ;
+    public PieceWiseLinear(SettingsParser settings, String name) throws BadParameterTypeException {
+        init(readFromSettings(settings, name)) ;
     }
 
     public PieceWiseLinear(List<Translation2d> points) throws Exception {
-        init(points) ;
+        if (points.size() == 0)
+            throw new Exception("cannot have empty points list as input");
+        init(points);
+    }
+
+    private void init(List<Translation2d> points) {
+        points_ = new ArrayList<Translation2d>();
+
+        for (int i = 0; i < points.size(); i++)
+            points_.add(points.get(i));
+
+        Collections.sort(points_, new Comparator<Translation2d>() {
+            public int compare(Translation2d p1, Translation2d p2) {
+                if (p1.getX() < p2.getX())
+                    return -1;
+
+                if (p1.getX() > p2.getX())
+                    return 1;
+
+                if (p1.getY() < p2.getY())
+                    return -1;
+
+                if (p1.getY() > p2.getY())
+                    return 1;
+
+                return 0;
+            }
+        });
+    }
+
+    private List<Translation2d> readFromSettings(SettingsParser settings, String base)
+            throws BadParameterTypeException {
+        int index = 1;
+        List<Translation2d> points = new ArrayList<Translation2d>();
+
+        while (true) {
+            String xname = base + ":" + Integer.toString(index) + ":x";
+            String yname = base + ":" + Integer.toString(index) + ":y";
+
+            SettingsValue xvalue = settings.getOrNull(xname);
+            SettingsValue yvalue = settings.getOrNull(yname);
+
+            if (xvalue == null || yvalue == null)
+                break;
+
+            Translation2d pt = new Translation2d(xvalue.getDouble(), yvalue.getDouble());
+            points.add(pt);
+        }
+
+        return points;
     }
 
     public int size() {
@@ -54,35 +102,7 @@ public class PieceWiseLinear {
         return ret;
     }
 
-    private void init(List<Translation2d> points) throws Exception {
-        points_ = new ArrayList<Translation2d>();
-
-        if (points.size() == 0)
-            throw new Exception("cannot have empty points list as input");
-
-        for (int i = 0; i < points.size(); i++)
-            points_.add(points.get(i));
-
-        Collections.sort(points_, new Comparator<Translation2d>() {
-            public int compare(Translation2d p1, Translation2d p2) {
-                if (p1.getX() < p2.getX())
-                    return -1;
-
-                if (p1.getX() > p2.getX())
-                    return 1;
-
-                if (p1.getY() < p2.getY())
-                    return -1;
-
-                if (p1.getY() > p2.getY())
-                    return 1;
-
-                return 0;
-            }
-        });
-    }
-
-    private int findWhich(double x) {
+    int findWhich(double x) {
         for (int i = 0; i < points_.size(); i++) {
             if (x >= points_.get(i).getX() && x < points_.get(i + 1).getX()) {
                 return i;
@@ -90,27 +110,5 @@ public class PieceWiseLinear {
         }
 
         return -1;
-    }
-
-    private List<Translation2d> readFromSettings(SettingsParser settings, String base)
-            throws BadParameterTypeException {
-        int index = 1 ;
-        List<Translation2d> points = new ArrayList<Translation2d>() ;
-
-        while (true) {
-            String xname = base + ":" + Integer.toString(index) + ":x" ;
-            String yname = base + ":" + Integer.toString(index) + ":y" ;
-
-            SettingsValue xvalue = settings.getOrNull(xname) ;
-            SettingsValue yvalue = settings.getOrNull(yname) ;
-
-            if (xvalue == null || yvalue == null)
-                break ;
-
-            Translation2d pt = new Translation2d(xvalue.getDouble(), yvalue.getDouble()) ;
-            points.add(pt) ;
-        }
-
-        return points ;
     }
 }
