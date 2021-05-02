@@ -16,13 +16,15 @@ public class PieceWiseLinearTest {
     public void emptyListTest() {
         boolean except = false;
         List<Translation2d> points = new ArrayList<Translation2d>();
+        PieceWiseLinear pwl = null ;
 
         try {
-            PieceWiseLinear pwl = new PieceWiseLinear(points);
+            pwl = new PieceWiseLinear(points);
         } catch (Exception ex) {
             except = true;
         }
 
+        Assert.assertNull(pwl);
         Assert.assertEquals(true, except);
     }
 
