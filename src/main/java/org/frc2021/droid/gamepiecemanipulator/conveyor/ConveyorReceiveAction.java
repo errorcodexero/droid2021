@@ -37,7 +37,7 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
                         return act.getSubsystem().isStagedForCollect();
                     }),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.A, SensorEvent.IS_HIGH),
+            new WaitForSensor(ConveyorSensorThread.Sensor.A, SensorEvent.IS_HIGH),
 
             new DoWorkState("set collecting", (ConveyorStateAction act) -> {
                 act.getSubsystem().setCollecting(true);
@@ -56,9 +56,9 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
                 return act.getSubsystem().getBallCount() == 4;
             }),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.B, SensorEvent.IS_LOW),
+            new WaitForSensor(ConveyorSensorThread.Sensor.B, SensorEvent.IS_LOW),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.B, SensorEvent.IS_HIGH, TimeoutLabel, timeout),
+            new WaitForSensor(ConveyorSensorThread.Sensor.B, SensorEvent.IS_HIGH, TimeoutLabel, timeout),
 
             new DoWorkState("increment ball count", (ConveyorStateAction act) -> {
                 act.getSubsystem().incrementBallCount();
@@ -73,9 +73,9 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
 
             new GoToState(WaitForBallLabel),
 
-            new WaitForSensor(FifthLabel, ConveyorSubsystem.Sensor.C, SensorEvent.IS_LOW),
+            new WaitForSensor(FifthLabel, ConveyorSensorThread.Sensor.C, SensorEvent.IS_LOW),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.C, SensorEvent.IS_HIGH, TimeoutLabel, timeout),
+            new WaitForSensor(ConveyorSensorThread.Sensor.C, SensorEvent.IS_HIGH, TimeoutLabel, timeout),
 
             new DoWorkState("set finishing false", (ConveyorStateAction act) -> {
                 ConveyorReceiveAction rec = (ConveyorReceiveAction) act;

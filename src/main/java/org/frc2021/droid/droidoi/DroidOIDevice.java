@@ -78,7 +78,7 @@ public class DroidOIDevice extends OIPanel {
     private Action intake_off_ ;
 
     private Action turret_goto_zero_ ;
-    private Action turret_goto_90_ ;
+    // private Action turret_goto_90_ ;
     private Action turret_goto_manual_ ;
     private Action turret_follow_target_ ;
 
@@ -147,7 +147,7 @@ public class DroidOIDevice extends OIPanel {
         intake_off_ = new CollectOffAction(intake);
 
         turret_goto_zero_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
-        turret_goto_90_ = new MotorEncoderGotoAction(turret, -90.0, true) ;
+        // turret_goto_90_ = new MotorEncoderGotoAction(turret, -90.0, true) ;
         turret_goto_manual_ = new MotorEncoderGotoAction(turret, -70.0, true) ;
         turret_follow_target_ = new FollowTargetAction(turret, tracker) ;
 
@@ -435,15 +435,21 @@ public class DroidOIDevice extends OIPanel {
         gp.cancelAction(); ;
         seq.addSubActionPair(conveyor, queue_prep_collect_, false) ;
 
-        if (getValue(climb_lock_) == 1)
-        {
-            seq.addSubActionPair(turret, turret_goto_zero_, false) ;
-        }
-        else
-        {
-            seq.addSubActionPair(turret, turret_goto_90_, false) ;
-        }
+        //
+        // This is enabled when we are doing the 2021 challenges.  This is used to move the
+        // turret to -90 degrees to do the side shot in the accuracy challenge.  The robot is turned
+        // sideways with respect to the target and the turret rotated to find the turret.
+        //
+        // if (getValue(climb_lock_) == 1)
+        // {
+        //     seq.addSubActionPair(turret, turret_goto_zero_, false) ;
+        // }
+        // else
+        // {
+        //     seq.addSubActionPair(turret, turret_goto_90_, false) ;
+        // }
 
+        seq.addSubActionPair(turret, turret_goto_zero_, false) ;
         seq.addSubActionPair(shooter, shooter_stop_, false);
     }
 

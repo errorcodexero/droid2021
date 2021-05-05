@@ -28,15 +28,15 @@ public class ConveyorPrepareToReceiveAction extends ConveyorStateAction {
                 act.getSubsystem().setMotorsPower(prepare_receive_intake_to_intake_power_, prepare_receive_shooter_to_intake_power_) ;
                 return ConveyorStateStatus.NextState; }),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.A, SensorEvent.IS_HIGH),
+            new WaitForSensor(ConveyorSensorThread.Sensor.A, SensorEvent.IS_HIGH),
 
             new DoWorkState("set motor prepare receive power reverse", (ConveyorStateAction act) -> {
                 act.getSubsystem().setMotorsPower(prepare_receive_intake_to_shooter_power_, prepare_receive_shooter_to_shooter_power_) ;
                 return ConveyorStateStatus.NextState; }),  
                 
-            new WaitForSensor(ConveyorSubsystem.Sensor.A, SensorEvent.IS_LOW),
+            new WaitForSensor(ConveyorSensorThread.Sensor.A, SensorEvent.IS_LOW),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.B, SensorEvent.IS_HIGH),            
+            new WaitForSensor(ConveyorSensorThread.Sensor.B, SensorEvent.IS_HIGH),            
 
             new DoWorkState(SetStagedLabel, "set conveyor state staged", (ConveyorStateAction act) -> {
                 act.getSubsystem().setStagedForCollect(true);

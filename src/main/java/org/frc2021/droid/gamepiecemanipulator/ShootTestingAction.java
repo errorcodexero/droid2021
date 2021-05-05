@@ -1,7 +1,5 @@
 package org.frc2021.droid.gamepiecemanipulator;
 
-import edu.wpi.first.wpilibj.shuffleboard.*;
-
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToEmitAction;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorPrepareToReceiveAction;
@@ -14,7 +12,23 @@ import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
+
 public class ShootTestingAction extends Action {
+    
+    private GamePieceManipulatorSubsystem sub_ ;
+    private State state_ ;
+    private ShooterVelocityAction fire_ ;
+    private ConveyorPrepareToReceiveAction prepare_receive_ ;
+    private ConveyorPrepareToEmitAction prepare_emit_ ;
+    private ConveyorReceiveAction receive_ ;
+    private ConveyorEmitAction emit_ ;
+    private double shoot_delay_ ;
+    private double start_ ;
+    private SimpleWidget widget_ ;
+    
     public ShootTestingAction(GamePieceManipulatorSubsystem gp, ShooterSubsystem.HoodPosition pos) throws Exception {
         super(gp.getRobot().getMessageLogger()) ;
 
@@ -119,14 +133,4 @@ public class ShootTestingAction extends Action {
         WaitShoot,        
     } ;
 
-    private GamePieceManipulatorSubsystem sub_ ;
-    private State state_ ;
-    private ShooterVelocityAction fire_ ;
-    private ConveyorPrepareToReceiveAction prepare_receive_ ;
-    private ConveyorPrepareToEmitAction prepare_emit_ ;
-    private ConveyorReceiveAction receive_ ;
-    private ConveyorEmitAction emit_ ;
-    private double shoot_delay_ ;
-    private double start_ ;
-    private SimpleWidget widget_ ;
 }

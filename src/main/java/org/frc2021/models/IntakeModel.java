@@ -12,6 +12,11 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.SettingsValue;
 
 public class IntakeModel extends SimulationModel {
+    private SimMotorController spin_ ;
+    private SimMotorController updown_ ;
+    private double ticks_per_second_per_volt_ ;
+    private double ticks_  ;
+
     private static final String SubTableName = "intake" ;
 
     public IntakeModel(SimulationEngine engine, String model, String inst) {
@@ -61,11 +66,8 @@ public class IntakeModel extends SimulationModel {
     }
 
     public boolean isDownAndRunning() {
-        return ticks_ > 1400 && spin_.getPower() > 0.3 ;
+        double power = spin_.getPower() ;
+        return ticks_ > 1400 && Math.abs(power) > 0.3 ;
     }
-    
-    private SimMotorController spin_ ;
-    private SimMotorController updown_ ;
-    private double ticks_per_second_per_volt_ ;
-    private double ticks_  ;
+
 }
