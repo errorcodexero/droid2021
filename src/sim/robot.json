@@ -153,7 +153,7 @@
                 "updown:motor:type" : "sparkmax-brushless",
                 "spin:motor:index" : 10,
                 "spin:motor:type" : "sparkmax-brushless",
-                "ticks_per_second_per_volt" : 7000.0
+                "ticks_per_second_per_volt" : 21000.0
             }
         }        
     ]

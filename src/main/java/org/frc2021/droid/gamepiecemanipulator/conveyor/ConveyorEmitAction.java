@@ -37,7 +37,7 @@ public class ConveyorEmitAction extends ConveyorStateAction {
                 act.getSubsystem().setCollecting(false);
                 return ConveyorStateStatus.NextState ;} ),            
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.D, SensorEvent.IS_LOW),
+            new WaitForSensor(ConveyorSensorThread.Sensor.D, SensorEvent.IS_LOW),
 
             new BranchState(NotFiringLastBallLabel, (ConveyorStateAction act) -> {
                 return act.getSubsystem().getBallCount() != 1 ;}),
@@ -52,9 +52,9 @@ public class ConveyorEmitAction extends ConveyorStateAction {
 
             new GoToState(DoneLabel),
 
-            new WaitForSensor(NotFiringLastBallLabel, ConveyorSubsystem.Sensor.D, SensorEvent.IS_HIGH),
+            new WaitForSensor(NotFiringLastBallLabel, ConveyorSensorThread.Sensor.D, SensorEvent.IS_HIGH),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.D, SensorEvent.IS_LOW),
+            new WaitForSensor(ConveyorSensorThread.Sensor.D, SensorEvent.IS_LOW),
 
             new DoWorkState("decrement ball count", (ConveyorStateAction act) -> {
                 act.getSubsystem().decrementBallCount();

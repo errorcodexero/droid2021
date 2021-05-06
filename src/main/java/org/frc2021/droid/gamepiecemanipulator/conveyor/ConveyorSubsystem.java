@@ -1,13 +1,11 @@
 package org.frc2021.droid.gamepiecemanipulator.conveyor;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
-import org.xero1425.misc.SettingsParser;
 import org.xero1425.misc.SettingsValue;
 
 public class ConveyorSubsystem extends Subsystem {
@@ -16,50 +14,36 @@ public class ConveyorSubsystem extends Subsystem {
     private boolean staged_for_collect_ ;           // Is true, if balls are positioned for collecting
     private boolean staged_for_fire_ ;              // Is true, if balls are positioned for firing
     private boolean collecting_ ;                   // Is true, when when collecting balls
-    private DigitalInput [] sensors_ ;              // The array of ball detect sensors
-    private boolean [] sensor_states_ ;             // The states of ball detect sensors
-    private boolean [] prev_sensor_states_ ;        // The states of ball detect sensors last robot loop
+
     private MotorController intake_motor_ ;         // The motor for the flash intake piece
     private MotorController shooter_motor_ ;        // The motor for the shooter sidef of the conveyor
     private int sensor_logger_id_ ;                 // The message logger id just for sensors
+    private ConveyorSensorThread sensor_thread_ ;
     
     public static final String SubsystemName = "conveyor";
     public static final String SensorLoggerName = "conveyor:sensors:messages";
     public static final int MAX_BALLS = 5;
-    public static final int SENSOR_COUNT = Sensor.values().length;
+
     public static final String SensorSubsystemName = null;
 
     public ConveyorSubsystem(Subsystem parent) throws BadParameterTypeException, MissingParameterException {
         super(parent, SubsystemName);
 
-        SettingsParser p = getRobot().getSettingsParser() ;
+
         sensor_logger_id_ = getRobot().getMessageLogger().registerSubsystem(SensorLoggerName);
 
-        int num;
-        int basech = (int) 'a';
-        // ball_count_ = 3 ;
         ball_count_ = 0 ;
 
         staged_for_collect_ = false;
         staged_for_fire_ = false;
         collecting_ = false;
 
-        sensors_ = new DigitalInput[SENSOR_COUNT];
-        sensor_states_ = new boolean[SENSOR_COUNT];
-        prev_sensor_states_ = new boolean[SENSOR_COUNT];
-
-        for (int i = 0; i < SENSOR_COUNT; i++) {
-            String name = "hw:conveyor:sensor:" + (char) (basech + i);
-            num = p.get(name).getInteger();
-            sensors_[i] = new DigitalInput(num);
-            sensor_states_[i] = false ;
-            prev_sensor_states_[i] = false ;
-            String sname = Character.toString((char)('A' + i)) ;
-            putDashboard(sname, DisplayType.Verbose, sensor_states_[i]);
-        }
 
         intake_motor_ = getRobot().getMotorFactory().createMotor("intake", "hw:conveyor:motors:intake");
         shooter_motor_ = getRobot().getMotorFactory().createMotor("shooter", "hw:conveyor:motors:shooter");
+
+        sensor_thread_ = new ConveyorSensorThread(this) ;
+        sensor_thread_.start() ;
     }
 
     public int getSensorLoggerID() {
@@ -80,6 +64,10 @@ public class ConveyorSubsystem extends Subsystem {
         }
 
         return v ;
+    }
+
+    public ConveyorSensorThread getSensorThread() {
+        return sensor_thread_ ;
     }
 
     public boolean isFull() {
@@ -135,41 +123,15 @@ public class ConveyorSubsystem extends Subsystem {
 
     @Override
     public void computeMyState() throws Exception {
-        MessageLogger logger = getRobot().getMessageLogger();
-
-        for (int i = 0; i < SENSOR_COUNT; i++) {
-            prev_sensor_states_[i] = sensor_states_[i] ;
-            sensor_states_[i] = !sensors_[i].get();
-
-            if (prev_sensor_states_[i] != sensor_states_[i]) {
-                Sensor s = Sensor.fromInt(i);
-                logger.startMessage(MessageType.Debug, getLoggerID());
-                logger.add("Conveyor:").add("sensor ").add(s.toString());
-                logger.add(" transitioned to ").add(sensor_states_[i]);
-                logger.endMessage();
-                putDashboard(s.toString(), DisplayType.Verbose, sensor_states_[i]);
-            }
-        }
-
-        logger.startMessage(MessageType.Debug, getSensorLoggerID()) ;
-        logger.add("sensors") ;
-        for(int i = 0 ; i < SENSOR_COUNT ; i++) {
-            logger.add(" [ ").add(Sensor.fromInt(i).toString()) ;
-            logger.add(" ").add(prev_sensor_states_[i]) ;
-            logger.add(" ").add(sensor_states_[i]) ;
-            logger.add(" ").add(didSensorLowToHigh(Sensor.fromInt(i))) ;
-            logger.add(" ").add(didSensorHighToLow(Sensor.fromInt(i))) ;            
-            logger.add("]") ;
-        }
-        logger.endMessage();
-
-        if (prev_sensor_states_[Sensor.D.value] == true && sensor_states_[Sensor.D.value] == false) {
-            setStagedForFire(true) ;
-        }
-
         putDashboard("staged-fire", DisplayType.Verbose, staged_for_fire_) ;
         putDashboard("staged-collect", DisplayType.Verbose, staged_for_collect_);
         putDashboard("ballcount", DisplayType.Always, ball_count_);
+
+        //
+        // Tell the sensor thread we have finished this robot loop so it will
+        // reset its state
+        //
+        sensor_thread_.endRobotLoop(); 
     }
 
     public boolean isCollecting() {
@@ -202,18 +164,6 @@ public class ConveyorSubsystem extends Subsystem {
         logger.endMessage();
     }    
 
-    public boolean getSensorState(Sensor s) {
-        return sensor_states_[s.value] ;
-    }
-
-    public boolean didSensorLowToHigh(Sensor s) {
-        return !prev_sensor_states_[s.value] && sensor_states_[s.value] ;
-    }
-
-    public boolean didSensorHighToLow(Sensor s) {
-        return prev_sensor_states_[s.value] && !sensor_states_[s.value] ;
-    }
-
     protected void setMotorsPower(double intake, double shooter) {
         try {
             intake_motor_.set(intake) ;
@@ -221,28 +171,5 @@ public class ConveyorSubsystem extends Subsystem {
         }
         catch(Exception ex) {
         }
-    }
-
-    public enum Sensor {
-        A(0),
-        B(1),
-        C(2),
-        D(3) ;
-
-        public final int value ;
-
-        private Sensor(int value) {
-            this.value = value ;
-        }
-
-        public static Sensor fromInt(int id) throws Exception {
-            Sensor[] As = Sensor.values() ;
-            for(int i = 0 ; i < As.length ; i++) {
-                if (As[i].value == id)
-                    return As[i] ;
-            }
-            throw new Exception("invalid integer in Sensor.fromInt") ;
-        }
-    }     
-
+    }  
 } ;

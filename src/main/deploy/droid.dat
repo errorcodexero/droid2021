@@ -38,17 +38,18 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       false
+conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
 droidoi:messages                                                        false
 blinky:messages                                                         false
-conveyor:sensors:messages                                               false
+conveyor:sensors:messages                                               true
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
 fireaction:messages                                                     false
-conveyor_model:messages                                                 false
+conveyor_model:messages                                                 true
+conveyor_ball_model:messages                                            true
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -292,12 +293,13 @@ shooter:blue                                                    5200
 shooter:red                                                     4920
 
 shooter:velocity:kp                                             0.00001
-#shooter:velocity:kp                                            0.0002
 shooter:velocity:ki                                             0.0
 shooter:velocity:kd                                             0.0
 shooter:velocity:kf                                             0.000130642
 shooter:velocity:maxmagnitude                                   1.0
 shooter:velocity:imax                                           0.0
+shooter:velocity:max                                            1.0
+shooter:velocity:min                                            -1.0
 
 # Power port challenge
 # shooter:velocity:ready_margin_percent                         8.0      

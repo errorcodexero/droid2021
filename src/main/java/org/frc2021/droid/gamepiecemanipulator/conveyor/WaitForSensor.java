@@ -6,6 +6,14 @@ import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 
 public class WaitForSensor extends BaseState {
+    
+    private ConveyorSensorThread.Sensor sensor_ ;
+    private SensorEvent event_ ;
+    private String timeout_label_ ;
+    private double timeout_duration_ ;
+    private double start_ ;
+    private boolean active_ ;
+
     public enum SensorEvent {
         IS_LOW,
         IS_HIGH,
@@ -13,26 +21,26 @@ public class WaitForSensor extends BaseState {
         HIGH_TO_LOW
     } ;
 
-    public WaitForSensor(ConveyorSubsystem.Sensor s, SensorEvent ev) {
+    public WaitForSensor(ConveyorSensorThread.Sensor s, SensorEvent ev) {
         sensor_ = s ;
         event_ = ev ;
         timeout_duration_ = Double.MAX_VALUE ;
     }
 
-    public WaitForSensor(ConveyorSubsystem.Sensor s, SensorEvent ev, String label, double timeout) {
+    public WaitForSensor(ConveyorSensorThread.Sensor s, SensorEvent ev, String label, double timeout) {
         sensor_ = s ;
         event_ = ev ;
         timeout_duration_ = timeout ;
     }    
 
-    public WaitForSensor(String label, ConveyorSubsystem.Sensor s, SensorEvent ev) {
+    public WaitForSensor(String label, ConveyorSensorThread.Sensor s, SensorEvent ev) {
         super(label) ;
         sensor_ = s ;
         event_ = ev ;
         timeout_duration_ = Double.MAX_VALUE ;
     }
 
-    public WaitForSensor(String label, ConveyorSubsystem.Sensor s, SensorEvent ev, String timeoutlabel, double timeout) {
+    public WaitForSensor(String label, ConveyorSensorThread.Sensor s, SensorEvent ev, String timeoutlabel, double timeout) {
         super(label) ;
         sensor_ = s ;
         event_ = ev ;
@@ -69,19 +77,19 @@ public class WaitForSensor extends BaseState {
         {
             switch(event_) {
                 case IS_LOW:
-                    if (!act.getSubsystem().getSensorState(sensor_))
+                    if (!act.getSubsystem().getSensorThread().getSensorState(sensor_))
                         st = ConveyorStateStatus.NextState ;
                     break ;
                 case IS_HIGH:
-                    if (act.getSubsystem().getSensorState(sensor_))
+                    if (act.getSubsystem().getSensorThread().getSensorState(sensor_))
                         st = ConveyorStateStatus.NextState ;
                     break ;
                 case LOW_TO_HIGH:
-                    if (act.getSubsystem().didSensorLowToHigh(sensor_))
+                    if (act.getSubsystem().getSensorThread().didSensorLowToHigh(sensor_))
                         st = ConveyorStateStatus.NextState ;
                     break ;
                 case HIGH_TO_LOW:
-                    if (act.getSubsystem().didSensorHighToLow(sensor_))
+                    if (act.getSubsystem().getSensorThread().didSensorHighToLow(sensor_))
                         st = ConveyorStateStatus.NextState ;
                     break ;                                
             }
@@ -100,10 +108,4 @@ public class WaitForSensor extends BaseState {
         return ret ;
     }   
 
-    private ConveyorSubsystem.Sensor sensor_ ;
-    private SensorEvent event_ ;
-    private String timeout_label_ ;
-    private double timeout_duration_ ;
-    private double start_ ;
-    private boolean active_ ;
 }

@@ -22,7 +22,7 @@ public class ConveyorPrepareToEmitAction extends ConveyorStateAction {
                 act.getSubsystem().setMotorsPower(prepare_emit_intake_power_, prepare_emit_shooter_power_) ;
                 return ConveyorStateStatus.NextState; }),
 
-            new WaitForSensor(ConveyorSubsystem.Sensor.D, SensorEvent.HIGH_TO_LOW),
+            new WaitForSensor(ConveyorSensorThread.Sensor.D, SensorEvent.HIGH_TO_LOW),
 
             new DoWorkState("set conveyor state", (ConveyorStateAction act) -> {
                 act.getSubsystem().setStagedForCollect(false);

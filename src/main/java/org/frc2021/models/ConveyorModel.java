@@ -10,8 +10,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.xero1425.simulator.engine.SimulationModel;
 import org.xero1425.simulator.models.SimMotorController;
+import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorSensorThread;
 import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorSubsystem;
-import org.frc2021.droid.gamepiecemanipulator.conveyor.ConveyorSubsystem.Sensor;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
@@ -74,7 +74,7 @@ public class ConveyorModel extends SimulationModel {
             subkey.getEntry(BallPositionName).setNumber(b.getPosition()) ;
         }
 
-        for(int i = Sensor.A.value ; i <= Sensor.D.value ; i++) {
+        for(int i = ConveyorSensorThread.Sensor.A.value ; i <= ConveyorSensorThread.Sensor.D.value ; i++) {
             String name = "Sensor" + (char)('A' + i) ;
             NetworkTable sub = table.getSubTable(name) ;
             sub.getEntry("state").setBoolean(!state_[i]) ;
@@ -152,9 +152,9 @@ public class ConveyorModel extends SimulationModel {
             balls_[i] = new Ball(false, 0.0) ;
         }
 
-        sensor_io_ = new int[ConveyorSubsystem.SENSOR_COUNT];
-        sensor_pos_ = new double[ConveyorSubsystem.SENSOR_COUNT] ;
-        state_ = new boolean[ConveyorSubsystem.SENSOR_COUNT] ;
+        sensor_io_ = new int[ConveyorSensorThread.SENSOR_COUNT];
+        sensor_pos_ = new double[ConveyorSensorThread.SENSOR_COUNT] ;
+        state_ = new boolean[ConveyorSensorThread.SENSOR_COUNT] ;
 
         try {
             dist_per_second_per_volt_ = getProperty("distance_per_second_per_inch").getDouble() ;
@@ -164,15 +164,15 @@ public class ConveyorModel extends SimulationModel {
             maxpos_ = getProperty("maxpos").getDouble() ;      
             midpos_ = getProperty("midpos").getDouble() ;
 
-            sensor_io_[ConveyorSubsystem.Sensor.A.value] = getProperty("sensorA").getInteger() ;
-            sensor_io_[ConveyorSubsystem.Sensor.B.value] = getProperty("sensorB").getInteger() ;
-            sensor_io_[ConveyorSubsystem.Sensor.C.value] = getProperty("sensorC").getInteger() ;
-            sensor_io_[ConveyorSubsystem.Sensor.D.value] = getProperty("sensorD").getInteger() ;
+            sensor_io_[ConveyorSensorThread.Sensor.A.value] = getProperty("sensorA").getInteger() ;
+            sensor_io_[ConveyorSensorThread.Sensor.B.value] = getProperty("sensorB").getInteger() ;
+            sensor_io_[ConveyorSensorThread.Sensor.C.value] = getProperty("sensorC").getInteger() ;
+            sensor_io_[ConveyorSensorThread.Sensor.D.value] = getProperty("sensorD").getInteger() ;
             
-            sensor_pos_[ConveyorSubsystem.Sensor.A.value] = getProperty("positionA").getDouble() ;
-            sensor_pos_[ConveyorSubsystem.Sensor.B.value] = getProperty("positionB").getDouble() ;
-            sensor_pos_[ConveyorSubsystem.Sensor.C.value] = getProperty("positionC").getDouble() ;
-            sensor_pos_[ConveyorSubsystem.Sensor.D.value] = getProperty("positionD").getDouble() ; 
+            sensor_pos_[ConveyorSensorThread.Sensor.A.value] = getProperty("positionA").getDouble() ;
+            sensor_pos_[ConveyorSensorThread.Sensor.B.value] = getProperty("positionB").getDouble() ;
+            sensor_pos_[ConveyorSensorThread.Sensor.C.value] = getProperty("positionC").getDouble() ;
+            sensor_pos_[ConveyorSensorThread.Sensor.D.value] = getProperty("positionD").getDouble() ; 
             
             for(int i = 0 ; i < sensor_io_.length ; i++) {
                 DIODataJNI.setIsInput(sensor_io_[i], true) ;
@@ -187,7 +187,7 @@ public class ConveyorModel extends SimulationModel {
         table.getEntry("MaxConveyorPosition").setNumber(maxpos_) ;
         table.getEntry("MidConveyorPosition").setNumber(midpos_) ;
 
-        for(int i = Sensor.A.value ; i <= Sensor.D.value ; i++) {
+        for(int i = ConveyorSensorThread.Sensor.A.value ; i <= ConveyorSensorThread.Sensor.D.value ; i++) {
             String name = "Sensor" + (char)('A' + i) ;
             NetworkTable sub = table.getSubTable(name) ;
             sub.getEntry("position").setNumber(sensor_pos_[i]) ;
@@ -226,6 +226,10 @@ public class ConveyorModel extends SimulationModel {
     }
 
     public void run(double dt) {
+        double now = getRobotTime() ;
+
+        if (balls_[0].isPresent())
+            System.out.println("Ball") ;
 
         if (isConveyorOff())
             moveBallsStopped(dt) ;
@@ -240,6 +244,7 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void moveBallsStopped(double dt) {
+        double now = getRobotTime() ;
         if (intake_model_.isDownAndRunning()) {
             for(int i = balls_.length - 1 ; i >= 0 ; i--) {
                 Ball b = balls_[i] ;
@@ -252,6 +257,7 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void moveBallsRunning(double dt) {
+        double now = getRobotTime() ;
         double dist = intake_.getPower() * dist_per_second_per_volt_ * dt ;
         double dist2 = shooter_.getPower() * dist_per_second_per_volt_ * dt ;
 
@@ -312,23 +318,23 @@ public class ConveyorModel extends SimulationModel {
 
             double pos = balls_[i].getPosition();
 
-            if (pos > sensor_pos_[Sensor.A.value] - BallSensorRegion * 2.0 && pos < sensor_pos_[Sensor.A.value] + BallSensorRegion * 2.0)
+            if (pos > sensor_pos_[ConveyorSensorThread.Sensor.A.value] - BallSensorRegion * 2.0 && pos < sensor_pos_[ConveyorSensorThread.Sensor.A.value] + BallSensorRegion * 2.0)
                 state_[0] = false ;
 
-            if (pos > sensor_pos_[Sensor.B.value] - BallSensorRegion && pos < sensor_pos_[Sensor.B.value] + BallSensorRegion)
+            if (pos > sensor_pos_[ConveyorSensorThread.Sensor.B.value] - BallSensorRegion && pos < sensor_pos_[ConveyorSensorThread.Sensor.B.value] + BallSensorRegion)
                 state_[1]  = false ;
 
-            if (pos > sensor_pos_[Sensor.C.value] - BallSensorRegion && pos < sensor_pos_[Sensor.C.value] + BallSensorRegion)
+            if (pos > sensor_pos_[ConveyorSensorThread.Sensor.C.value] - BallSensorRegion && pos < sensor_pos_[ConveyorSensorThread.Sensor.C.value] + BallSensorRegion)
                 state_[2]  = false ;
 
-            if (pos > sensor_pos_[Sensor.D.value] - BallSensorRegion && pos < sensor_pos_[Sensor.D.value] + BallSensorRegion)
+            if (pos > sensor_pos_[ConveyorSensorThread.Sensor.D.value] - BallSensorRegion && pos < sensor_pos_[ConveyorSensorThread.Sensor.D.value] + BallSensorRegion)
                 state_[3]  = false ;
         }
 
-        DIODataJNI.setValue(sensor_io_[Sensor.A.value], state_[0]) ;
-        DIODataJNI.setValue(sensor_io_[Sensor.B.value], state_[1]) ;
-        DIODataJNI.setValue(sensor_io_[Sensor.C.value], state_[2]) ;
-        DIODataJNI.setValue(sensor_io_[Sensor.D.value], state_[3]) ;
+        DIODataJNI.setValue(sensor_io_[ConveyorSensorThread.Sensor.A.value], state_[0]) ;
+        DIODataJNI.setValue(sensor_io_[ConveyorSensorThread.Sensor.B.value], state_[1]) ;
+        DIODataJNI.setValue(sensor_io_[ConveyorSensorThread.Sensor.C.value], state_[2]) ;
+        DIODataJNI.setValue(sensor_io_[ConveyorSensorThread.Sensor.D.value], state_[3]) ;
     }
     
     private class Ball {
@@ -494,6 +500,7 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void insertBallAtIntake() {
+        double now = getRobotTime() ;
         if (getBallCount() < balls_.length)
         {
             int i = balls_.length - 1 ;
