@@ -10,6 +10,14 @@ import org.xero1425.misc.SettingsParser;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
+//
+// This class is a thread the monitors the conveyor sensor inputs.  This
+// thread runs on a 5 ms loop time to be sure conveyor sensor events are not
+// missed.  Not only is the latest state for a sensor stored, but any low to 
+// high or high to low transitions are stored and can be queried by the actions
+// that operate on the conveyor.  
+//
+ 
 public class ConveyorSensorThread extends Thread {
     public static final int SENSOR_COUNT = Sensor.values().length;
     public static final int LOOP_INTERVAL_MS = 5;

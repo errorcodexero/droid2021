@@ -60,7 +60,8 @@ public class FireAction extends Action {
     private ShooterVelocityAction shooter_stop_action_ ;
     private ConveyorEmitAction emit_action_ ;
 
-    private PieceWiseLinear pwl_ ;
+    private PieceWiseLinear pwl_down_ ;
+    private PieceWiseLinear pwl_up_ ;
 
     private double start_time_ ;
     private int plot_id_ ;
@@ -124,6 +125,9 @@ public class FireAction extends Action {
         plot_id_ = gp.initPlot("FireAction") ;
 
         hood_pos_ = HoodPosition.Down ;        
+
+        pwl_down_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "shooter:down:pwl") ;
+        pwl_up_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "shooter:up:pwl") ;
     }
 
     @Override
@@ -335,18 +339,7 @@ public class FireAction extends Action {
     }
 
     private double getTargetVelocityPWL(double dist, HoodPosition pos) {
-        if (pwl_ == null)
-        {
-            try {
-                pwl_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "shooter:pwl") ;
-            }
-            catch(Exception ex)
-            {
-
-            }
-        }
-
-        return pwl_.getValue(dist) ;
+        return (pos ==  HoodPosition.Down) ? pwl_down_.getValue(dist) : pwl_up_.getValue(dist) ;
     }
 
     private void setTargetVelocity() throws BadMotorRequestException, MotorRequestFailedException {

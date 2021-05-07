@@ -330,12 +330,19 @@ shooter:aim:min_hood_down                                       110
 
 shooter:hood:change_time					                    1.0
 
-shooter:pwl:1:x                                                 0.0
-shooter:pwl:1:y                                                 0.0
-shooter:pwl:2:x                                                10.0
-shooter:pwl:2:y                                                10.0
-shooter:pwl:3:x                                                20.0
-shooter:pwl:3:y                                                 0.0
+shooter:up:pwl:1:x                                              0.0
+shooter:up:pwl:1:y                                              0.0
+shooter:up:pwl:2:x                                             10.0
+shooter:up:pwl:2:y                                             10.0
+shooter:up:pwl:3:x                                             20.0
+shooter:up:pwl:3:y                                              0.0
+
+shooter:down:pwl:1:x                                            0.0
+shooter:down:pwl:1:y                                            0.0
+shooter:down:pwl:2:x                                           10.0
+shooter:down:pwl:2:y                                           10.0
+shooter:down:pwl:3:x                                           20.0
+shooter:down:pwl:3:y                                            0.0
 
 #
 # If the drivebase is going faster than this, the hood is
