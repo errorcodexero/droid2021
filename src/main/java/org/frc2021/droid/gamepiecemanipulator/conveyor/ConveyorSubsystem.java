@@ -166,6 +166,12 @@ public class ConveyorSubsystem extends Subsystem {
 
     protected void setMotorsPower(double intake, double shooter) {
         try {
+            MessageLogger logger = getRobot().getMessageLogger();
+            logger.startMessage(MessageType.Debug, getLoggerID());
+            logger.add("Conveyor:").add("intake_power", intake) ;
+            logger.add(" shooter_power", shooter) ;
+            logger.endMessage();
+
             intake_motor_.set(intake) ;
             shooter_motor_.set(shooter) ;
         }

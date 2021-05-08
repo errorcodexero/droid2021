@@ -19,15 +19,23 @@ public class DelayState extends BaseState {
     }
 
     @Override
+    public void cancelState() {
+        active_ = false ;
+    }
+
+    @Override
     public ConveyorStateStatus runState(ConveyorStateAction act) {
+        double now = act.getSubsystem().getRobot().getTime() ;
         ConveyorStateStatus st = ConveyorStateStatus.CurrentState ;
 
-        if (!active_) {
+        if (active_ == false) {
             active_ = true ;
-            start_time_ = act.getSubsystem().getRobot().getTime() ;
+            start_time_ = now ;
         }
         else {
-            if (act.getSubsystem().getRobot().getTime() - start_time_ > delay_time_)
+            double elapsed = now - start_time_ ;
+
+            if (elapsed > delay_time_)
             {
                 st = ConveyorStateStatus.NextState ;
                 active_ = false ;

@@ -226,11 +226,6 @@ public class ConveyorModel extends SimulationModel {
     }
 
     public void run(double dt) {
-        double now = getRobotTime() ;
-
-        if (balls_[0].isPresent())
-            System.out.println("Ball") ;
-
         if (isConveyorOff())
             moveBallsStopped(dt) ;
         else
@@ -244,7 +239,6 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void moveBallsStopped(double dt) {
-        double now = getRobotTime() ;
         if (intake_model_.isDownAndRunning()) {
             for(int i = balls_.length - 1 ; i >= 0 ; i--) {
                 Ball b = balls_[i] ;
@@ -257,7 +251,6 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void moveBallsRunning(double dt) {
-        double now = getRobotTime() ;
         double dist = intake_.getPower() * dist_per_second_per_volt_ * dt ;
         double dist2 = shooter_.getPower() * dist_per_second_per_volt_ * dt ;
 
@@ -500,7 +493,6 @@ public class ConveyorModel extends SimulationModel {
     }
 
     private void insertBallAtIntake() {
-        double now = getRobotTime() ;
         if (getBallCount() < balls_.length)
         {
             int i = balls_.length - 1 ;

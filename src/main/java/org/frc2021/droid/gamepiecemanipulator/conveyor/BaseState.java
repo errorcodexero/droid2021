@@ -18,6 +18,8 @@ public abstract class BaseState {
     public abstract ConveyorStateStatus runState(ConveyorStateAction act) ;
     public abstract void addBranchTargets(List<String> targets) ;
     public abstract String humanReadableName() ;
+    public void cancelState() {
+    }
 
     private String name_ ;
 }

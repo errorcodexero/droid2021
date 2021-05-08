@@ -35,6 +35,9 @@ public abstract class ConveyorStateAction extends Action {
 
     @Override
     public void cancel() {
+        if (current_state_ >= 0 && current_state_ < states_.length)
+            states_[current_state_].cancelState();
+
         super.cancel() ;
         sub_.setMotorsPower(0.0, 0.0) ;
     }
