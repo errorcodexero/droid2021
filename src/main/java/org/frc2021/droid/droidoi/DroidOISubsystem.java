@@ -15,40 +15,17 @@ public class DroidOISubsystem extends OISubsystem {
     private DroidOIDevice oi_ ;
 
     public final static String SubsystemName = "droidoi";
-    private final static String DriverGamepadHIDIndexName = "hw:driverstation:hid:driver";
     private final static String OIHIDIndexName = "hw:driverstation:hid:oi";
 
     public DroidOISubsystem(Subsystem parent, TankDriveSubsystem db, boolean climber) {
-        super(parent, SubsystemName);
+        super(parent, SubsystemName, db) ;
 
+        int index ;
         MessageLogger logger = getRobot().getMessageLogger() ;
-        int index;
 
-        try {
-            index = getRobot().getSettingsParser().get(DriverGamepadHIDIndexName).getInteger();
-        } catch (BadParameterTypeException e) {
-            logger.startMessage(MessageType.Error) ;
-            logger.add("parameter ").addQuoted(DriverGamepadHIDIndexName) ;
-            logger.add(" exists, but is not an integer").endMessage();
-            index = -1 ;
-        } catch (MissingParameterException e) {
-            logger.startMessage(MessageType.Error) ;
-            logger.add("parameter ").addQuoted(DriverGamepadHIDIndexName) ;
-            logger.add(" does not exist").endMessage();
-            index = -1 ;            
-        }
-        
-        if (index != -1) {
-            try {
-                gp_ = new TankDriveGamepad(this, index, db) ;
-                addHIDDevice(gp_);
-            }
-            catch(Exception ex) {
-                logger.startMessage(MessageType.Error) ;
-                logger.add("driver gamepad HID device was not created ").endMessage();
-            }
-        }
-
+        //
+        // Add the custom OI for droid to the OI subsystem
+        //
         try {
             index = getRobot().getSettingsParser().get(OIHIDIndexName).getInteger() ;
         } catch (BadParameterTypeException e) {
