@@ -75,10 +75,6 @@ public class DroidOISubsystem extends OISubsystem {
         }
     }
 
-    public boolean isOI() {
-        return true ;
-    }
-
     public TankDriveGamepad getGamepad() {
         return gp_ ;
     }
