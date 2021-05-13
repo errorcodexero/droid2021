@@ -38,7 +38,7 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       true
+conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
@@ -47,9 +47,9 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     false
-conveyor_model:messages                                                 true
-conveyor_ball_model:messages                                            true
+fireaction:messages                                                     true
+conveyor_model:messages                                                 false
+conveyor_ball_model:messages                                            false
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -337,12 +337,22 @@ shooter:up:pwl:2:y                                             10.0
 shooter:up:pwl:3:x                                             20.0
 shooter:up:pwl:3:y                                              0.0
 
-shooter:down:pwl:1:x                                            0.0
-shooter:down:pwl:1:y                                            0.0
-shooter:down:pwl:2:x                                           10.0
-shooter:down:pwl:2:y                                           10.0
-shooter:down:pwl:3:x                                           20.0
-shooter:down:pwl:3:y                                            0.0
+shooter:down:pwl:1:x                                            119
+shooter:down:pwl:1:y                                            6650
+shooter:down:pwl:2:x                                            134
+shooter:down:pwl:2:y                                            6000
+shooter:down:pwl:3:x                                            153
+shooter:down:pwl:3:y                                            5780
+shooter:down:pwl:4:x                                            188
+shooter:down:pwl:4:y                                            5570
+shooter:down:pwl:5:x                                            202
+shooter:down:pwl:5:y                                            5620
+shooter:down:pwl:6:x                                            227
+shooter:down:pwl:6:y                                            5700
+shooter:down:pwl:7:x                                            253.5
+shooter:down:pwl:7:y                                            5770
+shooter:down:pwl:8:x                                            316
+shooter:down:pwl:8:y                                            5910
 
 #
 # If the drivebase is going faster than this, the hood is

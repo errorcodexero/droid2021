@@ -85,6 +85,12 @@ public class ConveyorSubsystem extends Subsystem {
         return staged_for_collect_ ;
     }
 
+    @Override
+    public void run() throws Exception {
+        super.run() ;
+        sensor_thread_.endRobotLoop();
+    }
+
     public void setStagedForCollect(boolean staged) {
         staged_for_collect_ = staged;
 
@@ -126,12 +132,6 @@ public class ConveyorSubsystem extends Subsystem {
         putDashboard("staged-fire", DisplayType.Verbose, staged_for_fire_) ;
         putDashboard("staged-collect", DisplayType.Verbose, staged_for_collect_);
         putDashboard("ballcount", DisplayType.Always, ball_count_);
-
-        //
-        // Tell the sensor thread we have finished this robot loop so it will
-        // reset its state
-        //
-        sensor_thread_.endRobotLoop(); 
     }
 
     public boolean isCollecting() {
