@@ -9,8 +9,6 @@ import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.actions.ParallelAction.DonePolicy;
 import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
-import org.xero1425.misc.MessageLogger;
-import org.xero1425.misc.MessageType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
