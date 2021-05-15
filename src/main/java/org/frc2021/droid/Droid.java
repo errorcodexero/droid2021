@@ -14,7 +14,6 @@ import org.xero1425.simulator.engine.SimulationEngine;
 import org.frc2021.droid.automodes.DroidAutoController;
 import org.frc2021.droid.droidsubsystem.DroidRobotSubsystem;
 import org.xero1425.base.XeroRobot;
-import org.xero1425.base.alarms.AlarmSubsystem;
 import org.xero1425.base.controllers.AutoController;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
@@ -74,9 +73,6 @@ public class Droid extends XeroRobot {
 
         DroidRobotSubsystem robotsub = new DroidRobotSubsystem(this, climber_attached) ;
         setRobotSubsystem(robotsub);
-
-        AlarmSubsystem alarms = robotsub.getAlarms() ;
-        alarms.addEntry(30.0, new ClimbAlarm(robotsub.getOI().getGamepad()));
     }
 
     protected void enableMessages() {

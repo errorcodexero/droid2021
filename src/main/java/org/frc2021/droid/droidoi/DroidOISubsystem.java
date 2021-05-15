@@ -10,8 +10,6 @@ import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 public class DroidOISubsystem extends OISubsystem {
-    
-    private TankDriveGamepad gp_ ;
     private DroidOIDevice oi_ ;
 
     public final static String SubsystemName = "droidoi";
@@ -42,7 +40,7 @@ public class DroidOISubsystem extends OISubsystem {
 
         if (index != -1) {
             try {
-                oi_ = new DroidOIDevice(this, index, gp_, climber) ;
+                oi_ = new DroidOIDevice(this, index, getGamePad(), climber) ;
                 addHIDDevice(oi_) ;
             }
             catch(Exception ex) {
@@ -50,9 +48,5 @@ public class DroidOISubsystem extends OISubsystem {
                 logger.add("OI HID device was not created ").endMessage();
             }
         }
-    }
-
-    public TankDriveGamepad getGamepad() {
-        return gp_ ;
     }
 }

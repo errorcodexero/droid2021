@@ -75,10 +75,6 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
         NetworkTable table = NetworkTableInstance.getDefault().getTable("Shuffleboard").getSubTable("Vision");
         String which = table.getEntry("Result").getString("");
 
-        MessageLogger logger = getAutoController().getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Info).add("Configuration Detected", which) ;
-        logger.endMessage();
-
         if (which.length() == 0)
             which = "red-b" ;
 

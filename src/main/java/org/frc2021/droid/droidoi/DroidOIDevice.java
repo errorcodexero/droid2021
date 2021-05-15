@@ -148,7 +148,7 @@ public class DroidOIDevice extends OIPanel {
 
         turret_goto_zero_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
         // turret_goto_90_ = new MotorEncoderGotoAction(turret, -90.0, true) ;
-        turret_goto_manual_ = new MotorEncoderGotoAction(turret, -70.0, true) ;
+        turret_goto_manual_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
         turret_follow_target_ = new FollowTargetAction(turret, tracker) ;
 
         eject_action_ = new ConveyorEjectAction(conveyor) ;
