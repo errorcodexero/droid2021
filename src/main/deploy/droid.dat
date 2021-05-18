@@ -479,10 +479,21 @@ driver:turn:max                                                 0.8
 driver:turn:default                                             0.4
 driver:power:slowby                                             0.5
 driver:power:tolerance                                          0.05
+driver:zerolevel                                                0.1
 driver:power:nudge_straight                                     0.2
 driver:power:nudge_rotate                                       0.2
 driver:nudge_time                                               0.1
-driver:zerolevel                                                0.1
+
+newdrive:power:nudge_straight                                   0.2
+newdrive:power:nudge_rotate                                     0.2
+newdrive:nudge_time                                             0.1
+newdrive:throttle:stick                                         1
+newdrive:throttle:deadband                                      0.04
+newdrive:wheel:stick                                            0
+newdrive:wheel:deadband                                         0.035
+newdrive:wheel:nonlinearity                                     0.05
+newdrive:wheel:wheelgain                                        0.05
+newdrive:wheel:deltapower                                       0.01
 
 ###################################################################################################
 # Climber
@@ -603,6 +614,8 @@ oi:traverse_right                                               4               
 
 oi:manual_shoot_mode                                            9               # Switch to manual shoot mode
 oi:manual_shoot_fire                                            7               # Shoot in manual mode
+
+oi:newdrive                                                     true            # Use the new cheesy poofs game pad driving
 
 ###################################################################################################
 # targettracker
