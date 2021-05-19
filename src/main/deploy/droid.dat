@@ -648,7 +648,7 @@ targettracker:fire:max_drivebase_velocity			1.0
 # Enable plotting.  Plot data is stored in the network tables and display
 # programs read the data from the network tables
 #
-plotting:enabled                                               false
+plotting:enabled                                              true
 
 #
 # Shoot test parameters
