@@ -108,7 +108,7 @@ public class DroidOIDevice extends OIPanel {
 
     public DroidOIDevice(DroidOISubsystem sub, int index, Gamepad gamepad, boolean climber)
             throws BadParameterTypeException, MissingParameterException {
-        super(sub, index);
+        super(sub, "DroidOI", index);
 
         collect_shoot_state_ = CollectShootState.InvalidMode;
         climber_deployed_ = false;
@@ -159,7 +159,7 @@ public class DroidOIDevice extends OIPanel {
 
         shooter_eject_action_ = new ShooterVelocityAction(shooter, -3000, ShooterSubsystem.HoodPosition.Down, false) ;
         shooter_stop_ = new ShooterVelocityAction(shooter, 0, ShooterSubsystem.HoodPosition.Down, false) ;
-        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 4000.0, ShooterSubsystem.HoodPosition.Up, true) ;
+        shooter_shoot_manual_ = new ShooterVelocityAction(shooter, 2500.0, ShooterSubsystem.HoodPosition.Up, true) ;
         shooter_spinup_ = new ShooterVelocityAction(shooter, 4500.0, ShooterSubsystem.HoodPosition.Down, false) ;
 
         if (climber_attached_)
@@ -326,6 +326,7 @@ public class DroidOIDevice extends OIPanel {
             MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
             logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
             logger.add("OI shoot/collect: ").add(prev.toString()).add(" --> ").add(collect_shoot_state_.toString()) ;
+            logger.add(", ballcount ", conveyor.getBallCount()) ;
             logger.endMessage(); 
         }
     }
@@ -409,7 +410,7 @@ public class DroidOIDevice extends OIPanel {
     private void processPreparingForCollect(SequenceAction seq) throws InvalidActionRequest {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
         
-        if (conveyor.isStagedForCollect()) {
+        if (conveyor.isStagedForCollect() || conveyor.isFull()) {
             collect_shoot_state_ = CollectShootState.CollectReady ;
         }
     }

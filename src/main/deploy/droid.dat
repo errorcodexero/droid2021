@@ -17,7 +17,7 @@ shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
 gamepiecemanipulator:verbose                                            false
-conveyor:verbose                                                        false
+conveyor:verbose                                                        true
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
 targettracker:verbose                                                   false
@@ -615,7 +615,7 @@ oi:traverse_right                                               4               
 oi:manual_shoot_mode                                            9               # Switch to manual shoot mode
 oi:manual_shoot_fire                                            7               # Shoot in manual mode
 
-oi:newdrive                                                     true            # Use the new cheesy poofs game pad driving
+oi:newdrive                                                     false            # Use the new cheesy poofs game pad driving
 
 ###################################################################################################
 # targettracker
