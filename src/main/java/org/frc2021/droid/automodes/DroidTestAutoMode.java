@@ -30,9 +30,10 @@ import org.xero1425.base.controllers.TestAutoMode;
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderPowerAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderVelocityAction;
-import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
+import org.xero1425.base.tankdrive.TankDrivePathFollowerAction;
 import org.xero1425.base.tankdrive.TankDrivePowerAction;
 import org.xero1425.base.tankdrive.TankDrivePurePursuitPathAction;
+import org.xero1425.base.tankdrive.TankDriveRamseteAction;
 import org.xero1425.base.tankdrive.TankDriveScrubCharAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
@@ -85,12 +86,16 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ; 
 
             case 4:         // Run the path follower to follow a named path
-                addSubActionPair(db, new TankDriveFollowPathAction(db, getNameParam(), false), true) ;
+                addSubActionPair(db, new TankDrivePathFollowerAction(db, getNameParam(), false), true) ;
                 break ;
 
             case 5:         // Run the path follower to follow a named path
                 addSubActionPair(db, new TankDrivePurePursuitPathAction(db, getNameParam(), false), true) ;
                 break ;
+
+            case 6:         // Run the path follower to follow a named path
+                addSubActionPair(db, new TankDriveRamseteAction(db, getNameParam(), false), true) ;
+                break ;                
 
             //
             // Numbers 10 - 19 are for the intake

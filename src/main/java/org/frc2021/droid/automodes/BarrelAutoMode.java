@@ -1,7 +1,7 @@
 package org.frc2021.droid.automodes;
 
 import org.xero1425.base.actions.InvalidActionRequest;
-import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
+import org.xero1425.base.tankdrive.TankDrivePathFollowerAction ;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
@@ -13,7 +13,7 @@ public class BarrelAutoMode extends DroidAutoMode {
 
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ; 
 
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "Barrel_Path", false), true);
+        addSubActionPair(db, new TankDrivePathFollowerAction(db, "Barrel_Path", false), true);
     
     }
 }

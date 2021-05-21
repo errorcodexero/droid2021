@@ -7,7 +7,7 @@ import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.actions.ParallelAction.DonePolicy;
-import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
+import org.xero1425.base.tankdrive.TankDrivePathFollowerAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -51,14 +51,14 @@ public class GalacticSearchAutoMode extends DroidAutoMode {
         
                 if (which_.equals("red-a")) {
                     pathseq.addAction(new DelayAction(db.getRobot(), 0.125));
-                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedA", false), true);
+                    pathseq.addSubActionPair(db, new TankDrivePathFollowerAction(db, "GalacticSearch_RedA", false), true);
                 } else if (which_.equals("red-b")) {
                     pathseq.addAction(new DelayAction(db.getRobot(), 0.125));
-                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_RedB", false), true);
+                    pathseq.addSubActionPair(db, new TankDrivePathFollowerAction(db, "GalacticSearch_RedB", false), true);
                 } else if (which_.equals("blue-a")) {
-                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueA", false), true);
+                    pathseq.addSubActionPair(db, new TankDrivePathFollowerAction(db, "GalacticSearch_BlueA", false), true);
                 } else if (which_.equals("blue-b")) {
-                    pathseq.addSubActionPair(db, new TankDriveFollowPathAction(db, "GalacticSearch_BlueB", false), true);
+                    pathseq.addSubActionPair(db, new TankDrivePathFollowerAction(db, "GalacticSearch_BlueB", false), true);
                 }
         
                 pact.addAction(pathseq);

@@ -1,6 +1,6 @@
 package org.frc2021.droid.automodes;
 
-import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
+import org.xero1425.base.tankdrive.TankDrivePathFollowerAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
 //
@@ -28,6 +28,6 @@ public class MiddleAuto extends DroidAutoMode {
         //
         // Move forward a short distance to get off the initiation line
         //
-        addSubActionPair(db, new TankDriveFollowPathAction(db, "three_ball_auto_fire", true), true);
+        addSubActionPair(db, new TankDrivePathFollowerAction(db, "three_ball_auto_fire", true), true);
     }
 }

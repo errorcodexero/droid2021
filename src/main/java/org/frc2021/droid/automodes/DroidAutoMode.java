@@ -20,7 +20,7 @@ import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
 import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
-import org.xero1425.base.tankdrive.TankDriveFollowPathAction;
+import org.xero1425.base.tankdrive.TankDrivePathFollowerAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
@@ -66,7 +66,7 @@ public class DroidAutoMode extends AutoMode {
 
         parallel.addSubActionPair(conveyor, new ConveyorPrepareToEmitAction(conveyor), false);
         if (path != null)
-            parallel.addSubActionPair(db, new TankDriveFollowPathAction(db, path, reverse), true);
+            parallel.addSubActionPair(db, new TankDrivePathFollowerAction(db, path, reverse), true);
         parallel.addSubActionPair(shooter, new ShooterVelocityAction(shooter, 4150, HoodPosition.Down, false), false);
 
         addAction(parallel);
@@ -87,7 +87,7 @@ public class DroidAutoMode extends AutoMode {
 
         parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger(), ParallelAction.DonePolicy.All) ;
 
-        parallel.addSubActionPair(db, new TankDriveFollowPathAction(db, path, false), true);
+        parallel.addSubActionPair(db, new TankDrivePathFollowerAction(db, path, false), true);
 
         series = new SequenceAction(getAutoController().getRobot().getMessageLogger()) ;
         series.addSubActionPair(conveyor, new ConveyorPrepareToReceiveAction(conveyor), true);
