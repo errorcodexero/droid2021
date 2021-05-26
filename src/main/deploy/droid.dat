@@ -270,7 +270,8 @@ tankdrive:follower:right:kp                                     0.035           
 tankdrive:follower:right:kd                                     0.0
 
 tankdrive:follower:turn_correction                              0
-tankdrive:follower:angle_correction                             -0.03
+tankdrive:follower:angle_correction:clockwise                  -0.03
+tankdrive:follower:angle_correction:counter_clockwise          -0.03
 
 hw:tankdrive:gyro                                               "navx"
 
