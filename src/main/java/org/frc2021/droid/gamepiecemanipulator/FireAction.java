@@ -135,7 +135,7 @@ public class FireAction extends Action {
         super.start() ;
 
         is_firing_ = false ;
-        shooter_velocity_action_.setTarget(4500.0) ;
+        shooter_velocity_action_.setReadyFlagEnabled(false);
         sub_.getShooter().setAction(shooter_velocity_action_, true) ;
 
         start_time_ = sub_.getRobot().getTime() ;
@@ -355,6 +355,7 @@ public class FireAction extends Action {
 
         shooter_velocity_action_.setHoodPosition(hood_pos_);
         shooter_velocity_action_.setTarget(target);
+        shooter_velocity_action_.setReadyFlagEnabled(true);
 
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info, logger_id_) ;

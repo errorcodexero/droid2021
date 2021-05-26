@@ -33,6 +33,10 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
         updateReadyToFire() ;
     }
 
+    public void setReadyFlagEnabled(boolean b) {
+        setready_ = b ;
+    }
+
     public void setHoodPosition(ShooterSubsystem.HoodPosition pos) {
         pos_ = pos ;
     }
@@ -96,15 +100,16 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
 
     private void updateReadyToFire() {
         MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+        logger.add("ActionID", getID()) ;
         if (setready_ == false)
         {
-            logger.startMessage(MessageType.Debug).add("Did not set ready to fire, action was prohibited").endMessage();
+            logger.add(" - did not set ready to fire, action was prohibited").endMessage();
             sub_.setReadyToFire(false);
         }
         else
         {
-            logger.startMessage(MessageType.Debug) ;
-            logger.add("Checking velocity for ready to fire").add(", target", getTarget()) ;
+            logger.add(", target", getTarget()) ;
             logger.add(", actual", sub_.getVelocity()) ;
             logger.add(", percent", ready_percent_) ;
             if (XeroMath.equalWithinPercentMargin(getTarget(), sub_.getVelocity(), ready_percent_))

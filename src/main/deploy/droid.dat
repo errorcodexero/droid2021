@@ -17,7 +17,7 @@ shooter:verbose                                                         false
 droid:verbose                                                           false
 alarms:verbose                                                          false
 gamepiecemanipulator:verbose                                            false
-conveyor:verbose                                                        true
+conveyor:verbose                                                        false
 intake:verbose                                                          false
 droid-limelight:verbose                                                 false
 targettracker:verbose                                                   false
@@ -38,7 +38,7 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       true
+conveyor:messages                                                       false
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
