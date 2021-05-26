@@ -38,17 +38,17 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       false
+conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false
 droidoi:messages                                                        true
 blinky:messages                                                         false
-conveyor:sensors:messages                                               false
+conveyor:sensors:messages                                               true
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     true
-conveyor_model:messages                                                 false
+fireaction:messages                                                     false
+conveyor_model:messages                                                 true
 conveyor_ball_model:messages                                            false
 
 #

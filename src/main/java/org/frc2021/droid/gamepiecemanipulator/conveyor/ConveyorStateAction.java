@@ -104,6 +104,8 @@ public abstract class ConveyorStateAction extends Action {
                 else
                     logger.addQuoted(current_state_ + ": " + states_[current_state_].humanReadableName()) ;
 
+                logger.add(", ballcount", getSubsystem().getBallCount()) ;
+
                 if (isDone())
                     logger.add("  ACTION DONE") ;
 

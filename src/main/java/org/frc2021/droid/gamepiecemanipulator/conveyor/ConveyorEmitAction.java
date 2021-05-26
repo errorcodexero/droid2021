@@ -39,13 +39,21 @@ public class ConveyorEmitAction extends ConveyorStateAction {
 
             new WaitForSensor(ConveyorSensorThread.Sensor.D, SensorEvent.IS_LOW),
 
+            //
+            // The ball count at this point includes the ball that just left the shooter.  So if the count is
+            // 2, then a ball just left the shooter and another ball is positioned just above the D sensor, so we will not see
+            // any more sensor transitions.
+            //
             new BranchState(NotFiringLastBallLabel, (ConveyorStateAction act) -> {
-                return act.getSubsystem().getBallCount() != 1 ;}),
+                return act.getSubsystem().getBallCount() != 2 ;}),
 
+            //
+            // This lets both of the balls have time to shoot
+            //
             new DelayState(0.5),
 
             new DoWorkState("decrement ball count", (ConveyorStateAction act) -> {
-                act.getSubsystem().decrementBallCount();
+                act.getSubsystem().setBallCount(0);
                 act.getSubsystem().setStagedForFire(false);
                 return ConveyorStateStatus.NextState;
             }),
