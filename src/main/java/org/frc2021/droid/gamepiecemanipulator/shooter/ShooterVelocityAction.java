@@ -40,6 +40,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     @Override
     public void start() throws Exception {
         super.start() ;
+        updateReadyToFire() ;
     }
 
     @Override
@@ -78,6 +79,12 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
             ret += " Up" ;
         else
             ret += " Down" ;
+
+        if (setready_)
+            ret += " true" ;
+        else
+            ret += " false" ;
+            
         return ret ;
     }
 
@@ -88,16 +95,29 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
     }
 
     private void updateReadyToFire() {
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
         if (setready_ == false)
         {
+            logger.startMessage(MessageType.Debug).add("Did not set ready to fire, action was prohibited").endMessage();
             sub_.setReadyToFire(false);
         }
         else
         {
+            logger.startMessage(MessageType.Debug) ;
+            logger.add("Checking velocity for ready to fire").add(", target", getTarget()) ;
+            logger.add(", actual", sub_.getVelocity()) ;
+            logger.add(", percent", ready_percent_) ;
             if (XeroMath.equalWithinPercentMargin(getTarget(), sub_.getVelocity(), ready_percent_))
+            {
                 sub_.setReadyToFire(true);
+                logger.add(", set to ", true) ;
+            }
             else
+            {
                 sub_.setReadyToFire(false);
+                logger.add(", set to ", false) ;
+            }
+            logger.endMessage();
         }
     }
 }

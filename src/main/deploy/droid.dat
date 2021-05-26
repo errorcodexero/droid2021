@@ -38,7 +38,7 @@ shooter:messages                                                        false
 droid:messages                                                          false
 alarms:messages                                                         false
 gamepiecemanipulator:messages                                           false
-conveyor:messages                                                       false
+conveyor:messages                                                       true
 intake:messages                                                         false
 droid-limelight:messages                                                false
 targettracker:messages                                                  false

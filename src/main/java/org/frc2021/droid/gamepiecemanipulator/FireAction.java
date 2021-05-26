@@ -92,7 +92,7 @@ public class FireAction extends Action {
         turret_ = turret ;
         db_ = db ;
 
-        shooter_velocity_action_ = new ShooterVelocityAction(gp.getShooter(), 4500.0, ShooterSubsystem.HoodPosition.Down, true) ;
+        shooter_velocity_action_ = new ShooterVelocityAction(gp.getShooter(), 5700.0, ShooterSubsystem.HoodPosition.Down, true) ;
         shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down, false) ;
         emit_action_ = new ConveyorEmitAction(gp.getConveyor()) ;
 
@@ -358,7 +358,7 @@ public class FireAction extends Action {
 
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
         logger.startMessage(MessageType.Info, logger_id_) ;
-        logger.add("FireAction (aiming): ") ;
+        logger.add("SetTarget (fireaction): ") ;
         logger.add("distance", dist) ;
         logger.add(" target", target) ;
         logger.add(" velocity", sub_.getShooter().getVelocity()) ;
