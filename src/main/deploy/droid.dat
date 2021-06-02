@@ -18,7 +18,7 @@ droid:verbose                                                           false
 alarms:verbose                                                          false
 gamepiecemanipulator:verbose                                            false
 conveyor:verbose                                                        false
-intake:verbose                                                          false
+intake:verbose                                                          true
 droid-limelight:verbose                                                 false
 targettracker:verbose                                                   false
 droidoi:verbose                                                         false
@@ -130,8 +130,8 @@ endif
 
 hw:turret:encoder:analog:rc                                     0.0
 
-hw:intake:collector:motor:type                                   "sparkmax_brushless"
-hw:intake:collector:motor:canid                                  10                          # CAN 10
+hw:intake:collector:motor:type                                 "sparkmax_brushless"
+hw:intake:collector:motor:canid                                10                          # CAN 10
 hw:intake:motor:type                                           "sparkmax_brushless"
 hw:intake:motor:canid                                          11                          # CAN 11
 hw:intake:encoder:quad:motor                                   true
@@ -177,7 +177,7 @@ if PRACTICE
 intake:arm:collecton:pos                                        1400
 endif
 if COMPETITION
-intake:arm:collecton:pos                                        1550
+intake:arm:collecton:pos                                        1320
 endif
 intake:arm:collectoff:pos                                       0
 intake:hold:kp                                                   0.001
@@ -210,7 +210,7 @@ if PRACTICE
 intake:follower:up:kv                                         0.000035
 endif
 if COMPETITION
-intake:follower:up:kv                                         0.000147929
+intake:follower:up:kv                                         0.000035
 endif
 intake:follower:up:ka                                         0
 

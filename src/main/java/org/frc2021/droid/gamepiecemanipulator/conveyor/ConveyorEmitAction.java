@@ -45,7 +45,7 @@ public class ConveyorEmitAction extends ConveyorStateAction {
             // any more sensor transitions.
             //
             new BranchState(NotFiringLastBallLabel, (ConveyorStateAction act) -> {
-                return act.getSubsystem().getBallCount() != 2 ;}),
+                return act.getSubsystem().getBallCount() > 2 ;}),
 
             //
             // This lets both of the balls have time to shoot
@@ -53,12 +53,12 @@ public class ConveyorEmitAction extends ConveyorStateAction {
             new DelayState(0.5),
 
             new DoWorkState("decrement ball count", (ConveyorStateAction act) -> {
-                act.getSubsystem().setBallCount(0);
+                act.getSubsystem().decrementBallCount();
                 act.getSubsystem().setStagedForFire(false);
                 return ConveyorStateStatus.NextState;
             }),
 
-            new GoToState(DoneLabel),
+            new GoToState(LoopLabel),
 
             new WaitForSensor(NotFiringLastBallLabel, ConveyorSensorThread.Sensor.D, SensorEvent.IS_HIGH),
 
