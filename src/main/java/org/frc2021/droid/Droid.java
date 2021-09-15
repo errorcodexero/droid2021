@@ -75,23 +75,12 @@ public class Droid extends XeroRobot {
         setRobotSubsystem(robotsub);
     }
 
-    protected void enableMessages() {
-        // MessageLogger logger = getMessageLogger() ;
-
-        if (RobotBase.isSimulation()) {
-            // logger.enableSubsystem(SimulationEngine.LoggerName) ;
-            // logger.enableSubsystem("tankdrive_model") ;
-            // logger.enableSubsystem("conveyor_model") ;
-            // logger.enableSubsystem(ConveyorModel.LogBallPosition) ;
-            // logger.enableSubsystem("shooter_model") ;
-        }
-    }
 
     protected void loadPathsFile() throws Exception {
         super.loadPathsFile();
     }
 
     protected XeroPathType getPathType() {
-        return XeroPathType.TankPurePursuit ;
+        return XeroPathType.TankPathFollowing ;
     }
 }
