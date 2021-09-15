@@ -2,6 +2,8 @@ package org.frc2021.droid.gamepiecemanipulator.intake;
 
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
 
 public class CollectOffAction extends MotorEncoderGotoAction {
@@ -19,6 +21,13 @@ public class CollectOffAction extends MotorEncoderGotoAction {
     public void start() throws Exception {
         super.start() ;
 
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+        logger.add("start") ;
+        logger.add("isdone", isDone()) ;
+        logger.add("power", collect_power_) ;
+        logger.endMessage();
+
         if (!isDone())
             sub_.setCollectorPower(collect_power_);
         else
@@ -29,6 +38,13 @@ public class CollectOffAction extends MotorEncoderGotoAction {
     public void run() throws Exception {
         super.run() ;
 
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+        logger.add("run") ;
+        logger.add("isdone", isDone()) ;
+        logger.add("power", collect_power_) ;
+        logger.endMessage();
+
         if (isDone())
             sub_.setCollectorPower(0.0);
     }
@@ -36,6 +52,14 @@ public class CollectOffAction extends MotorEncoderGotoAction {
     @Override
     public void cancel() {
         super.cancel() ;
+
+        MessageLogger logger = getSubsystem().getRobot().getMessageLogger() ;
+        logger.startMessage(MessageType.Debug, getSubsystem().getLoggerID()) ;
+        logger.add("cancel") ;
+        logger.add("isdone", isDone()) ;
+        logger.add("power", collect_power_) ;
+        logger.endMessage();
+
         try {
             sub_.setCollectorPower(0.0) ;
         }

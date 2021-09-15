@@ -14,10 +14,6 @@ import org.xero1425.misc.MissingParameterException;
 //
 public class DroidAutoController extends AutoController {
     private AutoMode test_mode_ ;
-    private AutoMode bounce_ ;
-    private AutoMode barrel_ ;
-    private AutoMode slalom_ ;
-    private GalacticSearchAutoMode galactic_search_ ;
 
     public DroidAutoController(Droid robot) throws MissingParameterException, BadParameterTypeException {
         super(robot, "droid-auto");
@@ -33,46 +29,6 @@ public class DroidAutoController extends AutoController {
             logger.add(e.getMessage()) ;
             logger.endMessage();
         }
-
-        try {
-            bounce_ = new BounceAutoMode(this);
-        }
-        catch(Exception e) {
-            logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'BounceAutoMode', exception caught - ") ;
-            logger.add(e.getMessage()) ;
-            logger.endMessage();
-        }
-
-        try {
-            barrel_ = new BarrelAutoMode(this);
-        }
-        catch(Exception e) {
-            logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'BarrelAutoMode', exception caught - ") ;
-            logger.add(e.getMessage()) ;
-            logger.endMessage();
-        }
-
-        try {
-            slalom_ = new SlalomAutoMode(this);
-        }
-        catch(Exception e) {
-            logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'SlalomAutoMode', exception caught - ") ;
-            logger.add(e.getMessage()) ;
-            logger.endMessage();
-        }
-
-        try {
-            galactic_search_ = new GalacticSearchAutoMode(this);
-        }
-        catch(Exception e) {
-            logger.startMessage(MessageType.Error) ;
-            logger.add("cannot create automode 'GalacticSearchAutoMode', exception caught - ") ;
-            logger.add(e.getMessage()) ;
-            logger.endMessage();
-        }
     }
 
     public void updateAutoMode(int mode, String gamedata) throws Exception {
@@ -80,21 +36,6 @@ public class DroidAutoController extends AutoController {
             setAutoMode(test_mode_) ;
         }
         else {
-            switch(mode) {
-                case 0:
-                    setAutoMode(bounce_) ;
-                    break ;
-                case 1:
-                    setAutoMode(barrel_) ;
-                    break ;
-                case 2:
-                    setAutoMode(slalom_) ;
-                    break ;
-                case 3:
-                    setAutoMode(galactic_search_) ;
-                    break ;
-            }
-
             AutoMode am = getAutoMode() ;
             if (am != null)
                 am.update(gamedata) ;

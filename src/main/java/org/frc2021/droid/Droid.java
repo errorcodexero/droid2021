@@ -69,7 +69,7 @@ public class Droid extends XeroRobot {
         // We pulled the climber off for the at home challenges.  Set this to true to
         // enable support for the climber in the software.
         //
-        boolean climber_attached = false ;
+        boolean climber_attached = true ;
 
         DroidRobotSubsystem robotsub = new DroidRobotSubsystem(this, climber_attached) ;
         setRobotSubsystem(robotsub);

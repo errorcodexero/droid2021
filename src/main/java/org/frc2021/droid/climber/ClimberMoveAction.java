@@ -21,6 +21,7 @@ public class ClimberMoveAction extends Action {
         double power = sub.getRobot().getSettingsParser().get(lift).getDouble() ;
         lift_ = new MotorPowerAction(sub.getLifter(), power) ;
         trav_ = sub.getRobot().getSettingsParser().get(trav).getDouble() ;
+        sub_ = sub ;
     }    
 
     public ClimberMoveAction(ClimberSubsystem sub, String lift, double trav)
@@ -30,6 +31,7 @@ public class ClimberMoveAction extends Action {
         double power = sub.getRobot().getSettingsParser().get(lift).getDouble() ;
         lift_ = new MotorPowerAction(sub.getLifter(), power) ;
         trav_ = trav ;
+        sub_ = sub ;
     }      
 
     public ClimberMoveAction(ClimberSubsystem sub, double lift, String trav)
@@ -38,6 +40,7 @@ public class ClimberMoveAction extends Action {
 
         lift_ = new MotorPowerAction(sub.getLifter(), lift) ;
         trav_ = sub.getRobot().getSettingsParser().get(trav).getDouble() ;
+        sub_ = sub ;
     }      
 
     @Override

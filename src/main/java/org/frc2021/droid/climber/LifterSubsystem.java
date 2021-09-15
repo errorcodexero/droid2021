@@ -38,8 +38,8 @@ public class LifterSubsystem extends MotorEncoderSubsystem {
                 }
                 else if (getPosition() < low_power_height_)
                 {
-                    if (power < low_power_limit_)
-                        power = low_power_limit_ ;
+                    if (Math.abs(power) > low_power_limit_)
+                        power = Math.signum(power) * low_power_limit_ ;
                 }
             }
             else
@@ -47,8 +47,8 @@ public class LifterSubsystem extends MotorEncoderSubsystem {
                 //
                 // We are in the PIT mode here
                 //
-                if (power < low_power_limit_)
-                    power = low_power_limit_ ;
+                if (Math.abs(power) > low_power_limit_)
+                    power = Math.signum(power) * low_power_limit_ ;
             }
         }
         else

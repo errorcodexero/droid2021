@@ -233,34 +233,48 @@ public class DroidOIDevice extends OIPanel {
                 boolean left = (getValue(climb_left_) == 1) ;
                 boolean right = (getValue(climb_right_) == 1) ;
 
+                MessageLogger l = getSubsystem().getRobot().getMessageLogger() ;
+                l.startMessage(MessageType.Debug).add("Climber Action ") ;
+
                 if (up && left) {
                     act = climber_up_left_ ;
+                    l.add("Up Left") ;
                 }
                 else if (up & right) {
                     act = climber_up_right_ ;
+                    l.add("Up Right") ;
                 }
                 else if (down && left) {
                     act = climber_down_left_ ;
+                    l.add("Down Left") ;
                 }
                 else if (down && right) {
                     act = climber_down_right_ ;
+                    l.add("Down Right") ;
                 }
                 else if (up) {
                     act = climber_up_ ;
+                    l.add("Up") ;
                 }
                 else if (down) {
                     act = climber_down_ ;
+                    l.add("Down") ;
                 }
                 else if (left) {
                     act = climber_left_ ;
+                    l.add("Left") ;
                 }
                 else if (right) {
                     act = climber_right_ ;
+                    l.add("Right") ;
                 }
                 else {
                     act = stop_climber_ ;
+                    l.add("Stop") ;
                 }
                 
+                l.endMessage();
+
                 seq.addSubActionPair(climber, act, false);
             }
         }

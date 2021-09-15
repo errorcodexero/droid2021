@@ -237,7 +237,9 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 41:                // Go to specific angle
-                addSubActionPair(turret, new MotorEncoderGotoAction(turret, getPosition(), false), true);
+                addSubActionPair(turret, new MotorEncoderGotoAction(turret, -15, false), true);
+                addAction(new DelayAction(ctrl.getRobot(), 3.0));
+                addSubActionPair(turret, new MotorEncoderGotoAction(turret, 15, false), true);
                 break ;
 
             case 42:                // Follow the target

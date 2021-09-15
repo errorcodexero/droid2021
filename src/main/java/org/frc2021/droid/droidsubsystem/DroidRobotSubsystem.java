@@ -42,7 +42,7 @@ public class DroidRobotSubsystem extends RobotSubsystem {
         tracker_ = new TargetTrackerSubsystem(this, limelight_, turret_) ;
         addChild(tracker_) ;
 
-        oi_ = new DroidOISubsystem(this, db_, false) ;
+        oi_ = new DroidOISubsystem(this, db_, climber) ;
         addChild(oi_) ;        
     }
 
