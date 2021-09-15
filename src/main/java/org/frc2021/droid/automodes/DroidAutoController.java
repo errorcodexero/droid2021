@@ -14,6 +14,7 @@ import org.xero1425.misc.MissingParameterException;
 //
 public class DroidAutoController extends AutoController {
     private AutoMode test_mode_ ;
+    private AutoMode mode_ ;
 
     public DroidAutoController(Droid robot) throws MissingParameterException, BadParameterTypeException {
         super(robot, "droid-auto");
@@ -22,6 +23,7 @@ public class DroidAutoController extends AutoController {
         
         try {
             test_mode_ = new DroidTestAutoMode(this);
+            mode_ = new NearSideSixAuto(this) ;
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;
@@ -36,9 +38,7 @@ public class DroidAutoController extends AutoController {
             setAutoMode(test_mode_) ;
         }
         else {
-            AutoMode am = getAutoMode() ;
-            if (am != null)
-                am.update(gamedata) ;
+            setAutoMode(mode_) ;
         }
     }
 }

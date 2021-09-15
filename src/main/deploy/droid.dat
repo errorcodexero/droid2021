@@ -32,7 +32,7 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      false
+tankdrive:messages                                                      true
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
@@ -120,7 +120,7 @@ hw:turret:encoder:analog:ec                                     2.45
 endif
 
 if COMPETITION
-hw:turret:encoder:analog:ec                                     4.8486
+hw:turret:encoder:analog:ec                                     1.44653
 endif
 
 hw:turret:encoder:analog:rc                                     0.0
@@ -265,7 +265,13 @@ tankdrive:follower:right:kp                                     0.035           
 tankdrive:follower:right:kd                                     0.0
 
 tankdrive:follower:turn_correction                              0
-tankdrive:follower:angle_correction                            -0.03
+tankdrive:angle_correction:kp                          -0.03
+tankdrive:angle_correction:ki                          0
+tankdrive:angle_correction:kd                          0
+tankdrive:angle_correction:kf                          0
+tankdrive:angle_correction:max                          1.0
+tankdrive:angle_correction:min                         -1.0
+tankdrive:angle_correction:imax                          0
 
 hw:tankdrive:gyro                                               "navx"
 
@@ -325,27 +331,32 @@ shooter:aim:min_hood_down                                       110
 
 shooter:hood:change_time					                    1.0
 
-shooter:up:pwl:1:x                                              0.0
-shooter:up:pwl:1:y                                              0.0
-shooter:up:pwl:2:x                                             10.0
-shooter:up:pwl:2:y                                             10.0
-shooter:up:pwl:3:x                                             20.0
-shooter:up:pwl:3:y                                              0.0
+shooter:up:pwl:1:x                                              71
+shooter:up:pwl:1:y                                              3300
+shooter:up:pwl:2:x                                              87
+shooter:up:pwl:2:y                                              3350
+shooter:up:pwl:3:x                                              101
+shooter:up:pwl:3:y                                              3500
+shooter:up:pwl:4:x                                              119
+shooter:up:pwl:4:y                                              3550
 
-shooter:down:pwl:1:x                                            121
+shooter:down:pwl:1:x                                            110
 shooter:down:pwl:1:y                                            5600
-shooter:down:pwl:2:x                                            140
-shooter:down:pwl:2:y                                            5500
-shooter:down:pwl:3:x                                            161
-shooter:down:pwl:3:y                                            5300
-shooter:down:pwl:4:x                                            174
+shooter:down:pwl:2:x                                            120
+shooter:down:pwl:2:y                                            5600
+shooter:down:pwl:3:x                                            140
+shooter:down:pwl:3:y                                            5500
+shooter:down:pwl:4:x                                            161
 shooter:down:pwl:4:y                                            5300
-shooter:down:pwl:5:x                                            189
-shooter:down:pwl:5:y                                            5600
-shooter:down:pwl:6:x                                            220
-shooter:down:pwl:6:y                                            5700
-shooter:down:pwl:7:x                                            273
-shooter:down:pwl:7:y                                            6000
+shooter:down:pwl:5:x                                            174
+shooter:down:pwl:5:y                                            5300
+shooter:down:pwl:6:x                                            189
+shooter:down:pwl:6:y                                            5600
+shooter:down:pwl:7:x                                            220
+shooter:down:pwl:7:y                                            5700
+shooter:down:pwl:8:x                                            273
+shooter:down:pwl:8:y                                            6000
+
 
 
 #
@@ -655,10 +666,10 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          true
-auto:testmode:which                                           35
+auto:testmode:active                                          false
+auto:testmode:which                                           30
 auto:testmode:distance                                        1800
-auto:testmode:power                                           4000
+auto:testmode:power                                           0.5
 auto:testmode:duration                                        4
 auto:testmode:name                                           "Slalom_Path"
 
