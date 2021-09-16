@@ -7,8 +7,6 @@
 
 package org.frc2021.droid;
 
-import edu.wpi.first.wpilibj.RobotBase;
-
 import org.xero1425.simulator.engine.ModelFactory;
 import org.xero1425.simulator.engine.SimulationEngine;
 import org.frc2021.droid.automodes.DroidAutoController;

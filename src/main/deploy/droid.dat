@@ -32,7 +32,7 @@ blinky:verbose                                                          false
 #
 #####################################################################################
 
-tankdrive:messages                                                      true
+tankdrive:messages                                                      false
 turret:messages                                                         false
 shooter:messages                                                        false
 droid:messages                                                          false
@@ -50,6 +50,7 @@ xerorobot:messages                                                      false
 fireaction:messages                                                     false
 conveyor_model:messages                                                 false
 conveyor_ball_model:messages                                            false
+pathfollowing:messages                                                  true
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -264,14 +265,13 @@ tankdrive:follower:right:kv                                     0.006           
 tankdrive:follower:right:kp                                     0.035               # Recommended 0.02032 - 0.03048
 tankdrive:follower:right:kd                                     0.0
 
-tankdrive:follower:turn_correction                              0
-tankdrive:angle_correction:kp                          -0.03
-tankdrive:angle_correction:ki                          0
-tankdrive:angle_correction:kd                          0
-tankdrive:angle_correction:kf                          0
-tankdrive:angle_correction:max                          1.0
-tankdrive:angle_correction:min                         -1.0
-tankdrive:angle_correction:imax                          0
+tankdrive:angle_correction:kp                                   0.03
+tankdrive:angle_correction:ki                                   0
+tankdrive:angle_correction:kd                                   0
+tankdrive:angle_correction:kf                                   0
+tankdrive:angle_correction:max                                  1.0
+tankdrive:angle_correction:min                                 -1.0
+tankdrive:angle_correction:imax                                0
 
 hw:tankdrive:gyro                                               "navx"
 
@@ -667,11 +667,11 @@ shoottest:hold                                                true
 # this active value below is ignored if we are connected to the field.
 #
 auto:testmode:active                                          false
-auto:testmode:which                                           30
+auto:testmode:which                                           4
 auto:testmode:distance                                        1800
 auto:testmode:power                                           0.5
 auto:testmode:duration                                        4
-auto:testmode:name                                           "Slalom_Path"
+auto:testmode:name                                           "test_straight"
 
 #
 # Short shot, 6" elevation of the front of the bumper @ 3900 ready_margin_percent

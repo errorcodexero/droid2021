@@ -15,6 +15,7 @@ import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem.HoodPosit
 import org.frc2021.droid.targettracker.TargetTrackerSubsystem;
 import org.frc2021.droid.turret.FollowTargetAction;
 import org.frc2021.droid.turret.TurretSubsystem;
+import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.actions.ParallelAction;
 import org.xero1425.base.actions.SequenceAction;
@@ -78,16 +79,19 @@ public class DroidAutoMode extends AutoMode {
     // collection sequence can be executed along the start of the path so that no delay is necessary
     // before following the path to let the collection sequence start.
     //
-    protected void driveAndCollect(String path) throws Exception {
+    protected void driveAndCollect(String path, double delay) throws Exception {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ; 
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;
         ParallelAction parallel ;
-        SequenceAction series ;
+        SequenceAction series, series2 ;
 
         parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger(), ParallelAction.DonePolicy.All) ;
 
-        parallel.addSubActionPair(db, new TankDrivePathFollowerAction(db, path, false), true);
+        series2 = new SequenceAction(getAutoController().getRobot().getMessageLogger()) ;
+        series2.addAction(new DelayAction(getAutoController().getRobot(), delay));
+        series2.addSubActionPair(db, new TankDrivePathFollowerAction(db, path, false), true);
+        parallel.addAction(series2) ;
 
         series = new SequenceAction(getAutoController().getRobot().getMessageLogger()) ;
         series.addSubActionPair(conveyor, new ConveyorPrepareToReceiveAction(conveyor), true);

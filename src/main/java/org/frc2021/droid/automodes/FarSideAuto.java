@@ -20,7 +20,7 @@ public class FarSideAuto extends DroidAutoMode {
         //
         // Collect the extra two balls
         //
-        driveAndCollect("five_ball_auto_collect") ;
+        driveAndCollect("five_ball_auto_collect", 0.0) ;
 
         //
         // Drive near the center to fire
