@@ -63,6 +63,10 @@ public class FireAction extends Action {
     private PieceWiseLinear pwl_down_ ;
     private PieceWiseLinear pwl_up_ ;
 
+    private double prev_good_dist_ ;
+    private boolean prev_good_dist_valid_ ;
+    private int prev_good_dist_count_ ;
+
     private double start_time_ ;
     private int plot_id_ ;
     static final String[] plot_columns_ = { 
@@ -140,6 +144,9 @@ public class FireAction extends Action {
 
         start_time_ = sub_.getRobot().getTime() ;
         sub_.startPlot(plot_id_, plot_columns_) ;
+
+        prev_good_dist_valid_ = false ;
+        prev_good_dist_ = 0.0 ;
     }
 
     @Override
@@ -186,7 +193,6 @@ public class FireAction extends Action {
                 //
                 sub_.getShooter().setAction(shooter_stop_action_, true) ;
             }
-            // else if (!ready_to_fire_except_shooter) {
             else if (!ready_to_fire) {
                 //
                 // We lost the target or the driver started driving or we got bumped and
@@ -342,9 +348,39 @@ public class FireAction extends Action {
         return (pos ==  HoodPosition.Down) ? pwl_down_.getValue(dist) : pwl_up_.getValue(dist) ;
     }
 
-    private void setTargetVelocity() throws BadMotorRequestException, MotorRequestFailedException {
-
+    private double getTargetDistance() {
         double dist = tracker_.getDistance() ;
+
+        if (!prev_good_dist_valid_)
+        {
+            prev_good_dist_ = dist ;
+            prev_good_dist_count_ = 0 ;
+            prev_good_dist_valid_ = true ;
+        }
+        else
+        {
+            double pcnt = Math.abs((dist - prev_good_dist_) / prev_good_dist_) * 100.0 ;
+            if (pcnt > 10)
+            {
+                prev_good_dist_count_++ ;
+                if (prev_good_dist_count_ < 4)
+                {
+                    dist = prev_good_dist_ ;
+                }
+                else
+                {
+                    prev_good_dist_ = dist ;
+                    prev_good_dist_count_ = 0 ;
+                }
+            }
+        }
+
+        return dist ;
+    }
+
+    private void setTargetVelocity() throws BadMotorRequestException, MotorRequestFailedException {
+        double dist = getTargetDistance() ;
+        double rawdist = tracker_.getDistance() ;
 
         if (dist > max_hood_up_distance_)
             hood_pos_ = HoodPosition.Down ;
@@ -358,13 +394,12 @@ public class FireAction extends Action {
         shooter_velocity_action_.setReadyFlagEnabled(true);
 
         MessageLogger logger = sub_.getRobot().getMessageLogger() ;
-        logger.startMessage(MessageType.Info, logger_id_) ;
-        logger.add("SetTarget (fireaction): ") ;
+        logger.startMessage(MessageType.Debug, logger_id_) ;
+        logger.add("fire-action: calculated target") ;
+        logger.add("rawdist", rawdist) ;
         logger.add("distance", dist) ;
-        logger.add(" target", target) ;
-        logger.add(" velocity", sub_.getShooter().getVelocity()) ;
-        logger.add(" hood", hood_pos_.toString()) ;
-        logger.add(" turret", turret_.getPosition()) ;
-        logger.endMessage();
+        logger.add("velocity", target) ;
+        logger.add("hood", hood_pos_.toString()) ;
+        logger.endMessage();   
     }
 }

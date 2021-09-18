@@ -47,10 +47,10 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     false
+fireaction:messages                                                     true
 conveyor_model:messages                                                 false
 conveyor_ball_model:messages                                            false
-pathfollowing:messages                                                  true
+pathfollowing:messages                                                  false
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -302,10 +302,6 @@ shooter:velocity:imax                                           0.0
 shooter:velocity:max                                            1.0
 shooter:velocity:min                                            -1.0
 
-# Power port challenge
-# shooter:velocity:ready_margin_percent                         8.0      
-
-# Accuracy challenge
 shooter:velocity:ready_margin_percent                           5.0  
 
 shooter:hold:p                                                  0.0
@@ -382,8 +378,7 @@ turret:hold:min                                                 -0.3
 turret:hold:max                                                 0.3
 turret:hold:imax                                                0.0
 
-# turret:follow:kp                                                 0.014084508
-turret:follow:kp                                                 0.06
+turret:follow:kp                                                 0.014084508
 turret:follow:ki                                                 0
 turret:follow:kd                                                 0.0
 turret:follow:kf                                                 0
@@ -409,7 +404,7 @@ turret:follower:down:min                                               -1
 turret:follower:down:max                                               1
 turret:follower:down:imax                                              0
 
-turret:fire_threshold                                           0.2
+turret:fire_threshold                                           1.0
 turret:min                                                      -100 # The minimum safe angle.
 turret:max                                                      100  # The maximum safe angle.
 
