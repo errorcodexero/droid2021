@@ -79,7 +79,7 @@ public class DroidAutoMode extends AutoMode {
     // collection sequence can be executed along the start of the path so that no delay is necessary
     // before following the path to let the collection sequence start.
     //
-    protected void driveAndCollect(String path, double delay) throws Exception {
+    protected void driveAndCollect(String path, double delay1, double delay2) throws Exception {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor() ; 
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator() ;
         TankDriveSubsystem db = getDroidSubsystem().getTankDrive() ;
@@ -89,8 +89,9 @@ public class DroidAutoMode extends AutoMode {
         parallel = new ParallelAction(getAutoController().getRobot().getMessageLogger(), ParallelAction.DonePolicy.All) ;
 
         series2 = new SequenceAction(getAutoController().getRobot().getMessageLogger()) ;
-        series2.addAction(new DelayAction(getAutoController().getRobot(), delay));
+        series2.addAction(new DelayAction(getAutoController().getRobot(), delay1));
         series2.addSubActionPair(db, new TankDrivePathFollowerAction(db, path, false), true);
+        series2.addAction(new DelayAction(getAutoController().getRobot(), delay2));
         parallel.addAction(series2) ;
 
         series = new SequenceAction(getAutoController().getRobot().getMessageLogger()) ;

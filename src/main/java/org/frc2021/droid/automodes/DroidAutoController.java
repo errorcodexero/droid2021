@@ -23,7 +23,7 @@ public class DroidAutoController extends AutoController {
         
         try {
             test_mode_ = new DroidTestAutoMode(this);
-            mode_ = new NearSideEightAuto(this) ;
+            mode_ = new FarSideAuto(this) ;
         }
         catch(Exception e) {
             logger.startMessage(MessageType.Error) ;

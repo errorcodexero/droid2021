@@ -147,7 +147,6 @@ public class DroidOIDevice extends OIPanel {
         intake_off_ = new CollectOffAction(intake);
 
         turret_goto_zero_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
-        // turret_goto_90_ = new MotorEncoderGotoAction(turret, -90.0, true) ;
         turret_goto_manual_ = new MotorEncoderGotoAction(turret, 0.0, true) ;
         turret_follow_target_ = new FollowTargetAction(turret, tracker) ;
 
@@ -355,9 +354,10 @@ public class DroidOIDevice extends OIPanel {
     }
 
     private void processEjecting(SequenceAction seq) throws InvalidActionRequest {
-        if (getValue(eject_) == 0)
+        ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
+        if (!conveyor.isBusy())
             stopEject(seq) ;
-    }    
+    }
 
     private void processShootReady(SequenceAction seq) throws InvalidActionRequest {
         GamePieceManipulatorSubsystem gp = getDroidSubsystem().getGamePieceManipulator();

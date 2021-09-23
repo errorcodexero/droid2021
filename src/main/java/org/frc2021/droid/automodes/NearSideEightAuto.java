@@ -27,7 +27,7 @@ public class NearSideEightAuto extends DroidAutoMode {
         //
         // Now, collect new balls
         //
-        driveAndCollect("eight_ball_auto_collect", 0.5) ;
+        driveAndCollect("eight_ball_auto_collect", 0.5, 0.0) ;
 
         //
         // Now fire the new set of balls
