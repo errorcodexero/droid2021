@@ -1,5 +1,7 @@
 package org.frc2021.droid.automodes;
 
+import org.frc2021.droid.climber.ClimberSubsystem;
+import org.frc2021.droid.climber.LifterCalibrateAction;
 import org.frc2021.droid.droidsubsystem.DroidRobotSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.FireAction;
 import org.frc2021.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
@@ -15,6 +17,7 @@ import org.frc2021.droid.gamepiecemanipulator.shooter.ShooterSubsystem.HoodPosit
 import org.frc2021.droid.targettracker.TargetTrackerSubsystem;
 import org.frc2021.droid.turret.FollowTargetAction;
 import org.frc2021.droid.turret.TurretSubsystem;
+import org.xero1425.base.actions.Action;
 import org.xero1425.base.actions.DelayAction;
 import org.xero1425.base.actions.InvalidActionRequest;
 import org.xero1425.base.actions.ParallelAction;
@@ -45,6 +48,15 @@ public class DroidAutoMode extends AutoMode {
     protected void setInitialBallCount(int count) throws InvalidActionRequest {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
         addSubActionPair(conveyor, new ConveyorSetBallCountAction(conveyor, count), false);
+    }
+
+    //
+    // Initialize the climber
+    //
+    protected void initializeClimber() throws Exception {
+        ClimberSubsystem sub = getDroidSubsystem().getClimber() ;
+        Action act = new LifterCalibrateAction(sub.getLifter()) ;
+        addSubActionPair(sub, act, false);
     }
 
     //

@@ -16,6 +16,11 @@ public class FarSideAuto extends DroidAutoMode {
         // Initial ball count, 3 balls loaded into the robot at start
         //
         setInitialBallCount(3);
+        
+        //
+        // Initialize the climber
+        //
+        initializeClimber() ;
 
         //
         // Collect the extra two balls

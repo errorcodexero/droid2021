@@ -18,6 +18,7 @@ public class LifterSubsystem extends MotorEncoderSubsystem {
 
     protected void setCalibrated() {
         calibrated_ = true ;
+        reset() ;
     }
 
     protected void setPower(double power) {

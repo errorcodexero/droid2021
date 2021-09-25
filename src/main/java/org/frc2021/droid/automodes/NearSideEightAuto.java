@@ -14,10 +14,16 @@ public class NearSideEightAuto extends DroidAutoMode {
     public NearSideEightAuto(DroidAutoController ctrl) throws Exception {
         super(ctrl, "NearSideEight") ;
 
+
         //
         // Initial ball count, 3 balls loaded into the robot at start
         //
         setInitialBallCount(3);
+
+        //
+        // Initialize the climber
+        //
+        initializeClimber() ;
 
         //
         // The first drive and fire

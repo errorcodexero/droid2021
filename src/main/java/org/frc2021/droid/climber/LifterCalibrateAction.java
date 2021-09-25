@@ -1,18 +1,35 @@
 package org.frc2021.droid.climber;
 
 import org.xero1425.base.actions.Action;
+import org.xero1425.misc.PIDCtrl;
 
 public class LifterCalibrateAction extends Action {
-    public LifterCalibrateAction(LifterSubsystem sub) throws Exception {
-        super(sub.getRobot().getMessageLogger());
+    
+    private enum State {
+        DownSlowly,
+        Holding
+    } ;
 
-        sub_ = sub ;
-        holding_power_ = sub.getRobot().getSettingsParser().get("lifter:calibrate:hold_power").getDouble() ;        
-        samples_ = sub.getRobot().getSettingsParser().get("lifter:calibrate:samples").getInteger() ;
+    private LifterSubsystem sub_ ;
+    private State state_ ;
+    private double down_power_ ;
+    private double threshold_ ;
+    private double [] encoders_ ;
+    private int samples_ ;
+    private int captured_ ;
+    private PIDCtrl pid_ ;
+
+    public LifterCalibrateAction(LifterSubsystem lifter) throws Exception {
+        super(lifter.getRobot().getMessageLogger());
+
+        sub_ = lifter ;
+        samples_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:samples").getInteger() ;
         encoders_ = new double[samples_] ;
-        down_power_ = sub.getRobot().getSettingsParser().get("lifter:calibrate:down_power").getDouble() ;
+        down_power_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:down_power").getDouble() ;
         if (down_power_ >= 0.0)
             throw new Exception("lifter calibrate down power must be negative") ;
+
+        pid_ = new PIDCtrl(lifter.getRobot().getSettingsParser(), "climber:lifter", false) ;
     }
 
     @Override
@@ -36,12 +53,12 @@ public class LifterCalibrateAction extends Action {
             case DownSlowly:
                 if (addEncoderPosition(sub_.getPosition())) {
                     sub_.setCalibrated();
-                    sub_.reset() ;
                     state_ = State.Holding ;
                 }
                 break ;
             case Holding:
-                sub_.setPower(holding_power_) ;
+                double out = pid_.getOutput(0, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
+                sub_.setPower(out) ;
                 break ;
         }
     }
@@ -83,17 +100,5 @@ public class LifterCalibrateAction extends Action {
         return ret ;
     }
 
-    private enum State {
-        DownSlowly,
-        Holding
-    } ;
 
-    LifterSubsystem sub_ ;
-    private State state_ ;
-    double down_power_ ;
-    double threshold_ ;
-    double holding_power_ ;
-    double [] encoders_ ;
-    int samples_ ;
-    int captured_ ;
 }

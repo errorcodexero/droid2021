@@ -5,9 +5,14 @@ import edu.wpi.first.wpilibj.PWMSparkMax;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
-import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 
 public class ClimberSubsystem extends Subsystem {
+    
+    private LifterSubsystem lifter_ ;
+    private PWMSparkMax traverser_ ;
+    private double max_height_ ;
+    private boolean field_mode_ ;
+
     public static final String SubsystemName = "climber" ;
 
     public ClimberSubsystem(Subsystem parent) throws Exception {
@@ -36,7 +41,7 @@ public class ClimberSubsystem extends Subsystem {
         return field_mode_ ;
     }
 
-    public MotorEncoderSubsystem getLifter() {
+    public LifterSubsystem getLifter() {
         return lifter_ ;
     }
 
@@ -60,8 +65,4 @@ public class ClimberSubsystem extends Subsystem {
         super.run() ;
     }
 
-    private MotorEncoderSubsystem lifter_ ;
-    private PWMSparkMax traverser_ ;
-    private double max_height_ ;
-    private boolean field_mode_ ;
 }
