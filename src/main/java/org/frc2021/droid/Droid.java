@@ -37,7 +37,7 @@ public class Droid extends XeroRobot {
         if (ret != null)
             return ret ;
 
-        return "collect5_eject_collect5_eject" ;
+        return "climb" ;
     }
 
     protected void addRobotSimulationModels() {

@@ -16,6 +16,14 @@ public class LifterSubsystem extends MotorEncoderSubsystem {
         return calibrated_ ;
     }
 
+    @Override
+    public void computeMyState() throws Exception {
+        super.computeMyState(); 
+
+        if (getAction() == null)
+            putDashboard("ClimberState", DisplayType.Always, "IDLE") ;
+    }
+
     protected void setCalibrated() {
         calibrated_ = true ;
         reset() ;

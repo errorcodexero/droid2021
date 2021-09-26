@@ -174,6 +174,7 @@ public class DroidOIDevice extends OIPanel {
             climber_up_right_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:right") ;
             climber_down_left_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:left") ;
             climber_down_right_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:right") ;
+
         }
         else
         {
@@ -203,13 +204,14 @@ public class DroidOIDevice extends OIPanel {
 
         if (getValue(climb_lock_) == 1)
         {
-            if (!climber.getLifter().isBusy())
+            if (!climber.isBusy() && !climber.getLifter().isBusy())
             {
                 seq.addSubActionPair(climber.getLifter(), climber_calibrate_, false);
             }
         }
         else
         {
+            climber.getLifter().cancelAction();
             generateClimbActionUnlocked(seq);
         }
     }

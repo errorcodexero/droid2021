@@ -24,6 +24,13 @@
             }            
         },
         {
+            "mode" : "climber",
+            "instance" : "1",
+            "props" : {
+                "ticks_per_second_per_volt" : 2200
+            }
+        },
+        {
             "model" : "tankdrive",
             "instance" : "1",
             "props" :

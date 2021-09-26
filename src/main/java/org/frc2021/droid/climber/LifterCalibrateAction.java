@@ -1,5 +1,6 @@
 package org.frc2021.droid.climber;
 
+import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.actions.Action;
 import org.xero1425.misc.PIDCtrl;
 
@@ -29,7 +30,8 @@ public class LifterCalibrateAction extends Action {
         if (down_power_ >= 0.0)
             throw new Exception("lifter calibrate down power must be negative") ;
 
-        pid_ = new PIDCtrl(lifter.getRobot().getSettingsParser(), "climber:lifter", false) ;
+        threshold_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:threshold").getDouble() ;
+        pid_ = new PIDCtrl(lifter.getRobot().getSettingsParser(), "climber:lifter:stay", false) ;
     }
 
     @Override
@@ -40,6 +42,7 @@ public class LifterCalibrateAction extends Action {
             state_ = State.Holding ;
         }
         else {
+            sub_.putDashboard("ClimberState", DisplayType.Always, "CALIBRATING");
             captured_ = 0 ;
             state_ = State.DownSlowly ;
             sub_.setPower(down_power_) ;
@@ -54,7 +57,14 @@ public class LifterCalibrateAction extends Action {
                 if (addEncoderPosition(sub_.getPosition())) {
                     sub_.setCalibrated();
                     state_ = State.Holding ;
+                    sub_.putDashboard("ClimberState", DisplayType.Always, "HOLDING");
                 }
+                System.out.print("ENCODERS:") ;
+                for(int i = 0 ; i < captured_ ; i++)
+                {
+                    System.out.print(" " + Double.toString(encoders_[i])) ;
+                }
+                System.out.println() ;
                 break ;
             case Holding:
                 double out = pid_.getOutput(0, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
@@ -99,6 +109,4 @@ public class LifterCalibrateAction extends Action {
 
         return ret ;
     }
-
-
 }

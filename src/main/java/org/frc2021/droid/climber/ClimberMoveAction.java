@@ -1,5 +1,6 @@
 package org.frc2021.droid.climber;
 
+import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.actions.Action;
 import org.xero1425.base.motorsubsystem.MotorPowerAction;
 import org.xero1425.misc.BadParameterTypeException;
@@ -49,6 +50,8 @@ public class ClimberMoveAction extends Action {
         sub_.setAction(lift_) ;
         sub_.setTraverserPower(trav_);
         setDone() ;
+
+        sub_.putDashboard("ClimberState", DisplayType.Always, "ACTIVE");
     }
 
     @Override

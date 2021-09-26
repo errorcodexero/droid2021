@@ -537,6 +537,18 @@ climber:lifter:hold:min                                                 0
 climber:lifter:hold:max                                                 0
 climber:lifter:hold:imax                                                0
 
+climber:lifter:calibrate:samples                                8
+climber:lifter:calibrate:down_power                             -0.075
+climber:lifter:calibrate:threshold                              5
+
+climber:lifter:stay:kp                                          0.0002
+climber:lifter:stay:ki                                          0
+climber:lifter:stay:kd                                          0
+climber:lifter:stay:kf                                          0
+climber:lifter:stay:min                                         -0.1
+climber:lifter:stay:max                                         0.0
+climber:lifter:stay:imax                                        0
+
 ##----------------------
 
 ###################################################################################################

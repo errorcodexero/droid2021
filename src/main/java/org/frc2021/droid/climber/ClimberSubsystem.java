@@ -65,4 +65,11 @@ public class ClimberSubsystem extends Subsystem {
         super.run() ;
     }
 
+    @Override
+    public void computeMyState() throws Exception {
+        super.computeMyState();
+
+        putDashboard("climber", DisplayType.Always, lifter_.getPosition());
+    }
+
 }
