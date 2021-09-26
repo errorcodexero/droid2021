@@ -2,6 +2,7 @@ package org.frc2021.droid.droidoi;
 
 import org.frc2021.droid.climber.ClimberMoveAction;
 import org.frc2021.droid.climber.ClimberSubsystem;
+import org.frc2021.droid.climber.LifterCalibrateAction;
 import org.frc2021.droid.droidsubsystem.DroidRobotSubsystem;
 import org.frc2021.droid.gamepiecemanipulator.FireAction;
 import org.frc2021.droid.gamepiecemanipulator.GamePieceManipulatorSubsystem;
@@ -69,6 +70,7 @@ public class DroidOIDevice extends OIPanel {
     private CollectShootState collect_shoot_state_ ;
     private boolean climber_deployed_ ;
     private boolean started_deploy_ ;
+    private boolean climber_attached_ ;
     private boolean rumbled_ ;
 
     private Action stop_collect_ ;
@@ -78,7 +80,6 @@ public class DroidOIDevice extends OIPanel {
     private Action intake_off_ ;
 
     private Action turret_goto_zero_ ;
-    // private Action turret_goto_90_ ;
     private Action turret_goto_manual_ ;
     private Action turret_follow_target_ ;
 
@@ -103,8 +104,7 @@ public class DroidOIDevice extends OIPanel {
     private Action climber_down_right_ ;
     private Action climber_left_ ;
     private Action climber_right_ ;
-
-    private boolean climber_attached_ ;
+    private Action climber_calibrate_ ;
 
     public DroidOIDevice(DroidOISubsystem sub, int index, Gamepad gamepad, boolean climber)
             throws BadParameterTypeException, MissingParameterException {
@@ -163,6 +163,7 @@ public class DroidOIDevice extends OIPanel {
 
         if (climber_attached_)
         {
+            climber_calibrate_ = new LifterCalibrateAction(climber.getLifter()) ;
             deploy_climber_ = new MotorEncoderGotoAction(climber.getLifter(), "climber:climb_height", true) ;
             stop_climber_ = new ClimberMoveAction(climber, 0.0, 0.0) ;
             climber_left_ = new ClimberMoveAction(climber, 0.0, "climber:power:left") ;
@@ -176,6 +177,7 @@ public class DroidOIDevice extends OIPanel {
         }
         else
         {
+            climber_calibrate_ = null ;
             deploy_climber_ = null ;
             stop_climber_ = null ;
             climber_left_ = null ;
@@ -200,7 +202,21 @@ public class DroidOIDevice extends OIPanel {
         ClimberSubsystem climber = getDroidSubsystem().getClimber() ;
 
         if (getValue(climb_lock_) == 1)
-            return ;
+        {
+            if (!climber.getLifter().isBusy())
+            {
+                seq.addSubActionPair(climber.getLifter(), climber_calibrate_, false);
+            }
+        }
+        else
+        {
+            generateClimbActionUnlocked(seq);
+        }
+    }
+
+    private void generateClimbActionUnlocked(SequenceAction seq) throws InvalidActionRequest
+    {
+        ClimberSubsystem climber = getDroidSubsystem().getClimber() ;
 
         if (!climber_deployed_) {
             if (!climber.isInFieldMode() && !started_deploy_) {
