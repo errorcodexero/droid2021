@@ -20,7 +20,7 @@ public class ClimberModel extends SimulationModel {
     }
 
     public boolean create() {
-        climb_ = new SimMotorController(this, "climb") ;
+        climb_ = new SimMotorController(this, "climber") ;
         if (!climb_.createMotor())
             return false ;
 
@@ -50,8 +50,13 @@ public class ClimberModel extends SimulationModel {
     }
 
     public void run(double dt) {
-        double dist = climb_.getPower() * ticks_per_second_per_volt_ * dt ;
+        double power = climb_.getPower() + 0.001 ;
+        double dist = power * ticks_per_second_per_volt_ * dt ;
         ticks_ += dist ;
+
+        if (ticks_ < 0.0)
+            ticks_ = 0.0 ;
+            
         climb_.setEncoder(ticks_ / (double)SparkMaxMotorController.TicksPerRevolution) ;
     }
 }

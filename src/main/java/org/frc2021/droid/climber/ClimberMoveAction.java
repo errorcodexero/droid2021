@@ -7,15 +7,22 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MissingParameterException;
 
 public class ClimberMoveAction extends Action {
-    public ClimberMoveAction(ClimberSubsystem sub, double lift, double trav) {
+    
+    private ClimberSubsystem sub_ ;
+    private MotorPowerAction lift_ ;
+    private double trav_ ;
+    private String state_ ;
+
+    public ClimberMoveAction(ClimberSubsystem sub, double lift, double trav, String state) {
         super(sub.getRobot().getMessageLogger());
 
         lift_ = new MotorPowerAction(sub.getLifter(), lift) ;
         trav_ = trav;
         sub_ = sub ;
+        state_ = state ;
     }
 
-    public ClimberMoveAction(ClimberSubsystem sub, String lift, String trav)
+    public ClimberMoveAction(ClimberSubsystem sub, String lift, String trav, String state)
             throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
@@ -23,9 +30,10 @@ public class ClimberMoveAction extends Action {
         lift_ = new MotorPowerAction(sub.getLifter(), power) ;
         trav_ = sub.getRobot().getSettingsParser().get(trav).getDouble() ;
         sub_ = sub ;
+        state_ = state ;
     }    
 
-    public ClimberMoveAction(ClimberSubsystem sub, String lift, double trav)
+    public ClimberMoveAction(ClimberSubsystem sub, String lift, double trav, String state)
             throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
@@ -33,15 +41,17 @@ public class ClimberMoveAction extends Action {
         lift_ = new MotorPowerAction(sub.getLifter(), power) ;
         trav_ = trav ;
         sub_ = sub ;
+        state_ = state ;
     }      
 
-    public ClimberMoveAction(ClimberSubsystem sub, double lift, String trav)
+    public ClimberMoveAction(ClimberSubsystem sub, double lift, String trav, String state)
             throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
         lift_ = new MotorPowerAction(sub.getLifter(), lift) ;
         trav_ = sub.getRobot().getSettingsParser().get(trav).getDouble() ;
         sub_ = sub ;
+        state_ = state ;
     }      
 
     @Override
@@ -51,11 +61,12 @@ public class ClimberMoveAction extends Action {
         sub_.setTraverserPower(trav_);
         setDone() ;
 
-        sub_.putDashboard("ClimberState", DisplayType.Always, "ACTIVE");
+        sub_.putDashboard("ClimberState", DisplayType.Always, state_);
     }
 
     @Override
-    public void run() {
+    public void run() throws Exception {
+        super.run() ;
     }
 
     @Override
@@ -64,7 +75,4 @@ public class ClimberMoveAction extends Action {
                 " traverse=" + trav_;
     }
 
-    private ClimberSubsystem sub_ ;
-    private MotorPowerAction lift_ ;
-    private double trav_ ;
 }

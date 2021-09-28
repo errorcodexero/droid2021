@@ -48,6 +48,7 @@ public class Droid extends XeroRobot {
         factory.registerModel("shooter", "org.frc2021.models.ShooterModel");
         factory.registerModel("droid_limelight", "org.frc2021.models.DroidLimelightModel") ;
         factory.registerModel("turret", "org.frc2021.models.TurretModel") ;
+        factory.registerModel("climber", "org.frc2021.models.ClimberModel");
     }
 
     public String getName() {

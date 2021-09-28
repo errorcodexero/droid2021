@@ -57,14 +57,16 @@ public class LifterCalibrateAction extends Action {
                 if (addEncoderPosition(sub_.getPosition())) {
                     sub_.setCalibrated();
                     state_ = State.Holding ;
-                    sub_.putDashboard("ClimberState", DisplayType.Always, "HOLDING");
+                    sub_.putDashboard("ClimberState", DisplayType.Always, "KEEPDOWN");
                 }
-                System.out.print("ENCODERS:") ;
-                for(int i = 0 ; i < captured_ ; i++)
-                {
-                    System.out.print(" " + Double.toString(encoders_[i])) ;
-                }
-                System.out.println() ;
+
+                // System.out.print("ENCODERS:") ;
+                // for(int i = 0 ; i < captured_ ; i++)
+                // {
+                //     System.out.print(" " + String.format("%4.0f", encoders_[i])) ;
+                // }
+                // System.out.println() ;
+
                 break ;
             case Holding:
                 double out = pid_.getOutput(0, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;

@@ -14,7 +14,7 @@
                         "autonomous" : 0.0,
                         "between" : 0.0,
                         "teleop" : 30.0,
-                        "fms" : true,
+                        "fms" : false,
                         "station" : "blue1"
                     }
                 },
@@ -53,7 +53,7 @@
                     "instance" : "1",
                     "values" :
                     {
-                        "comment" : "%%%% Push deploy buttong",
+                        "comment" : "%%%% Push deploy button",
                         "button5" : true
                     }
                 }

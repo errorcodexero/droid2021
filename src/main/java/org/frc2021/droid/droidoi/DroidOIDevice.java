@@ -1,5 +1,6 @@
 package org.frc2021.droid.droidoi;
 
+import org.frc2021.droid.climber.ClimberDeployAction;
 import org.frc2021.droid.climber.ClimberMoveAction;
 import org.frc2021.droid.climber.ClimberSubsystem;
 import org.frc2021.droid.climber.LifterCalibrateAction;
@@ -72,6 +73,7 @@ public class DroidOIDevice extends OIPanel {
     private boolean started_deploy_ ;
     private boolean climber_attached_ ;
     private boolean rumbled_ ;
+    private boolean climber_calibrating_ ;
 
     private Action stop_collect_ ;
     private Action start_collect_ ;
@@ -114,6 +116,7 @@ public class DroidOIDevice extends OIPanel {
         climber_deployed_ = false;
         started_deploy_ = false;
         climber_attached_ = climber ;
+        climber_calibrating_ = false ;
         rumbled_ = false;
         gamepad_ = gamepad ;
 
@@ -164,17 +167,16 @@ public class DroidOIDevice extends OIPanel {
         if (climber_attached_)
         {
             climber_calibrate_ = new LifterCalibrateAction(climber.getLifter()) ;
-            deploy_climber_ = new MotorEncoderGotoAction(climber.getLifter(), "climber:climb_height", true) ;
-            stop_climber_ = new ClimberMoveAction(climber, 0.0, 0.0) ;
-            climber_left_ = new ClimberMoveAction(climber, 0.0, "climber:power:left") ;
-            climber_right_ = new ClimberMoveAction(climber, 0.0, "climber:power:right") ;
-            climber_up_ = new ClimberMoveAction(climber, "climber:power:up", 0.0) ;
-            climber_down_ = new ClimberMoveAction(climber, "climber:power:down", 0.0) ;
-            climber_up_left_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:left") ;
-            climber_up_right_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:right") ;
-            climber_down_left_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:left") ;
-            climber_down_right_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:right") ;
-
+            deploy_climber_ = new ClimberDeployAction(climber.getLifter()) ;
+            stop_climber_ = new ClimberMoveAction(climber, 0.0, 0.0, "STOPPED") ;
+            climber_left_ = new ClimberMoveAction(climber, 0.0, "climber:power:left", "LEFT") ;
+            climber_right_ = new ClimberMoveAction(climber, 0.0, "climber:power:right", "RIGHT") ;
+            climber_up_ = new ClimberMoveAction(climber, "climber:power:up", 0.0, "UP") ;
+            climber_down_ = new ClimberMoveAction(climber, "climber:power:down", 0.0, "DOWN") ;
+            climber_up_left_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:left", "UP-LEFT") ;
+            climber_up_right_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:right", "UP-RIGHT") ;
+            climber_down_left_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:left", "DOWN-LEFT") ;
+            climber_down_right_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:right", "DOWN-RIGHT") ;
         }
         else
         {
@@ -204,15 +206,30 @@ public class DroidOIDevice extends OIPanel {
 
         if (getValue(climb_lock_) == 1)
         {
+            if (!climber_calibrating_)
+            {
+                climber.cancelAction();
+                climber.getLifter().cancelAction(); ;
+            }
+
             if (!climber.isBusy() && !climber.getLifter().isBusy())
             {
                 seq.addSubActionPair(climber.getLifter(), climber_calibrate_, false);
+                climber_calibrating_ = true ;
             }
         }
         else
         {
-            climber.getLifter().cancelAction();
-            generateClimbActionUnlocked(seq);
+            if (climber_calibrating_)
+            {
+                climber.getLifter().cancelAction();
+                climber_calibrating_ = false ;
+            }
+
+            if (!climber.isBusy() && !climber.getLifter().isBusy())
+            {
+                generateClimbActionUnlocked(seq);
+            }
         }
     }
 
@@ -225,7 +242,7 @@ public class DroidOIDevice extends OIPanel {
                 climber_deployed_ = true ;
                 started_deploy_ = true ;
             }
-            else {
+            else if (!started_deploy_) {
                 if (getValue(climb_deploy_) == 1 && !climber.isBusy() && !climber.getLifter().isBusy()) {
                     climber.setDefaultAction(null);
                     climber.setAction(null) ;
@@ -235,6 +252,10 @@ public class DroidOIDevice extends OIPanel {
                 else if (started_deploy_ && !climber.isBusy() && !climber.getLifter().isBusy()) {
                     climber_deployed_ = true ;
                 }
+            }
+            else {
+                if (!climber.getLifter().isBusy())
+                    climber_deployed_ = true ;
             }
         }
         else {

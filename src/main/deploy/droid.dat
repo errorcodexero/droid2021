@@ -47,10 +47,11 @@ blinky:messages                                                         false
 conveyor:sensors:messages                                               false
 pathmanager:messages                                                    false
 xerorobot:messages                                                      false
-fireaction:messages                                                     true
+fireaction:messages                                                     false
 conveyor_model:messages                                                 false
 conveyor_ball_model:messages                                            false
 pathfollowing:messages                                                  false
+climber:messages                                                        true
 
 #
 # Some special things we can turn on that are not associated with a subsystem
@@ -501,7 +502,7 @@ newdrive:wheel:deltapower                                       0.01
 # In field mode, the climber's max downward velocity is limited to 10% below 1000, and 0% below 0.
 # In pit mode, the climber's max downward velocity is always limited to 10%.
 
-climber:force_field_mode                                        false
+climber:force_field_mode                                        true
 
 climber:climb_height                                            10500
 climber:max_height                                              11000
@@ -538,7 +539,7 @@ climber:lifter:hold:max                                                 0
 climber:lifter:hold:imax                                                0
 
 climber:lifter:calibrate:samples                                8
-climber:lifter:calibrate:down_power                             -0.075
+climber:lifter:calibrate:down_power                             -0.1
 climber:lifter:calibrate:threshold                              5
 
 climber:lifter:stay:kp                                          0.0002

@@ -264,9 +264,9 @@ public class DroidTestAutoMode extends TestAutoMode {
                 break ;
 
             case 62:
-                addSubActionPair(climber, new ClimberMoveAction(climber, getPower(), 0.0), true);
+                addSubActionPair(climber, new ClimberMoveAction(climber, getPower(), 0.0, "TEST-START"), true);
                 addAction(new DelayAction(ctrl.getRobot(), getDuration()));
-                addSubActionPair(climber, new ClimberMoveAction(climber, 0.0, 0.0), true);                
+                addSubActionPair(climber, new ClimberMoveAction(climber, 0.0, 0.0, "TEST-STOP"), true);                
                 break ;
 
             // 100+ Whole robot test modes
