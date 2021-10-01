@@ -314,7 +314,7 @@ shooter:hold:max                                                1.0
 shooter:hold:imax                                               0.0
 
 if COMPETITION
-shooter:hood:down                                               0.55
+shooter:hood:down                                               0.85
 shooter:hood:up                                                 0.1
 endif
 
@@ -538,9 +538,9 @@ climber:lifter:hold:min                                                 0
 climber:lifter:hold:max                                                 0
 climber:lifter:hold:imax                                                0
 
-climber:lifter:calibrate:samples                                8
+climber:lifter:calibrate:samples                                6
 climber:lifter:calibrate:down_power                             -0.1
-climber:lifter:calibrate:threshold                              5
+climber:lifter:calibrate:threshold                              1
 
 climber:lifter:stay:kp                                          0.0002
 climber:lifter:stay:ki                                          0
@@ -672,8 +672,8 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
-auto:testmode:which                                           4
+auto:testmode:active                                          true
+auto:testmode:which                                           36
 auto:testmode:distance                                        1800
 auto:testmode:power                                           0.5
 auto:testmode:duration                                        4

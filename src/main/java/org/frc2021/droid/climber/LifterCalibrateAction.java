@@ -25,6 +25,7 @@ public class LifterCalibrateAction extends Action {
 
         sub_ = lifter ;
         samples_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:samples").getInteger() ;
+        captured_ = 0 ;
         encoders_ = new double[samples_] ;
         down_power_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:down_power").getDouble() ;
         if (down_power_ >= 0.0)
@@ -40,6 +41,7 @@ public class LifterCalibrateAction extends Action {
 
         if (sub_.isCalibarated()) {
             state_ = State.Holding ;
+            sub_.putDashboard("ClimberState", DisplayType.Always, "KEEPDOWN");
         }
         else {
             sub_.putDashboard("ClimberState", DisplayType.Always, "CALIBRATING");
@@ -59,14 +61,6 @@ public class LifterCalibrateAction extends Action {
                     state_ = State.Holding ;
                     sub_.putDashboard("ClimberState", DisplayType.Always, "KEEPDOWN");
                 }
-
-                // System.out.print("ENCODERS:") ;
-                // for(int i = 0 ; i < captured_ ; i++)
-                // {
-                //     System.out.print(" " + String.format("%4.0f", encoders_[i])) ;
-                // }
-                // System.out.println() ;
-
                 break ;
             case Holding:
                 double out = pid_.getOutput(0, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
@@ -106,7 +100,11 @@ public class LifterCalibrateAction extends Action {
             ret = checkForStopped() ;
         }
         else {
-            encoders_[captured_++] = pos ;
+            for(int i = captured_ - 1 ; i > 0 ; i--)
+                encoders_[i] = encoders_[i - 1] ;
+            encoders_[0] = pos ;
+            
+            captured_++ ;
         }
 
         return ret ;
