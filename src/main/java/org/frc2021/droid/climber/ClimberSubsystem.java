@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PWMSparkMax;
 import org.xero1425.base.LoopType;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorController.EncoderUpdateFrequency;
 
 public class ClimberSubsystem extends Subsystem {
     
@@ -27,6 +28,8 @@ public class ClimberSubsystem extends Subsystem {
 
         int travid = getRobot().getSettingsParser().get("hw:climber:traverser:pwmid").getInteger();
         traverser_ = new PWMSparkMax(travid);
+
+        lifter_.getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent);
     }
 
     public void setTraverserPower(double p) {

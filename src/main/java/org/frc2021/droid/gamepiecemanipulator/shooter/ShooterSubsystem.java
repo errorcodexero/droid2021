@@ -3,6 +3,7 @@ package org.frc2021.droid.gamepiecemanipulator.shooter;
 import edu.wpi.first.wpilibj.Servo;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
+import org.xero1425.base.motors.MotorController.EncoderUpdateFrequency;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
@@ -43,6 +44,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
 
         // getMotorController().setCurrentLimit(40);
         getMotorController().setNeutralMode(MotorController.NeutralMode.Coast);
+        getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Frequent);
 
         change_time_ = getRobot().getTime() ;
         actual_ = HoodPosition.Unknown ;

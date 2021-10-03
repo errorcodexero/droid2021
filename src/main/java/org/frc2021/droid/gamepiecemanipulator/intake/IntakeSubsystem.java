@@ -4,6 +4,7 @@ import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.BadMotorRequestException;
 import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motors.MotorRequestFailedException;
+import org.xero1425.base.motors.MotorController.EncoderUpdateFrequency;
 import org.xero1425.base.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem ;
 
@@ -17,6 +18,7 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
 
         // Motor 2, explicitly create it
         collector_ = getRobot().getMotorFactory().createMotor("intake-collector", "hw:intake:collector:motor");
+        collector_.setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent);
     }
 
     public void setCollectorPower(double p) throws BadMotorRequestException, MotorRequestFailedException {

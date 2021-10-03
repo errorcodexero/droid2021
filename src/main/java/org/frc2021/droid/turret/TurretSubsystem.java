@@ -1,6 +1,7 @@
 package org.frc2021.droid.turret;
 
 import org.xero1425.base.Subsystem;
+import org.xero1425.base.motors.MotorController.EncoderUpdateFrequency;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 
 public class TurretSubsystem extends MotorEncoderSubsystem {
@@ -12,6 +13,8 @@ public class TurretSubsystem extends MotorEncoderSubsystem {
         min_safe_angle_ = getRobot().getSettingsParser().get("turret:min").getDouble() ;
         max_safe_angle_ = getRobot().getSettingsParser().get("turret:max").getDouble() ;
         is_ready_to_fire_ = false ;
+
+        getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent) ;
     }
 
     public double getMinSafeAngle() {
