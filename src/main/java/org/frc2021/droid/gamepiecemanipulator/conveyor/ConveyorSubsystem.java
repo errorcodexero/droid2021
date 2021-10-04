@@ -2,11 +2,8 @@ package org.frc2021.droid.gamepiecemanipulator.conveyor;
 
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
-import org.xero1425.base.motors.MotorController.EncoderUpdateFrequency;
-import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
-import org.xero1425.misc.MissingParameterException;
 import org.xero1425.misc.SettingsValue;
 
 public class ConveyorSubsystem extends Subsystem {
@@ -41,9 +38,6 @@ public class ConveyorSubsystem extends Subsystem {
 
         intake_motor_ = getRobot().getMotorFactory().createMotor("intake", "hw:conveyor:motors:intake");
         shooter_motor_ = getRobot().getMotorFactory().createMotor("shooter", "hw:conveyor:motors:shooter");
-
-        intake_motor_.setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent);
-        shooter_motor_.setEncoderUpdateFrequncy(EncoderUpdateFrequency.Infrequent);
 
         sensor_thread_ = new ConveyorSensorThread(this) ;
         sensor_thread_.start() ;

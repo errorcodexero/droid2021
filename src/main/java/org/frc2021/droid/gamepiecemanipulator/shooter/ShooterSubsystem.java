@@ -42,7 +42,6 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         hood_change_time_= getRobot().getSettingsParser().get("shooter:hood:change_time").getDouble() ;
         hood_down_speed_= getRobot().getSettingsParser().get("shooter:hood:down_speed").getDouble() ;
 
-        // getMotorController().setCurrentLimit(40);
         getMotorController().setNeutralMode(MotorController.NeutralMode.Coast);
         getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Frequent);
 
