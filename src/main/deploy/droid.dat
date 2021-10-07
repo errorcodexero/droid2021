@@ -118,7 +118,7 @@ hw:turret:encoder:analog:emin                                   5.0
 hw:turret:encoder:analog:emax                                   0.0
 
 if PRACTICE
-hw:turret:encoder:analog:ec                                     2.45
+hw:turret:encoder:analog:ec                                     0.62133
 endif
 
 if COMPETITION
@@ -314,7 +314,7 @@ shooter:hold:max                                                1.0
 shooter:hold:imax                                               0.0
 
 if COMPETITION
-shooter:hood:down                                               0.85
+shooter:hood:down                                               0.825
 shooter:hood:up                                                 0.1
 endif
 
@@ -570,7 +570,7 @@ shooter:aim:hood_down:e                                         24823
 #
 # Negative values move to turrent clockwise
 #
-targettracker:camera_offset_angle                               0 
+targettracker:camera_offset_angle                               -1.5
 
 shooter:aim:hood_up:a                                           0
 shooter:aim:hood_up:b                                           -0.0814

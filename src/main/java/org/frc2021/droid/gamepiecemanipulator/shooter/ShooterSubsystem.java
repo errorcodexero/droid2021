@@ -43,7 +43,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
         hood_down_speed_= getRobot().getSettingsParser().get("shooter:hood:down_speed").getDouble() ;
 
         getMotorController().setNeutralMode(MotorController.NeutralMode.Coast);
-        getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Frequent);
+
 
         change_time_ = getRobot().getTime() ;
         actual_ = HoodPosition.Unknown ;
@@ -80,6 +80,12 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
 
     public void setReadyToFire(boolean b) {
         ready_to_fire_ = b ;
+    }
+
+    @Override
+    public void postHWInit() throws Exception {
+        super.postHWInit();
+        getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Frequent);
     }
 
     @Override

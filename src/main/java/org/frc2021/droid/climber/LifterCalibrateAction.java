@@ -1,7 +1,11 @@
 package org.frc2021.droid.climber;
 
+import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
+
 import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.actions.Action;
+import org.xero1425.misc.MessageLogger;
+import org.xero1425.misc.MessageType;
 import org.xero1425.misc.PIDCtrl;
 
 public class LifterCalibrateAction extends Action {
@@ -106,6 +110,15 @@ public class LifterCalibrateAction extends Action {
             
             captured_++ ;
         }
+
+        MessageLogger ml = sub_.getRobot().getMessageLogger() ;
+        ml.startMessage(MessageType.Debug) ;
+        ml.add("Encoders:") ;
+        for(int i = 0 ; i < captured_ ; i++)
+        {
+            ml.add(" ", encoders_[i]) ;
+        }
+        ml.endMessage();
 
         return ret ;
     }
