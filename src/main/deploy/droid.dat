@@ -161,12 +161,10 @@ hw:climber:lifter:encoder:quad:b                                0
 
 hw:climber:traverser:pwmid                                      2
 
-hw:climber:servo:l:pwmid                                        0                           # PWM 2
-hw:climber:servo:r:pwmid                                        1                           # PWM 1
-hw:climber:servo:l:release                                      1.0
-hw:climber:servo:r:release                                      1.0
-hw:climber:servo:l:climb                                        0.0
-hw:climber:servo:r:climb                                        0.0
+#hw:climber:servo:l:release                                      1.0
+#hw:climber:servo:r:release                                      1.0
+#hw:climber:servo:l:climb                                        0.0
+#hw:climber:servo:r:climb                                        0.0
 
 intake:collector:motor:power                                    -1.0
 intake:collector:motor:revpower                                 1.0
@@ -504,8 +502,8 @@ newdrive:wheel:deltapower                                       0.01
 
 climber:force_field_mode                                        true
 
-climber:climb_height                                            10500
-climber:max_height                                              11000
+climber:climb_height                                            11700
+climber:max_height                                              11868
 climber:power:up                                                0.8
 climber:power:down                                              -1
 climber:power:left                                              -1.0
@@ -530,13 +528,13 @@ climber:lifter:goto:maxa                                        3700
 climber:lifter:goto:maxd                                        -3700
 climber:lifter:goto:maxv                                        3700
 
-climber:lifter:hold:kp                                                   0.001
-climber:lifter:hold:ki                                                   0
-climber:lifter:hold:kd                                                   0
-climber:lifter:hold:kf                                                   0
-climber:lifter:hold:min                                                 0
-climber:lifter:hold:max                                                 0
-climber:lifter:hold:imax                                                0
+climber:lifter:hold:kp                                          0.002
+climber:lifter:hold:ki                                          0
+climber:lifter:hold:kd                                          0
+climber:lifter:hold:kf                                          0
+climber:lifter:hold:min                                         0
+climber:lifter:hold:max                                         0
+climber:lifter:hold:imax                                        0
 
 climber:lifter:calibrate:samples                                6
 climber:lifter:calibrate:down_power                             -0.1
@@ -672,11 +670,11 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          true
-auto:testmode:which                                           36
+auto:testmode:active                                          false
+auto:testmode:which                                           63
 auto:testmode:distance                                        1800
 auto:testmode:power                                           0.5
-auto:testmode:duration                                        4
+auto:testmode:duration                                        30
 auto:testmode:name                                           "test_straight"
 
 #

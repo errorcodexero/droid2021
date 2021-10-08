@@ -85,7 +85,7 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     @Override
     public void postHWInit() throws Exception {
         super.postHWInit();
-        getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Frequent);
+        // getMotorController().setEncoderUpdateFrequncy(EncoderUpdateFrequency.Frequent);
     }
 
     @Override

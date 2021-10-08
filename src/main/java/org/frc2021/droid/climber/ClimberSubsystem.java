@@ -26,7 +26,7 @@ public class ClimberSubsystem extends Subsystem {
         addChild(lifter_);
 
         int travid = getRobot().getSettingsParser().get("hw:climber:traverser:pwmid").getInteger();
-        //traverser_ = new PWMSparkMax(travid);
+        traverser_ = new PWMSparkMax(travid);
     }
 
     public void setTraverserPower(double p) {

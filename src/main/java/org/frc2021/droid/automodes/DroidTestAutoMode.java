@@ -269,6 +269,12 @@ public class DroidTestAutoMode extends TestAutoMode {
                 addSubActionPair(climber, new ClimberMoveAction(climber, 0.0, 0.0, "TEST-STOP"), true);                
                 break ;
 
+            case 63:
+                addSubActionPair(climber, new ClimberMoveAction(climber, 0.0, getPower(), "TEST-START"), true);
+                addAction(new DelayAction(ctrl.getRobot(), getDuration()));
+                addSubActionPair(climber, new ClimberMoveAction(climber, 0.0, 0.0, "TEST-STOP"), true);                
+                break ;
+
             // 100+ Whole robot test modes
             case 100:   // Complete shooting sequence
                 addSubActionPair(turret, new FollowTargetAction(turret, tracker), false);

@@ -1,7 +1,5 @@
 package org.frc2021.droid.climber;
 
-import com.ctre.phoenix.sensors.PigeonIMU.GeneralStatus;
-
 import org.xero1425.base.Subsystem.DisplayType;
 import org.xero1425.base.actions.Action;
 import org.xero1425.misc.MessageLogger;
@@ -68,6 +66,11 @@ public class LifterCalibrateAction extends Action {
                 break ;
             case Holding:
                 double out = pid_.getOutput(0, sub_.getPosition(), sub_.getRobot().getDeltaTime()) ;
+                MessageLogger logger = sub_.getRobot().getMessageLogger() ;
+                logger.startMessage(MessageType.Debug, sub_.getLoggerID()) ;
+                logger.add("out", out) ;
+                logger.add("pos", sub_.getPosition()) ;
+                logger.endMessage(); ;
                 sub_.setPower(out) ;
                 break ;
         }
@@ -91,7 +94,7 @@ public class LifterCalibrateAction extends Action {
                 vmax = encoders_[i] ;
         }
 
-        return vmax - vmin < threshold_ ;        
+        return vmax - vmin < Math.abs(threshold_) ;        
     }
 
     private boolean addEncoderPosition(double pos) {
