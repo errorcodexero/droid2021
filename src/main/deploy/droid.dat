@@ -335,22 +335,24 @@ shooter:up:pwl:3:y                                              3500
 shooter:up:pwl:4:x                                              119
 shooter:up:pwl:4:y                                              3550
 
-shooter:down:pwl:1:x                                            110
-shooter:down:pwl:1:y                                            5600
-shooter:down:pwl:2:x                                            120
-shooter:down:pwl:2:y                                            5600
-shooter:down:pwl:3:x                                            140
-shooter:down:pwl:3:y                                            5500
-shooter:down:pwl:4:x                                            161
-shooter:down:pwl:4:y                                            5300
-shooter:down:pwl:5:x                                            174
-shooter:down:pwl:5:y                                            5300
+shooter:down:pwl:1:x                                            100
+shooter:down:pwl:1:y                                            5350
+shooter:down:pwl:2:x                                            119
+shooter:down:pwl:2:y                                            5050
+shooter:down:pwl:3:x                                            138
+shooter:down:pwl:3:y                                            4900
+shooter:down:pwl:4:x                                            154
+shooter:down:pwl:4:y                                            4900
+shooter:down:pwl:5:x                                            172
+shooter:down:pwl:5:y                                            4900
 shooter:down:pwl:6:x                                            189
-shooter:down:pwl:6:y                                            5600
-shooter:down:pwl:7:x                                            220
-shooter:down:pwl:7:y                                            5700
-shooter:down:pwl:8:x                                            273
-shooter:down:pwl:8:y                                            6000
+shooter:down:pwl:6:y                                            4975
+shooter:down:pwl:7:x                                            208
+shooter:down:pwl:7:y                                            5060
+shooter:down:pwl:8:x                                            227
+shooter:down:pwl:8:y                                            5100
+shooter:down:pwl:9:x                                            244
+shooter:down:pwl:9:y                                            5375
 
 #
 # If the drivebase is going faster than this, the hood is
@@ -568,7 +570,7 @@ shooter:aim:hood_down:e                                         24823
 #
 # Negative values move to turrent clockwise
 #
-targettracker:camera_offset_angle                               -1.5
+targettracker:camera_offset_angle                               0.5
 
 shooter:aim:hood_up:a                                           0
 shooter:aim:hood_up:b                                           -0.0814
@@ -670,8 +672,8 @@ shoottest:hold                                                true
 # These control test modes for the robot.  They are used by the DroidTestTuneMode automode.  Note
 # this active value below is ignored if we are connected to the field.
 #
-auto:testmode:active                                          false
-auto:testmode:which                                           63
+auto:testmode:active                                          true
+auto:testmode:which                                           35
 auto:testmode:distance                                        1800
 auto:testmode:power                                           0.5
 auto:testmode:duration                                        30
