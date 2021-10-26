@@ -69,5 +69,4 @@ public class IntakeModel extends SimulationModel {
         double power = spin_.getPower() ;
         return ticks_ > 1400 && Math.abs(power) > 0.3 ;
     }
-
 }
