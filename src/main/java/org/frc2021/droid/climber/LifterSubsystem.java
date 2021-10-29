@@ -7,8 +7,8 @@ public class LifterSubsystem extends MotorEncoderSubsystem {
     public LifterSubsystem(Subsystem parent, String name) throws Exception {
         super(parent, name, false);
 
-        low_power_limit_ = getRobot().getSettingsParser().get("climber:low_power_limit").getDouble() ;
-        low_power_height_ = getRobot().getSettingsParser().get("climber:low_power_height").getDouble() ;     
+        low_power_limit_ = getSettingsValue("low_power_limit").getDouble() ;
+        low_power_height_ = getSettingsValue("low_power_height").getDouble() ;
         calibrated_ = false ;
     }
 

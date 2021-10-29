@@ -9,8 +9,8 @@ public class TurretSubsystem extends MotorEncoderSubsystem {
     public TurretSubsystem(Subsystem parent) throws Exception {
         super(parent, SubsystemName, false) ;
 
-        min_safe_angle_ = getRobot().getSettingsParser().get("turret:min").getDouble() ;
-        max_safe_angle_ = getRobot().getSettingsParser().get("turret:max").getDouble() ;
+        min_safe_angle_ = getSettingsValue("min").getDouble() ;
+        max_safe_angle_ = getSettingsValue("max").getDouble() ;
         is_ready_to_fire_ = false ;
     }
 

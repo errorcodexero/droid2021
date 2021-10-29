@@ -14,7 +14,6 @@ import org.xero1425.base.tankdrive.TankDriveSubsystem;
 import org.xero1425.base.utils.PieceWiseLinear;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
-import org.xero1425.misc.SettingsParser;
 
 public class FireAction extends Action {
 
@@ -100,38 +99,37 @@ public class FireAction extends Action {
         shooter_stop_action_ = new ShooterVelocityAction(gp.getShooter(), 0.0, ShooterSubsystem.HoodPosition.Down, false) ;
         emit_action_ = new ConveyorEmitAction(gp.getConveyor()) ;
 
-        SettingsParser settings = gp.getRobot().getSettingsParser() ;
-        db_velocity_threshold_ = settings.get("gamepiecemanipulator:fire:max_drivebase_velocity").getDouble() ;
+        db_velocity_threshold_ = gp.getSettingsValue("fire:max_drivebase_velocity").getDouble() ;
 
-        event_ = settings.get("shooter:event").getInteger() ;
-        power_port_power_ = settings.get("shooter:power_port_power").getDouble() ;
+        event_ = gp.getSettingsValue("event").getInteger() ;
+        power_port_power_ = gp.getSettingsValue("power_port_power").getDouble() ;
 
-        green_velo_ = settings.get("shooter:green").getDouble();
-        blue_velo_ = settings.get("shooter:blue").getDouble();
-        red_velo_ = settings.get("shooter:red").getDouble();
-        yellow_velo_ = settings.get("shooter:yellow").getDouble();
+        green_velo_ = gp.getSettingsValue("green").getDouble();
+        blue_velo_ = gp.getSettingsValue("blue").getDouble();
+        red_velo_ = gp.getSettingsValue("red").getDouble();
+        yellow_velo_ = gp.getSettingsValue("yellow").getDouble();
 
-        hood_down_a_ = settings.get("shooter:aim:hood_down:a").getDouble() ;
-        hood_down_b_ = settings.get("shooter:aim:hood_down:b").getDouble() ;
-        hood_down_c_ = settings.get("shooter:aim:hood_down:c").getDouble() ;
-        hood_down_d_ = settings.get("shooter:aim:hood_down:d").getDouble() ;
-        hood_down_e_ = settings.get("shooter:aim:hood_down:e").getDouble() ;
+        hood_down_a_ = gp.getSettingsValue("aim:polynomial:hood_down:a").getDouble() ;
+        hood_down_b_ = gp.getSettingsValue("aim:polynomial:hood_down:b").getDouble() ;
+        hood_down_c_ = gp.getSettingsValue("aim:polynomial:hood_down:c").getDouble() ;
+        hood_down_d_ = gp.getSettingsValue("aim:polynomial:hood_down:d").getDouble() ;
+        hood_down_e_ = gp.getSettingsValue("aim:polynomial:hood_down:e").getDouble() ;
 
-        hood_up_a_ = settings.get("shooter:aim:hood_up:a").getDouble() ;
-        hood_up_b_ = settings.get("shooter:aim:hood_up:b").getDouble() ;
-        hood_up_c_ = settings.get("shooter:aim:hood_up:c").getDouble() ;
-        hood_up_d_ = settings.get("shooter:aim:hood_up:d").getDouble() ;
-        hood_up_e_ = settings.get("shooter:aim:hood_up:e").getDouble() ;
+        hood_up_a_ = gp.getSettingsValue("aim:polynomial:hood_up:a").getDouble() ;
+        hood_up_b_ = gp.getSettingsValue("aim:polynomial:hood_up:b").getDouble() ;
+        hood_up_c_ = gp.getSettingsValue("aim:polynomial:hood_up:c").getDouble() ;
+        hood_up_d_ = gp.getSettingsValue("aim:polynomial:hood_up:d").getDouble() ;
+        hood_up_e_ = gp.getSettingsValue("aim:polynomial:hood_up:e").getDouble() ;
 
-        max_hood_up_distance_ = settings.get("shooter:aim:max_hood_up").getDouble() ;
-        min_hood_down_distance_ = settings.get("shooter:aim:min_hood_down").getDouble() ;
+        max_hood_up_distance_ = gp.getSettingsValue("aim:max_hood_up").getDouble() ;
+        min_hood_down_distance_ = gp.getSettingsValue("aim:min_hood_down").getDouble() ;
 
         plot_id_ = gp.initPlot("FireAction") ;
 
         hood_pos_ = HoodPosition.Down ;        
 
-        pwl_down_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "shooter:down:pwl") ;
-        pwl_up_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "shooter:up:pwl") ;
+        pwl_down_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "subsystems:gamepiecemanipulator:aim:pwl:hood_down") ;
+        pwl_up_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "subsystems:gamepiecemanipulator:aim:pwl:hood_up") ;
     }
 
     @Override

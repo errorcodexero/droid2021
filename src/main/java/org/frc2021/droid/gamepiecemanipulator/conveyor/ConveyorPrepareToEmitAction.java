@@ -9,8 +9,8 @@ public class ConveyorPrepareToEmitAction extends ConveyorStateAction {
     public ConveyorPrepareToEmitAction(ConveyorSubsystem sub) throws Exception {
         super(sub) ;
 
-        prepare_emit_intake_power_ = sub.getRobot().getSettingsParser().get("conveyor:prepare_emit:intake_side_power").getDouble() ;
-        prepare_emit_shooter_power_ = sub.getRobot().getSettingsParser().get("conveyor:prepare_emit:shooter_side_power").getDouble() ;
+        prepare_emit_intake_power_ = sub.getSettingsValue("prepare_emit:intake_side_power").getDouble() ;
+        prepare_emit_shooter_power_ = sub.getSettingsValue("prepare_emit:shooter_side_power").getDouble() ;
 
         BaseState[] states = new BaseState[] {
             new BranchState(DoneLabel, (ConveyorStateAction act) -> {

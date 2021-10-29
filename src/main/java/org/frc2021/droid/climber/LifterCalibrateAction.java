@@ -26,15 +26,15 @@ public class LifterCalibrateAction extends Action {
         super(lifter.getRobot().getMessageLogger());
 
         sub_ = lifter ;
-        samples_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:samples").getInteger() ;
+        samples_ = lifter.getSettingsValue("calibrate:samples").getInteger() ;
         captured_ = 0 ;
         encoders_ = new double[samples_] ;
-        down_power_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:down_power").getDouble() ;
+        down_power_ = lifter.getSettingsValue("calibrate:down_power").getDouble() ;
         if (down_power_ >= 0.0)
             throw new Exception("lifter calibrate down power must be negative") ;
 
-        threshold_ = lifter.getRobot().getSettingsParser().get("climber:lifter:calibrate:threshold").getDouble() ;
-        pid_ = new PIDCtrl(lifter.getRobot().getSettingsParser(), "climber:lifter:stay", false) ;
+        threshold_ = lifter.getSettingsValue("calibrate:threshold").getDouble() ;
+        pid_ = new PIDCtrl(lifter.getRobot().getSettingsParser(), "subsystems:lifter:stay", false) ;
     }
 
     @Override
@@ -113,16 +113,6 @@ public class LifterCalibrateAction extends Action {
             
             captured_++ ;
         }
-
-        MessageLogger ml = sub_.getRobot().getMessageLogger() ;
-        ml.startMessage(MessageType.Debug) ;
-        ml.add("Encoders:") ;
-        for(int i = 0 ; i < captured_ ; i++)
-        {
-            ml.add(" ", encoders_[i]) ;
-        }
-        ml.endMessage();
-
         return ret ;
     }
 }

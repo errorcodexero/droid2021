@@ -15,8 +15,8 @@ public class ConveyorEmitAction extends ConveyorStateAction {
     public ConveyorEmitAction(ConveyorSubsystem sub) throws Exception {
         super(sub) ;
 
-        emit_intake_power_ = sub.getRobot().getSettingsParser().get("conveyor:emit:intake_side_power").getDouble() ;
-        emit_shooter_power_ = sub.getRobot().getSettingsParser().get("conveyor:emit:shooter_side_power").getDouble() ;
+        emit_intake_power_ = sub.getSettingsValue("emit:intake_side_power").getDouble() ;
+        emit_shooter_power_ = sub.getSettingsValue("emit:shooter_side_power").getDouble() ;
         should_stop_firing_ = false ;
 
         BaseState[] states = new BaseState[] { 

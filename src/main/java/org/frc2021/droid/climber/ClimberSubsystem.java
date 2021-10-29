@@ -18,14 +18,14 @@ public class ClimberSubsystem extends Subsystem {
     public ClimberSubsystem(Subsystem parent) throws Exception {
         super(parent, SubsystemName);
 
-        max_height_ = getRobot().getSettingsParser().get("climber:max_height").getDouble();
-        lifter_ = new LifterSubsystem(this, "climber:lifter");
+        max_height_ = getSettingsValue("max_height").getDouble();
+        lifter_ = new LifterSubsystem(this, "lifter");
         lifter_.getMotorController().setCurrentLimit(40);
         lifter_.getMotorController().setNeutralMode(MotorController.NeutralMode.Brake);
         lifter_.getMotorController().resetEncoder();
         addChild(lifter_);
 
-        int travid = getRobot().getSettingsParser().get("hw:climber:traverser:pwmid").getInteger();
+        int travid = getSettingsValue("hw:traverser:pwmid").getInteger();
         traverser_ = new PWMSparkMax(travid);
     }
 
@@ -51,7 +51,7 @@ public class ClimberSubsystem extends Subsystem {
 
         boolean b ;
         try {
-            b = getRobot().getSettingsParser().get("climber:force_field_mode").getBoolean() ;
+            b = getSettingsValue("force_field_mode").getBoolean() ;
         }
         catch(Exception ex) {
             b = true ;

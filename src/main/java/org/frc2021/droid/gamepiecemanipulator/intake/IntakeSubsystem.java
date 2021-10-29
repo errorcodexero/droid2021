@@ -16,7 +16,7 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
         super(parent, SubsystemName, false); // Motor 1, in the base class
 
         // Motor 2, explicitly create it
-        collector_ = getRobot().getMotorFactory().createMotor("intake-collector", "hw:intake:collector:motor");
+        collector_ = getRobot().getMotorFactory().createMotor("intake-collector", "subsystems:intake:hw:collector:motor");
     }
 
     public void setCollectorPower(double p) throws BadMotorRequestException, MotorRequestFailedException {

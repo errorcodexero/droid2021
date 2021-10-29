@@ -7,7 +7,7 @@ import org.xero1425.misc.MissingParameterException;
 
 public class ClimberDeployAction extends MotorEncoderGotoAction {
     public ClimberDeployAction(LifterSubsystem lifter) throws BadParameterTypeException, MissingParameterException {
-        super(lifter, "climber:climb_height", true) ;
+        super(lifter, "climb_height", true) ;
     }
 
     @Override

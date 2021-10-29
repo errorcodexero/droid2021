@@ -3,7 +3,6 @@ package org.frc2021.droid.gamepiecemanipulator.shooter;
 import edu.wpi.first.wpilibj.Servo;
 import org.xero1425.base.Subsystem;
 import org.xero1425.base.motors.MotorController;
-import org.xero1425.base.motors.MotorController.EncoderUpdateFrequency;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
 
@@ -34,13 +33,13 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
 
         db_ = db ;
 
-        int index = getRobot().getSettingsParser().get("hw:shooter:hood").getInteger() ;
+        int index = getSettingsValue("hw:hood:servo").getInteger() ;
         hood_servo_ = new Servo(index) ;
 
-        hood_up_pos_ = getRobot().getSettingsParser().get("shooter:hood:up").getDouble() ;
-        hood_down_pos_ = getRobot().getSettingsParser().get("shooter:hood:down").getDouble() ;
-        hood_change_time_= getRobot().getSettingsParser().get("shooter:hood:change_time").getDouble() ;
-        hood_down_speed_= getRobot().getSettingsParser().get("shooter:hood:down_speed").getDouble() ;
+        hood_up_pos_ = getSettingsValue("hood:up").getDouble() ;
+        hood_down_pos_ = getSettingsValue("hood:down").getDouble() ;
+        hood_change_time_= getSettingsValue("hood:change_time").getDouble() ;
+        hood_down_speed_= getSettingsValue("hood:down_speed").getDouble() ;
 
         getMotorController().setNeutralMode(MotorController.NeutralMode.Coast);
 

@@ -9,10 +9,10 @@ public class CollectOnAction extends MotorEncoderGotoAction {
     private double collect_power_ ;
 
     public CollectOnAction(IntakeSubsystem sub)  throws BadParameterTypeException, MissingParameterException{
-        super(sub, "intake:arm:collecton:pos", true) ;
+        super(sub, "collect:onpos", true) ;
 
         sub_ = sub ;
-        collect_power_ = sub.getRobot().getSettingsParser().get("intake:collector:motor:power").getDouble() ;
+        collect_power_ = sub.getSettingsValue("collector:forpower").getDouble() ;
     }
 
     @Override

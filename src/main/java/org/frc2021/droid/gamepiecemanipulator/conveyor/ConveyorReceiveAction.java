@@ -12,9 +12,9 @@ public class ConveyorReceiveAction extends ConveyorStateAction {
     public ConveyorReceiveAction(ConveyorSubsystem sub) throws Exception {
         super(sub);
 
-        double timeout = sub.getRobot().getSettingsParser().get("conveyor:receive:timeout").getDouble();
-        intake_motor_power_ = sub.getRobot().getSettingsParser().get("conveyor:receive:intake_side_power").getDouble() ;
-        shooter_motor_power_ = sub.getRobot().getSettingsParser().get("conveyor:receive:shooter_side_power").getDouble() ;
+        double timeout = sub.getSettingsValue("receive:timeout").getDouble();
+        intake_motor_power_ = sub.getSettingsValue("receive:intake_side_power").getDouble() ;
+        shooter_motor_power_ = sub.getSettingsValue("receive:shooter_side_power").getDouble() ;
 
         BaseState[] states = new BaseState[] { 
             new DoWorkState(WaitForBallLabel, "wait for ball", (ConveyorStateAction act) -> {

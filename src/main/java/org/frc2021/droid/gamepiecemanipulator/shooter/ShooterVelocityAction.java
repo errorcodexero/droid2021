@@ -21,7 +21,7 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
             throws BadParameterTypeException, MissingParameterException, BadMotorRequestException {
         super(shooter, target) ;
 
-        ready_percent_ = shooter.getRobot().getSettingsParser().get("shooter:velocity:ready_margin_percent").getDouble() ;
+        ready_percent_ = shooter.getSettingsValue("velocity:ready_margin_percent").getDouble() ;
         pos_ = pos ;
         sub_ = shooter ;
         setready_ = setready ;

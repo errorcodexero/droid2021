@@ -34,7 +34,6 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
-import org.xero1425.misc.SettingsParser;
 
 public class DroidOIDevice extends OIPanel {
     
@@ -169,14 +168,14 @@ public class DroidOIDevice extends OIPanel {
             climber_calibrate_ = new LifterCalibrateAction(climber.getLifter()) ;
             deploy_climber_ = new ClimberDeployAction(climber.getLifter()) ;
             stop_climber_ = new ClimberMoveAction(climber, 0.0, 0.0, "STOPPED") ;
-            climber_left_ = new ClimberMoveAction(climber, 0.0, "climber:power:left", "LEFT") ;
-            climber_right_ = new ClimberMoveAction(climber, 0.0, "climber:power:right", "RIGHT") ;
-            climber_up_ = new ClimberMoveAction(climber, "climber:power:up", 0.0, "UP") ;
-            climber_down_ = new ClimberMoveAction(climber, "climber:power:down", 0.0, "DOWN") ;
-            climber_up_left_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:left", "UP-LEFT") ;
-            climber_up_right_ = new ClimberMoveAction(climber, "climber:power:up", "climber:power:right", "UP-RIGHT") ;
-            climber_down_left_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:left", "DOWN-LEFT") ;
-            climber_down_right_ = new ClimberMoveAction(climber, "climber:power:down", "climber:power:right", "DOWN-RIGHT") ;
+            climber_left_ = new ClimberMoveAction(climber, 0.0, "power:left", "LEFT") ;
+            climber_right_ = new ClimberMoveAction(climber, 0.0, "power:right", "RIGHT") ;
+            climber_up_ = new ClimberMoveAction(climber, "power:up", 0.0, "UP") ;
+            climber_down_ = new ClimberMoveAction(climber, "power:down", 0.0, "DOWN") ;
+            climber_up_left_ = new ClimberMoveAction(climber, "power:up", "power:left", "UP-LEFT") ;
+            climber_up_right_ = new ClimberMoveAction(climber, "power:up", "power:right", "UP-RIGHT") ;
+            climber_down_left_ = new ClimberMoveAction(climber, "power:down", "power:left", "DOWN-LEFT") ;
+            climber_down_right_ = new ClimberMoveAction(climber, "power:down", "power:right", "DOWN-RIGHT") ;
         }
         else
         {
@@ -271,48 +270,34 @@ public class DroidOIDevice extends OIPanel {
                 boolean left = (getValue(climb_left_) == 1) ;
                 boolean right = (getValue(climb_right_) == 1) ;
 
-                MessageLogger l = getSubsystem().getRobot().getMessageLogger() ;
-                l.startMessage(MessageType.Debug).add("Climber Action ") ;
-
                 if (up && left) {
                     act = climber_up_left_ ;
-                    l.add("Up Left") ;
                 }
                 else if (up & right) {
                     act = climber_up_right_ ;
-                    l.add("Up Right") ;
                 }
                 else if (down && left) {
                     act = climber_down_left_ ;
-                    l.add("Down Left") ;
                 }
                 else if (down && right) {
                     act = climber_down_right_ ;
-                    l.add("Down Right") ;
                 }
                 else if (up) {
                     act = climber_up_ ;
-                    l.add("Up") ;
                 }
                 else if (down) {
                     act = climber_down_ ;
-                    l.add("Down") ;
                 }
                 else if (left) {
                     act = climber_left_ ;
-                    l.add("Left") ;
                 }
                 else if (right) {
                     act = climber_right_ ;
-                    l.add("Right") ;
                 }
                 else {
                     act = stop_climber_ ;
-                    l.add("Stop") ;
                 }
-                
-                l.endMessage();
-
+            
                 seq.addSubActionPair(climber, act, false);
             }
         }
@@ -569,39 +554,38 @@ public class DroidOIDevice extends OIPanel {
 
     private void initializeGadgets() throws BadParameterTypeException, MissingParameterException {
         int num ;
-        SettingsParser settings = getSubsystem().getRobot().getSettingsParser() ;
 
-        num = settings.get("oi:automode").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:automode").getInteger() ;
         Double [] map = { -0.9, -0.75, -0.5, -0.25, 0.0, 0.2, 0.4, 0.6, 0.8, 1.0 } ;
         automode_ = mapAxisScale(num, map) ;
 
-        num = settings.get("oi:shoot_collect_mode").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:shoot_collect_mode").getInteger() ;
         collect_v_shoot_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
 
-        num = settings.get("oi:collect_onoff").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:collect_onoff").getInteger() ;
         collect_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
 
-        num = settings.get("oi:eject").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:eject").getInteger() ;
         eject_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
 
-        num = settings.get("oi:climb_lock").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:climb_lock").getInteger() ;
         climb_lock_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
 
         if (climber_attached_)
         {          
-            num = settings.get("oi:climb_deploy").getInteger() ;
+            num = getSubsystem().getSettingsValue("oi:gadgets:climb_deploy").getInteger() ;
             climb_deploy_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;
             
-            num = settings.get("oi:climb_up").getInteger() ;
+            num = getSubsystem().getSettingsValue("oi:gadgets:climb_up").getInteger() ;
             climb_up_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
             
-            num = settings.get("oi:climb_down").getInteger() ;
+            num = getSubsystem().getSettingsValue("oi:gadgets:climb_down").getInteger() ;
             climb_down_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
             
-            num = settings.get("oi:traverse_left").getInteger() ;
+            num = getSubsystem().getSettingsValue("oi:gadgets:traverse_left").getInteger() ;
             climb_left_ = mapButton(num, OIPanelButton.ButtonType.Level) ;
             
-            num = settings.get("oi:traverse_right").getInteger() ;
+            num = getSubsystem().getSettingsValue("oi:gadgets:traverse_right").getInteger() ;
             climb_right_ = mapButton(num, OIPanelButton.ButtonType.Level) ;        
         }
         else
@@ -613,10 +597,10 @@ public class DroidOIDevice extends OIPanel {
             climb_right_ = -1 ;
         }
 
-        num = settings.get("oi:manual_shoot_mode").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:manual_shoot_mode").getInteger() ;
         manual_shoot_mode_ = mapButton(num, OIPanelButton.ButtonType.Level) ;  
         
-        num = settings.get("oi:manual_shoot_fire").getInteger() ;
+        num = getSubsystem().getSettingsValue("oi:gadgets:manual_shoot_fire").getInteger() ;
         manual_shoot_fire_ = mapButton(num, OIPanelButton.ButtonType.LowToHigh) ;          
     }
 }

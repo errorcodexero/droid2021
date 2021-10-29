@@ -13,10 +13,10 @@ public class BlinkySubsystem extends Subsystem {
 
         int rnum ;
 
-        rnum = getRobot().getSettingsParser().get("hw:blinky:r0").getInteger() ;
+        rnum = getSettingsValue("r0").getInteger() ;
         r0_ = new Relay(rnum) ;
 
-        rnum = getRobot().getSettingsParser().get("hw:blinky:r1").getInteger() ;
+        rnum = getSettingsValue("r1").getInteger() ;
         r1_ = new Relay(rnum) ;
     }
 

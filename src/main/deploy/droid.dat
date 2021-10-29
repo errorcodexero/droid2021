@@ -135,19 +135,6 @@ hw:intake:encoder:quad:motor                                   true
 hw:intake:encoder:quad:m                                       1.0
 hw:intake:encoder:quad:b                                       0.0
 
-hw:controlpanelrotator:motor:type                               "sparkmax_brushless"
-hw:controlpanelrotator:motor:canid                              12                           # CAN 12
-hw:controlpanelrotator:encoder:quad:motor                       true
-hw:controlpanelrotator:encoder:quad:m                           1
-hw:controlpanelrotator:encoder:quad:b                           0
-if PRACTICE
-hw:controlpanelrotator:servo                                    0
-endif
-
-if COMPETITION
-hw:controlpanelrotator:servo                                    0
-endif
-
 hw:climber:lifter:motor:1:type                                  "sparkmax_brushless"
 hw:climber:lifter:motor:1:canid                                 13                          # CAN 13
 hw:climber:lifter:motor:1:inverted                              true
@@ -168,12 +155,7 @@ hw:climber:traverser:pwmid                                      2
 
 intake:collector:motor:power                                    -1.0
 intake:collector:motor:revpower                                 1.0
-if PRACTICE
 intake:arm:collecton:pos                                        1400
-endif
-if COMPETITION
-intake:arm:collecton:pos                                        1400
-endif
 intake:arm:collectoff:pos                                       0
 intake:hold:kp                                                   0.001
 intake:hold:ki                                                   0
@@ -183,30 +165,13 @@ intake:hold:min                                                 -0.1
 intake:hold:max                                                 0.1
 intake:hold:imax                                                0
 
-if PRACTICE
 intake:follower:down:kp                                       0.0005
-endif
-if COMPETITION
-intake:follower:down:kp                                       0.0005
-endif
 intake:follower:down:kd                                       0.0
 intake:follower:down:kv                                       0.00012407
 intake:follower:down:ka                                       0.0
-
-if PRACTICE
 intake:follower:up:kp                                         0.001
-endif
-if COMPETITION
-intake:follower:up:kp                                         0.001
-endif
-
 intake:follower:up:kd                                         0.0
-if PRACTICE
 intake:follower:up:kv                                         0.000035
-endif
-if COMPETITION
-intake:follower:up:kv                                         0.000035
-endif
 intake:follower:up:ka                                         0
 
 intake:goto:threshold                                       10.0       # Within 10 ticks degrees
