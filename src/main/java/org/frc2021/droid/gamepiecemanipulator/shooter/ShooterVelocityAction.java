@@ -19,9 +19,9 @@ public class ShooterVelocityAction extends MotorEncoderVelocityAction {
 
     public ShooterVelocityAction(ShooterSubsystem shooter, double target, ShooterSubsystem.HoodPosition pos, boolean setready)
             throws BadParameterTypeException, MissingParameterException, BadMotorRequestException {
-        super(shooter, target) ;
+        super(shooter, "shooter-action", target) ;
 
-        ready_percent_ = shooter.getSettingsValue("velocity:ready_margin_percent").getDouble() ;
+        ready_percent_ = shooter.getSettingsValue(getName() + ":ready_margin_percent").getDouble() ;
         pos_ = pos ;
         sub_ = shooter ;
         setready_ = setready ;

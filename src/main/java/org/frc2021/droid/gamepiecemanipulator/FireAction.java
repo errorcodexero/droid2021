@@ -128,8 +128,8 @@ public class FireAction extends Action {
 
         hood_pos_ = HoodPosition.Down ;        
 
-        pwl_down_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "subsystems:gamepiecemanipulator:aim:pwl:hood_down") ;
-        pwl_up_ = new PieceWiseLinear(sub_.getRobot().getSettingsParser(), "subsystems:gamepiecemanipulator:aim:pwl:hood_up") ;
+        pwl_down_ = new PieceWiseLinear(sub_.getRobot().getSettingsSupplier(), "subsystems:gamepiecemanipulator:aim:pwl:hood_down") ;
+        pwl_up_ = new PieceWiseLinear(sub_.getRobot().getSettingsSupplier(), "subsystems:gamepiecemanipulator:aim:pwl:hood_up") ;
     }
 
     @Override

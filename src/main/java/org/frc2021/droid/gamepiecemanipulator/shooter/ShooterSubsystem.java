@@ -29,8 +29,6 @@ public class ShooterSubsystem extends MotorEncoderSubsystem {
     public ShooterSubsystem(Subsystem parent, TankDriveSubsystem db) throws Exception {
         super(parent, SubsystemName, false, 8) ;
 
-        setSmartDashboardWhenEnabled(true);
-
         db_ = db ;
 
         int index = getSettingsValue("hw:hood:servo").getInteger() ;

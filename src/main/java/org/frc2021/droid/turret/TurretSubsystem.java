@@ -4,6 +4,11 @@ import org.xero1425.base.Subsystem;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem;
 
 public class TurretSubsystem extends MotorEncoderSubsystem {
+    
+    private double min_safe_angle_ ;
+    private double max_safe_angle_ ;
+    private boolean is_ready_to_fire_ ;
+    
     public final static String SubsystemName = "turret" ;
 
     public TurretSubsystem(Subsystem parent) throws Exception {
@@ -36,7 +41,7 @@ public class TurretSubsystem extends MotorEncoderSubsystem {
     }
 
     @Override
-    protected void setPower(double p) {
+    public void setPower(double p) {
         if (p < 0 && getPosition() < getMinSafeAngle())
             p = 0 ;
         else if (p > 0 && getPosition() > getMaxSafeAngle())
@@ -45,8 +50,5 @@ public class TurretSubsystem extends MotorEncoderSubsystem {
         super.setPower(p) ;
     }
 
-    private double min_safe_angle_ ;
-    private double max_safe_angle_ ;
-    private boolean is_ready_to_fire_ ;
 }
 

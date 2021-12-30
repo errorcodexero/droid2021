@@ -34,7 +34,7 @@ public class LifterCalibrateAction extends Action {
             throw new Exception("lifter calibrate down power must be negative") ;
 
         threshold_ = lifter.getSettingsValue("calibrate:threshold").getDouble() ;
-        pid_ = new PIDCtrl(lifter.getRobot().getSettingsParser(), "subsystems:lifter:stay", false) ;
+        pid_ = new PIDCtrl(lifter.getRobot().getSettingsSupplier(), "subsystems:lifter:stay", false) ;
     }
 
     @Override

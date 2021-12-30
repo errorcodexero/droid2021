@@ -282,7 +282,7 @@
                     "PRACTICE" : 0.32
                 }
             },
-            "velocity" : {
+            "shooter-action" : {
                 "kp" : 0.00001,
                 "ki" : 0.0,
                 "kd" : 0.0,
@@ -419,6 +419,7 @@
             "fire_threshold" : 5.0
         },
         "droid-limelight" : {
+            "timeout" : 8.0,
             "camera_latency" : 0.011,
             "network_latency" : 0.010,
             "camera_angle" : 20.08,
@@ -430,7 +431,7 @@
             "lost_count" : 10
         },
         "droidoi" : {
-            "gamepad" : {
+            "xero1425_gamepad" : {
                 "index" : 0,
                 "power" : {
                     "max" : 1.0,

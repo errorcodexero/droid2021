@@ -219,15 +219,12 @@ public class DroidOIDevice extends OIPanel {
         }
         else
         {
-            if (climber_calibrating_)
+            if (!climber_calibrating_)
             {
-                climber.getLifter().cancelAction();
-                climber_calibrating_ = false ;
-            }
-
-            if (!climber.isBusy() && !climber.getLifter().isBusy())
-            {
-                generateClimbActionUnlocked(seq);
+                if (!climber.isBusy() && !climber.getLifter().isBusy())
+                {
+                    generateClimbActionUnlocked(seq);
+                }
             }
         }
     }
@@ -307,7 +304,7 @@ public class DroidOIDevice extends OIPanel {
         ConveyorSubsystem conveyor = getDroidSubsystem().getGamePieceManipulator().getConveyor();
 
         if (conveyor.getBallCount() == ConveyorSubsystem.MAX_BALLS && rumbled_ == false && gamepad_ != null) {
-            gamepad_.rumble(true, 1.0, 1.0) ;
+            gamepad_.rumble(1.0, 1.0) ;
             rumbled_ = true ;
         }
         else if (conveyor.getBallCount() < ConveyorSubsystem.MAX_BALLS && rumbled_ == true) {

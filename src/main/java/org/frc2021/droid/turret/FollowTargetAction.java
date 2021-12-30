@@ -55,7 +55,7 @@ public class FollowTargetAction extends MotorAction {
         //
         // This PID controller does the work of following the target
         //
-        pid_ = new PIDCtrl(getSubsystem().getRobot().getSettingsParser(), "subsystems:turret:follow", false);
+        pid_ = new PIDCtrl(getSubsystem().getRobot().getSettingsSupplier(), "subsystems:turret:follow", false);
 
         //
         // Enable the target tracker, this lights up the LED lights and starts the flow of data

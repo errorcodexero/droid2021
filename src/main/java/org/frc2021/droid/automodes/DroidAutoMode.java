@@ -26,8 +26,6 @@ import org.xero1425.base.controllers.AutoMode;
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
 import org.xero1425.base.tankdrive.TankDrivePathFollowerAction;
 import org.xero1425.base.tankdrive.TankDriveSubsystem;
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MissingParameterException;
 
 //
 // This is the base class for the Droid automodes.  It basically provides some utility
@@ -119,7 +117,7 @@ public class DroidAutoMode extends AutoMode {
     // Add a sequence to move the turret to a specific angle and then set it up to track the
     // target.
     //
-    private SequenceAction setTurretToTrack(double angle) throws InvalidActionRequest, BadParameterTypeException, MissingParameterException {
+    private SequenceAction setTurretToTrack(double angle) throws Exception {
         TurretSubsystem turret = getDroidSubsystem().getTurret() ;
         TargetTrackerSubsystem tracker = getDroidSubsystem().getTracker() ;
         

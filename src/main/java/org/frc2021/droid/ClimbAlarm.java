@@ -11,7 +11,7 @@ public class ClimbAlarm extends AlarmSounder {
 
     @Override
     public void signalAlarm() {
-        gp_.rumble(true, 1.0, 5.0);
+        gp_.rumble(1.0, 5.0);
     }
 
     private Gamepad gp_ ;

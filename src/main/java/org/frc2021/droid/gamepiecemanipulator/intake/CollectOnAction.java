@@ -1,14 +1,12 @@
 package org.frc2021.droid.gamepiecemanipulator.intake;
 
 import org.xero1425.base.motorsubsystem.MotorEncoderGotoAction;
-import org.xero1425.misc.BadParameterTypeException;
-import org.xero1425.misc.MissingParameterException;
 
 public class CollectOnAction extends MotorEncoderGotoAction {
     private IntakeSubsystem sub_ ;
     private double collect_power_ ;
 
-    public CollectOnAction(IntakeSubsystem sub)  throws BadParameterTypeException, MissingParameterException{
+    public CollectOnAction(IntakeSubsystem sub)  throws Exception {
         super(sub, "collect:onpos", true) ;
 
         sub_ = sub ;
