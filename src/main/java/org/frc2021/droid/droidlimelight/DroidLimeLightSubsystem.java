@@ -17,9 +17,9 @@ public class DroidLimeLightSubsystem extends LimeLightSubsystem {
     public DroidLimeLightSubsystem(Subsystem parent) throws BadParameterTypeException, MissingParameterException {
         super(parent, SubsystemName) ;
 
-        camera_angle_ = getRobot().getSettingsParser().get("droidvision:camera_angle").getDouble() ;
-        camera_height_ = getRobot().getSettingsParser().get("droidvision:camera_height").getDouble() ;
-        target_height_ = getRobot().getSettingsParser().get("droidvision:target_height").getDouble() ;
+        camera_angle_ = getSettingsValue("camera_angle").getDouble() ;
+        camera_height_ = getSettingsValue("camera_height").getDouble() ;
+        target_height_ = getSettingsValue("target_height").getDouble() ;
         distance_ = 0 ;
 
         setCamMode(CamMode.VisionProcessing) ;

@@ -6,6 +6,8 @@ import org.xero1425.base.motors.MotorController;
 import org.xero1425.base.motors.MotorRequestFailedException;
 import org.xero1425.base.motorsubsystem.MotorEncoderHoldAction;
 import org.xero1425.base.motorsubsystem.MotorEncoderSubsystem ;
+import org.xero1425.misc.BadParameterTypeException;
+import org.xero1425.misc.MissingParameterException;
 
 public class IntakeSubsystem extends MotorEncoderSubsystem {
     public static final String SubsystemName = "intake";
@@ -16,7 +18,8 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
         super(parent, SubsystemName, false); // Motor 1, in the base class
 
         // Motor 2, explicitly create it
-        collector_ = getRobot().getMotorFactory().createMotor("intake-collector", "hw:intake:collector:motor");
+        collector_ = getRobot().getMotorFactory().createMotor("intake-collector",
+                "subsystems:intake:hw:collector:motor");
     }
 
     public void setCollectorPower(double p) throws BadMotorRequestException, MotorRequestFailedException {
@@ -25,6 +28,9 @@ public class IntakeSubsystem extends MotorEncoderSubsystem {
 
     @Override
     public void postHWInit() {
-        setDefaultAction(new MotorEncoderHoldAction(this)) ;
+        try {
+            setDefaultAction(new MotorEncoderHoldAction(this));
+        } catch (MissingParameterException | BadParameterTypeException e) {
+        }
     }
 }

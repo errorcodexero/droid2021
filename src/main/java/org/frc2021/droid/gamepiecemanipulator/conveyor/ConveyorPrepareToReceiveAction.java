@@ -9,10 +9,10 @@ public class ConveyorPrepareToReceiveAction extends ConveyorStateAction {
     public ConveyorPrepareToReceiveAction(ConveyorSubsystem sub) throws Exception {
         super(sub) ;
 
-        prepare_receive_intake_to_intake_power_ = sub.getRobot().getSettingsParser().get("conveyor:prepare_receive:to_intake:intake_side_power").getDouble() ;
-        prepare_receive_shooter_to_intake_power_ = sub.getRobot().getSettingsParser().get("conveyor:prepare_receive:to_intake:shooter_side_power").getDouble() ;
-        prepare_receive_intake_to_shooter_power_ = sub.getRobot().getSettingsParser().get("conveyor:prepare_receive:to_shooter:intake_side_power").getDouble() ;
-        prepare_receive_shooter_to_shooter_power_ = sub.getRobot().getSettingsParser().get("conveyor:prepare_receive:to_shooter:shooter_side_power").getDouble() ;        
+        prepare_receive_intake_to_intake_power_ = sub.getSettingsValue("prepare_receive:to_intake:intake_side_power").getDouble() ;
+        prepare_receive_shooter_to_intake_power_ = sub.getSettingsValue("prepare_receive:to_intake:shooter_side_power").getDouble() ;
+        prepare_receive_intake_to_shooter_power_ = sub.getSettingsValue("prepare_receive:to_shooter:intake_side_power").getDouble() ;
+        prepare_receive_shooter_to_shooter_power_ = sub.getSettingsValue("prepare_receive:to_shooter:shooter_side_power").getDouble() ;        
 
         BaseState[] states = new BaseState[] {
             new BranchState(DoneLabel, (ConveyorStateAction act) -> {

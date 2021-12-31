@@ -44,7 +44,7 @@ public class TargetTrackerSubsystem extends Subsystem {
         // Camera offset angle is determined empirically and deals with any angular offset in the
         // mounting or manufacturing of the camera.
         //
-        camera_offset_angle_ = getRobot().getSettingsParser().get("targettracker:camera_offset_angle").getDouble() ;
+        camera_offset_angle_ = getSettingsValue("camera_offset_angle").getDouble() ;
 
         //
         // This is the number of robot loops that the lime light can lose the target before we assume
@@ -53,7 +53,7 @@ public class TargetTrackerSubsystem extends Subsystem {
         // values we last calculated until the target is seen again.  Only after this number of robot loops
         // without a target do we actually consider the target lost and stop the firing operation.
         //
-        max_lost_count_ = getRobot().getSettingsParser().get("targettracker:lost_count").getInteger() ;
+        max_lost_count_ = getSettingsValue("lost_count").getInteger() ;
 
         //
         // Turn off the LEDs unless we are actually wanting to track a target

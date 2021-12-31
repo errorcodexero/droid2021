@@ -41,7 +41,7 @@ public class ShootTestingAction extends Action {
         prepare_emit_ = new ConveyorPrepareToEmitAction(gp.getConveyor()) ;
         emit_ = new ConveyorEmitAction(gp.getConveyor()) ;
 
-        shoot_delay_ = gp.getRobot().getSettingsParser().get("shoottest:shoot_delay").getDouble() ;
+        shoot_delay_ = gp.getSettingsValue("shoottest:shoot_delay").getDouble() ;
     }
 
     @Override

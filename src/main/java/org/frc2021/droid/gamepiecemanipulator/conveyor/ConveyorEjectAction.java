@@ -4,8 +4,8 @@ public class ConveyorEjectAction extends ConveyorStateAction {
     public ConveyorEjectAction(ConveyorSubsystem sub) throws Exception {
         super(sub) ;
 
-        eject_intake_power_ = sub.getRobot().getSettingsParser().get("conveyor:eject:intake_side_power").getDouble() ;
-        eject_shooter_power_ = sub.getRobot().getSettingsParser().get("conveyor:eject:shooter_side_power").getDouble() ;
+        eject_intake_power_ = sub.getSettingsValue("eject:intake_side_power").getDouble() ;
+        eject_shooter_power_ = sub.getSettingsValue("eject:shooter_side_power").getDouble() ;
 
         BaseState[] states = new BaseState[] { 
             new DoWorkState("motors to eject power", (ConveyorStateAction act) -> {

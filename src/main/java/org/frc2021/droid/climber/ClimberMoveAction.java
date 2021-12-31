@@ -26,9 +26,9 @@ public class ClimberMoveAction extends Action {
             throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
-        double power = sub.getRobot().getSettingsParser().get(lift).getDouble() ;
+        double power = sub.getSettingsValue(lift).getDouble() ;
         lift_ = new MotorPowerAction(sub.getLifter(), power) ;
-        trav_ = sub.getRobot().getSettingsParser().get(trav).getDouble() ;
+        trav_ = sub.getSettingsValue(trav).getDouble() ;
         sub_ = sub ;
         state_ = state ;
     }    
@@ -37,7 +37,7 @@ public class ClimberMoveAction extends Action {
             throws BadParameterTypeException, MissingParameterException {
         super(sub.getRobot().getMessageLogger());
 
-        double power = sub.getRobot().getSettingsParser().get(lift).getDouble() ;
+        double power = sub.getSettingsValue(lift).getDouble() ;
         lift_ = new MotorPowerAction(sub.getLifter(), power) ;
         trav_ = trav ;
         sub_ = sub ;
@@ -49,7 +49,7 @@ public class ClimberMoveAction extends Action {
         super(sub.getRobot().getMessageLogger());
 
         lift_ = new MotorPowerAction(sub.getLifter(), lift) ;
-        trav_ = sub.getRobot().getSettingsParser().get(trav).getDouble() ;
+        trav_ = sub.getSettingsValue(trav).getDouble() ;
         sub_ = sub ;
         state_ = state ;
     }      

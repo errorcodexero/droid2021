@@ -12,10 +12,10 @@ public class DroidOISubsystem extends OISubsystem {
     private DroidOIDevice oi_ ;
 
     public final static String SubsystemName = "droidoi";
-    private final static String OIHIDIndexName = "hw:driverstation:hid:oi";
+    private final static String OIHIDIndexName = "oi:index";
 
     public DroidOISubsystem(Subsystem parent, TankDriveSubsystem db, boolean climber) {
-        super(parent, SubsystemName, db) ;
+        super(parent, SubsystemName, GamePadType.Xero1425Historic, db) ;
 
         int index ;
         MessageLogger logger = getRobot().getMessageLogger() ;
@@ -24,7 +24,7 @@ public class DroidOISubsystem extends OISubsystem {
         // Add the custom OI for droid to the OI subsystem
         //
         try {
-            index = getRobot().getSettingsParser().get(OIHIDIndexName).getInteger() ;
+            index = getSettingsValue(OIHIDIndexName).getInteger() ;
         } catch (BadParameterTypeException e) {
             logger.startMessage(MessageType.Error) ;
             logger.add("parameter ").addQuoted(OIHIDIndexName) ;

@@ -6,7 +6,6 @@ import org.xero1425.misc.BadParameterTypeException;
 import org.xero1425.misc.MessageLogger;
 import org.xero1425.misc.MessageType;
 import org.xero1425.misc.MissingParameterException;
-import org.xero1425.misc.SettingsParser;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -58,8 +57,6 @@ public class ConveyorSensorThread extends Thread {
         sub_ = sub;
         running_ = true;
 
-        SettingsParser p = sub_.getRobot().getSettingsParser();
-
         lock_ = new Object();
         sensors_ = new DigitalInput[SENSOR_COUNT];
         sensor_states_ = new boolean[SENSOR_COUNT];
@@ -69,8 +66,8 @@ public class ConveyorSensorThread extends Thread {
         int num;
         int basech = (int) 'a';
         for (int i = 0; i < SENSOR_COUNT; i++) {
-            String name = "hw:conveyor:sensor:" + (char) (basech + i);
-            num = p.get(name).getInteger();
+            String name = "hw:sensors:" + (char) (basech + i);
+            num = sub.getSettingsValue(name).getInteger() ;
             sensors_[i] = new DigitalInput(num);
             sensor_states_[i] = false;
             prev_sensor_states_[i] = false;

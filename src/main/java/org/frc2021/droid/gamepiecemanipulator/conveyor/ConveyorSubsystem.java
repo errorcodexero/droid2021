@@ -36,8 +36,8 @@ public class ConveyorSubsystem extends Subsystem {
         staged_for_fire_ = false;
         collecting_ = false;
 
-        intake_motor_ = getRobot().getMotorFactory().createMotor("intake", "hw:conveyor:motors:intake");
-        shooter_motor_ = getRobot().getMotorFactory().createMotor("shooter", "hw:conveyor:motors:shooter");
+        intake_motor_ = getRobot().getMotorFactory().createMotor("intake", "subsystems:conveyor:hw:motors:intake");
+        shooter_motor_ = getRobot().getMotorFactory().createMotor("shooter", "subsystems:conveyor:hw:motors:shooter");
 
         sensor_thread_ = new ConveyorSensorThread(this) ;
         sensor_thread_.start() ;
