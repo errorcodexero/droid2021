@@ -1,8 +1,8 @@
 {
     "system": {
         "messages": {
-            "action" : true,
-            "tankdrive": false,
+            "actions" : true,
+            "tankdrive": true,
             "turret": false,
             "shooter": false,
             "droid": false,
@@ -556,11 +556,11 @@
         }
     },
     "testmode" : {
-        "active" : true,
-        "which" : 63,
+        "enabled" : true,
+        "which" : 0,
         "distance" : 1800,
         "power" : 0.5,
-        "duration" : 30,
+        "duration" : 5,
         "name" : "test_straight"
     }
 }
